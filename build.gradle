@@ -25,4 +25,5 @@ task clean(type: Delete) {
 ext {
     support_version = '26.0.0-alpha1'
     constraint_layout_version = '1.0.2'
+    butter_knife_version = '8.6.0'
 }
