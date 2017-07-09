@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Yamblz.Weather</string>
+
+    <string name="title_weather">Погода</string>
+    <string name="title_settings">Настройки</string>
+    <string name="title_about">О приложении</string>
+
+</resources>
