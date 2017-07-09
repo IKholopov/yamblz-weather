@@ -12,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.presentation.fragment.AboutFragment;
+import com.example.toor.yamblzweather.presentation.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.fragment.SettingsFragment;
 import com.example.toor.yamblzweather.presentation.fragment.WeatherFragment;
 
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationView nvDrawer;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
     private Unbinder unbinder;
 
     @Override
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void selectDrawerItem(MenuItem menuItem) {
-        // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
         switch (menuItem.getItemId()) {
@@ -78,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_settings:
                 fragmentClass = SettingsFragment.class;
                 break;
-            case R.id.nav_about:
-                fragmentClass = AboutFragment.class;
+            case R.id.nav_info:
+                fragmentClass = InfoFragment.class;
                 break;
             default:
                 fragmentClass = WeatherFragment.class;
@@ -91,15 +91,10 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
-        // Highlight the selected item has been done by NavigationView
         menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-        // Close the navigation drawer
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 

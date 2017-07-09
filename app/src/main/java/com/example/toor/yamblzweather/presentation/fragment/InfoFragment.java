@@ -8,15 +8,15 @@ import android.view.ViewGroup;
 
 import com.example.toor.yamblzweather.R;
 
-public class AboutFragment extends Fragment {
+public class InfoFragment extends Fragment {
 
-    public static AboutFragment newInstance() {
-        return new AboutFragment();
+    public static InfoFragment newInstance() {
+        return new InfoFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_about, container, false);
+        return inflater.inflate(R.layout.fragment_info, container, false);
     }
 }

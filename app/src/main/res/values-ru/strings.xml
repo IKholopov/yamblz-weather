@@ -3,6 +3,6 @@
 
     <string name="title_weather">Погода</string>
     <string name="title_settings">Настройки</string>
-    <string name="title_about">О приложении</string>
+    <string name="title_info">О приложении</string>
 
 </resources>
