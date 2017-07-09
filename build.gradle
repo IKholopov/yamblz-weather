@@ -21,3 +21,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    support_version = '26.0.0-alpha1'
+    constraint_layout_version = '1.0.2'
+}
