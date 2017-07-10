@@ -1,9 +1,9 @@
 package com.example.toor.yamblzweather.presentation.activity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
         setupDrawerContent(nvDrawer);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().add(R.id.flContent, WeatherFragment.newInstance()).commit();
     }
 
@@ -91,10 +91,9 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
 
-        menuItem.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
