@@ -10,6 +10,8 @@ import com.example.toor.yamblzweather.R;
 
 public class WeatherFragment extends Fragment {
 
+    public static final String WEATHER_FRAGMENT_TAG = WeatherFragment.class.getSimpleName();
+
     public static WeatherFragment newInstance() {
         return new WeatherFragment();
     }

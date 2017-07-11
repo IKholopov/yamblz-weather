@@ -20,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.toor.yamblzweather.presentation.fragment.WeatherFragment.WEATHER_FRAGMENT_TAG;
+
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.nav_view)
@@ -38,7 +40,11 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
 
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.flContent, WeatherFragment.newInstance()).commit();
+        WeatherFragment weatherFragment = ((WeatherFragment) fragmentManager.findFragmentByTag(WEATHER_FRAGMENT_TAG));
+        if (weatherFragment == null) {
+            weatherFragment = WeatherFragment.newInstance();
+            fragmentManager.beginTransaction().add(R.id.flContent, weatherFragment, WEATHER_FRAGMENT_TAG).commit();
+        }
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
