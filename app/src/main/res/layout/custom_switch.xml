@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="15dp"
     android:showText="true"
-    android:textOff="off"
-    android:textOn="on"
+    android:textOff="@string/celsius"
+    android:textOn="@string/fahrenheit"
     android:thumb="@drawable/apptheme_switch_track_holo_light"
     android:track="@drawable/apptheme_switch_inner_holo_light" />
