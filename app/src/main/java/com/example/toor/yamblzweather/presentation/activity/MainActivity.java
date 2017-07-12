@@ -19,6 +19,7 @@ import com.example.toor.yamblzweather.presentation.fragment.WeatherFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
 import static com.example.toor.yamblzweather.presentation.fragment.WeatherFragment.WEATHER_FRAGMENT_TAG;
 
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void selectDrawerItem(MenuItem menuItem) {
-        Fragment fragment = null;
         Class fragmentClass;
         switch (menuItem.getItemId()) {
             case R.id.nav_weather:
@@ -86,14 +86,16 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = WeatherFragment.class;
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentClass.getSimpleName());
+        if (fragment == null) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+                fragmentManager.beginTransaction().replace(R.id.flContent, fragment, fragmentClass.getSimpleName()).commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         drawerLayout.closeDrawer(GravityCompat.START);
     }
