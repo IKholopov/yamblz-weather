@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+            storeFile file(RELEASE_STORE_FILE)
+            storePassword RELEASE_STORE_PASSWORD
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
@@ -13,24 +21,27 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:appcompat-v7:$rootProject.support_version"
-    compile "com.android.support:design:$rootProject.support_version"
-    compile "com.android.support.constraint:constraint-layout:$rootProject.constraint_layout_version"
+    compile "com.android.support:appcompat-v7:$support_version"
+    compile "com.android.support:design:$support_version"
+    compile "com.android.support:support-v4:$support_version"
 
-    compile "com.jakewharton:butterknife:$rootProject.butter_knife_version"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butter_knife_version"
+    compile "com.android.support.constraint:constraint-layout:$constraint_layout_version"
 
-    compile 'com.android.support:support-v4:26.+'
+    compile "com.jakewharton:butterknife:$butter_knife_version"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butter_knife_version"
+
+    compile "com.jakewharton.timber:timber:$timber_version"
+
     testCompile 'junit:junit:4.12'
 }
