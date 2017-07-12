@@ -5,4 +5,9 @@
     <string name="title_settings">Настройки</string>
     <string name="title_info">О приложении</string>
 
+    <string name="settings_title_temperature">Температура</string>
+
+    <string name="weather_fragment">Погода</string>
+    <string name="info_fragment">Инфо</string>
+
 </resources>

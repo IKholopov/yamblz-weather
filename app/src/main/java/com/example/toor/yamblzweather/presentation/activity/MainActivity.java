@@ -69,11 +69,6 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
     void selectDrawerItem(MenuItem menuItem) {
         Fragment fragment = null;
         Class fragmentClass;
