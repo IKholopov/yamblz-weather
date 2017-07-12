@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -11,6 +12,13 @@ public class SettingsFragment extends PreferenceFragment {
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        getActivity().setTitle(R.string.title_settings);
     }
 
     @Override

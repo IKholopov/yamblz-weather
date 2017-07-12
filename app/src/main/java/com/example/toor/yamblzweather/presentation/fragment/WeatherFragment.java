@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.presentation.fragment;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,15 @@ import com.example.toor.yamblzweather.R;
 
 public class WeatherFragment extends Fragment {
 
-    public static final String WEATHER_FRAGMENT_TAG = WeatherFragment.class.getSimpleName();
-
     public static WeatherFragment newInstance() {
         return new WeatherFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        getActivity().setTitle(R.string.title_weather);
     }
 
     @Override
@@ -21,4 +27,5 @@ public class WeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_weather, container, false);
     }
+
 }

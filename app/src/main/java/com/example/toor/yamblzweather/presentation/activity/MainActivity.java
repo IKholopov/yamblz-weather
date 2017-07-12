@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.presentation.activity;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,9 +19,6 @@ import com.example.toor.yamblzweather.presentation.fragment.WeatherFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import timber.log.Timber;
-
-import static com.example.toor.yamblzweather.presentation.fragment.WeatherFragment.WEATHER_FRAGMENT_TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,11 +37,10 @@ public class MainActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
         setupDrawerContent(nvDrawer);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        WeatherFragment weatherFragment = ((WeatherFragment) fragmentManager.findFragmentByTag(WEATHER_FRAGMENT_TAG));
+        WeatherFragment weatherFragment = ((WeatherFragment) getFragmentManager().findFragmentByTag(WeatherFragment.class.getSimpleName()));
         if (weatherFragment == null) {
             weatherFragment = WeatherFragment.newInstance();
-            fragmentManager.beginTransaction().add(R.id.flContent, weatherFragment, WEATHER_FRAGMENT_TAG).commit();
+            getFragmentManager().beginTransaction().add(R.id.flContent, weatherFragment, WeatherFragment.class.getSimpleName()).commit();
         }
     }
 
@@ -62,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.BLACK);
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -86,12 +83,13 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = WeatherFragment.class;
         }
 
-        FragmentManager fragmentManager = getFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(fragmentClass.getSimpleName());
+        Fragment fragment = getFragmentManager().findFragmentByTag(fragmentClass.getSimpleName());
         if (fragment == null) {
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-                fragmentManager.beginTransaction().replace(R.id.flContent, fragment, fragmentClass.getSimpleName()).commit();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.flContent, fragment, fragmentClass.getSimpleName())
+                        .commit();
             } catch (Exception e) {
                 e.printStackTrace();
             }
