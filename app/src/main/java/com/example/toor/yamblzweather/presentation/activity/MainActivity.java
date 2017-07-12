@@ -37,9 +37,8 @@ public class MainActivity extends AppCompatActivity {
         unbinder = ButterKnife.bind(this);
         setupDrawerContent(nvDrawer);
 
-        WeatherFragment weatherFragment = ((WeatherFragment) getFragmentManager().findFragmentByTag(WeatherFragment.class.getSimpleName()));
-        if (weatherFragment == null) {
-            weatherFragment = WeatherFragment.newInstance();
+        if (savedInstanceState == null) {
+            WeatherFragment weatherFragment = WeatherFragment.newInstance();
             getFragmentManager().beginTransaction().add(R.id.flContent, weatherFragment, WeatherFragment.class.getSimpleName()).commit();
         }
     }
