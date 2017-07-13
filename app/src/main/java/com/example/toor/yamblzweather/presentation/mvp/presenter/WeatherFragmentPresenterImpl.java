@@ -12,10 +12,9 @@ public class WeatherFragmentPresenterImpl implements WeatherFragmentPresenter {
         this.interactor = interactor;
     }
 
-
     @Override
-    public void updateCurrentWether() {
-
+    public void updateCurrentWeather() {
+        view.showCurrentWeather(interactor.loadWeather());
     }
 
     @Override
