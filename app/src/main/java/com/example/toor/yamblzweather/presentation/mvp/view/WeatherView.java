@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.presentation.view;
+package com.example.toor.yamblzweather.presentation.mvp.view;
 
 public interface WeatherView {
 

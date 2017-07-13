@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.presentation.presenter;
+package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 public class SettingsFragmentPresenterImpl implements SettingsFragmentPresenter {
 }

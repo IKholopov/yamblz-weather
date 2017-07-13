@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.presentation.view.activity;
+package com.example.toor.yamblzweather.presentation.mvp.view.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,9 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.presentation.view.fragment.InfoFragment;
-import com.example.toor.yamblzweather.presentation.view.fragment.SettingsFragment;
-import com.example.toor.yamblzweather.presentation.view.fragment.WeatherFragment;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

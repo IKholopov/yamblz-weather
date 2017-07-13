@@ -2,7 +2,7 @@ package com.example.toor.yamblzweather.presentation.di.components;
 
 import com.example.toor.yamblzweather.presentation.di.modules.SettingsScreenModule;
 import com.example.toor.yamblzweather.presentation.di.scopes.ScreenScope;
-import com.example.toor.yamblzweather.presentation.view.fragment.SettingsFragment;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
 
 import dagger.Subcomponent;
 

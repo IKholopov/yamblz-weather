@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.presentation.common;
+package com.example.toor.yamblzweather.presentation.mvp.presenter.common;
 
 public interface BaseFragmentPresenter<View>{
 

@@ -1,7 +1,7 @@
-package com.example.toor.yamblzweather.presentation.presenter;
+package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
-import com.example.toor.yamblzweather.presentation.view.WeatherView;
+import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
 public class WeatherFragmentPresenterImpl implements WeatherFragmentPresenter {
 
