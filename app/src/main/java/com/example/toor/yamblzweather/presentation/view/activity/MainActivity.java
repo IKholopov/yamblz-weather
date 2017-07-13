@@ -1,9 +1,9 @@
-package com.example.toor.yamblzweather.presentation.activity;
+package com.example.toor.yamblzweather.presentation.view.activity;
 
-import android.app.Fragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,9 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.presentation.fragment.InfoFragment;
-import com.example.toor.yamblzweather.presentation.fragment.SettingsFragment;
-import com.example.toor.yamblzweather.presentation.fragment.WeatherFragment;
+import com.example.toor.yamblzweather.presentation.view.fragment.InfoFragment;
+import com.example.toor.yamblzweather.presentation.view.fragment.SettingsFragment;
+import com.example.toor.yamblzweather.presentation.view.fragment.WeatherFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             WeatherFragment weatherFragment = WeatherFragment.newInstance();
-            getFragmentManager().beginTransaction().add(R.id.flContent, weatherFragment, WeatherFragment.class.getSimpleName()).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.flContent, weatherFragment, WeatherFragment.class.getSimpleName()).commit();
         }
     }
 
@@ -82,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
                 fragmentClass = WeatherFragment.class;
         }
 
-        Fragment fragment = getFragmentManager().findFragmentByTag(fragmentClass.getSimpleName());
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentClass.getSimpleName());
         if (fragment == null) {
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
-                getFragmentManager().beginTransaction()
+                getSupportFragmentManager().beginTransaction()
                         .replace(R.id.flContent, fragment, fragmentClass.getSimpleName())
                         .commit();
             } catch (Exception e) {
