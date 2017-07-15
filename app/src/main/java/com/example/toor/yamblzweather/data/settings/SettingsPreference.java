@@ -2,7 +2,10 @@ package com.example.toor.yamblzweather.data.settings;
 
 import android.content.SharedPreferences;
 
-import static com.example.toor.yamblzweather.data.settings.TemperatureType.CELSIUS;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.fromString;
 
 public class SettingsPreference {
 
@@ -16,15 +19,15 @@ public class SettingsPreference {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void saveTemperatureType(TemperatureType type) {
+    public void saveTemperatureType(OWSupportedUnits metric) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(temperatureKey, type.ordinal());
+        editor.putString(temperatureKey, metric.getUnit());
         editor.apply();
     }
 
-    public TemperatureType loadTemperatureType() {
-        int temp = sharedPreferences.getInt(temperatureKey, CELSIUS.ordinal());
-        return TemperatureType.values()[temp];
+    public OWSupportedUnits loadTemperatureMetric() {
+        String metric = sharedPreferences.getString(temperatureKey, CELSIUS.getUnit());
+        return fromString(metric);
     }
 
     public void saveUpdateWeatherInterval(long interval) {

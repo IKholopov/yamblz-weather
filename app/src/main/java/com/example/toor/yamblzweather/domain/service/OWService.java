@@ -23,7 +23,7 @@ public class OWService {
 
     private String mToken;
 
-    private OWSupportedUnits mSelectedUnits = OWSupportedUnits.METRIC;
+    private OWSupportedUnits mSelectedUnits = OWSupportedUnits.CELSIUS;
 
     private OWSupportedLanguages mSelectedLanguage = OWSupportedLanguages.ENGLISH;
 

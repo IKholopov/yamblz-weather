@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
+import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.providers.WeatherProvider;
@@ -18,6 +19,8 @@ public class WeatherInteractor {
     WeatherProvider provider;
     @Inject
     Locale locale;
+    @Inject
+    SettingsPreference preference;
 
     public WeatherInteractor(WeatherProvider provider) {
         this.provider = provider;
@@ -27,6 +30,7 @@ public class WeatherInteractor {
 
     public Observable<CurrentWeather> getCurrentWeather(Coord coordinates) {
         provider.setLanguage(locale);
+        provider.setMetric(preference.loadTemperatureMetric());
         return provider.getCurrentForecast(coordinates);
     }
 }

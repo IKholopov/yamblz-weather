@@ -1,25 +1,27 @@
 package com.example.toor.yamblzweather.data.settings;
 
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+
 public class Settings {
 
-    private TemperatureType temperatureType;
+    private OWSupportedUnits metric;
     private long updateWeatherInterval;
 
-    public Settings(TemperatureType temperatureType, long updateWeatherInterval) {
-        this.temperatureType = temperatureType;
+    public Settings(OWSupportedUnits metric, long updateWeatherInterval) {
+        this.metric = metric;
         this.updateWeatherInterval = updateWeatherInterval;
     }
 
-    public void setTemperatureType(TemperatureType temperatureType) {
-        this.temperatureType = temperatureType;
+    public void setOWSupportedUnits(OWSupportedUnits metric) {
+        this.metric = metric;
     }
 
     public void setUpdateWeatherInterval(long timeInterval) {
         this.updateWeatherInterval = timeInterval;
     }
 
-    public TemperatureType getTemperatureType() {
-        return this.temperatureType;
+    public OWSupportedUnits getMetric() {
+        return this.metric;
     }
 
     public long getUpdateWeatherInterval() {

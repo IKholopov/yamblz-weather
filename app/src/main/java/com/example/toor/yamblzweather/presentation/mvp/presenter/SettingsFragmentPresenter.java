@@ -1,10 +1,12 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 import com.example.toor.yamblzweather.data.settings.Settings;
-import com.example.toor.yamblzweather.data.settings.TemperatureType;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
+
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
 
 public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsView> {
 
@@ -21,15 +23,15 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
 
     public void showSettings() {
         Settings settings = interactor.getUserSettings();
-        showTemperatureState(settings.getTemperatureType());
+        showTemperatureMetric(settings.getMetric());
         showUpdateWeatherInterval(settings.getUpdateWeatherInterval());
     }
 
-    private void showTemperatureState(TemperatureType temperatureType) {
-        if (temperatureType.ordinal() == 1)
-            getView().setTemperatureState(false);
-        else
+    private void showTemperatureMetric(OWSupportedUnits metric) {
+        if (metric == CELSIUS)
             getView().setTemperatureState(true);
+        else
+            getView().setTemperatureState(false);
     }
 
     private void showUpdateWeatherInterval(long interval) {
@@ -37,6 +39,6 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
     }
 
     public void saveTemperatureState(boolean state) {
-        interactor.saveTemperatureType(state);
+        interactor.saveTemperatureMetric(state);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.domain.utils;
 
 public enum OWSupportedUnits {
-    METRIC("metric"),
+    CELSIUS("metric"),
     FAHRENHEIT("imperial");
 
     String unit;
@@ -12,5 +12,14 @@ public enum OWSupportedUnits {
 
     public String getUnit() {
         return unit;
+    }
+
+    public static OWSupportedUnits fromString(String text) {
+        for (OWSupportedUnits b : OWSupportedUnits.values()) {
+            if (b.unit.equalsIgnoreCase(text)) {
+                return b;
+            }
+        }
+        return null;
     }
 }

@@ -2,7 +2,7 @@ package com.example.toor.yamblzweather.domain.providers;
 
 import com.example.toor.yamblzweather.data.settings.Settings;
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-import com.example.toor.yamblzweather.data.settings.TemperatureType;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 
 import javax.inject.Inject;
 
@@ -16,16 +16,16 @@ public class SettingsProvider {
     }
 
     public Settings loadSettings() {
-        return new Settings(preference.loadTemperatureType(), preference.loadUpdateWeatherInterval());
+        return new Settings(preference.loadTemperatureMetric(), preference.loadUpdateWeatherInterval());
     }
 
     public void saveSettings(Settings settings) {
-        preference.saveTemperatureType(settings.getTemperatureType());
+        preference.saveTemperatureType(settings.getMetric());
         preference.saveUpdateWeatherInterval(settings.getUpdateWeatherInterval());
     }
 
-    public void saveTemperatureType(TemperatureType temperatureType) {
-        preference.saveTemperatureType(temperatureType);
+    public void saveTemperatureMetric(OWSupportedUnits metric) {
+        preference.saveTemperatureType(metric);
     }
 
     public void saveUpdateWeatherInterval(long interval) {

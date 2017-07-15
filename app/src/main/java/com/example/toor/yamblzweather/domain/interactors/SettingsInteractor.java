@@ -7,8 +7,8 @@ import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
 import javax.inject.Inject;
 
-import static com.example.toor.yamblzweather.data.settings.TemperatureType.CELSIUS;
-import static com.example.toor.yamblzweather.data.settings.TemperatureType.FAHRENHEIT;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.FAHRENHEIT;
 
 public class SettingsInteractor {
 
@@ -25,8 +25,8 @@ public class SettingsInteractor {
         return provider.loadSettings();
     }
 
-    public void saveTemperatureType(boolean type) {
-        provider.saveTemperatureType(type ? CELSIUS : FAHRENHEIT);
+    public void saveTemperatureMetric(boolean type) {
+        provider.saveTemperatureMetric(type ? CELSIUS : FAHRENHEIT);
     }
 
     public void saveUpdateInterval(long interval) {

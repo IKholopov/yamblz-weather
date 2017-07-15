@@ -3,6 +3,7 @@ package com.example.toor.yamblzweather.domain.providers;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.service.OWService;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 
 import java.util.Locale;
 
@@ -21,6 +22,10 @@ public class WeatherProvider {
 
     public void setLanguage(Locale locale) {
         service.setLanguage(locale);
+    }
+
+    public void setMetric(OWSupportedUnits metric) {
+        service.setMetricUnits(metric);
     }
 
     public Observable<CurrentWeather> getCurrentForecast(Coord coordinates) {
