@@ -30,6 +30,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     TextView tvCity;
     @BindView(R.id.tvTemp)
     TextView tvTemp;
+    @BindView(R.id.tvDescription)
+    TextView tvDescription;
 
     private Unbinder unbinder;
 
@@ -73,6 +75,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     public void showCurrentWeather(CurrentWeather weather) {
         tvTemp.setText(String.valueOf(weather.getMain().getTemp()));
         tvCity.setText(weather.getName());
+        tvDescription.setText(weather.getWeather().get(0).getDescription());
     }
 
     @Override
