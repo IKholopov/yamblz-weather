@@ -1,9 +1,8 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.model.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.domain.providers.CurrentWeatherProvider;
-import com.example.toor.yamblzweather.domain.service.OWService;
+import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.domain.providers.WeatherProvider;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
@@ -15,23 +14,19 @@ import io.reactivex.Observable;
 
 public class WeatherInteractor {
 
-    private CurrentWeatherProvider provider;
-
+    @Inject
+    WeatherProvider provider;
     @Inject
     Locale locale;
 
-    @Inject
-    OWService service;
-
-    public WeatherInteractor(CurrentWeatherProvider provider) {
+    public WeatherInteractor(WeatherProvider provider) {
         this.provider = provider;
 
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
     }
 
     public Observable<CurrentWeather> getCurrentWeather(Coord coordinates) {
-        provider.provideService();
-        service.setLanguage(locale);
-        return service.getCurrentDayForecast(coordinates);
+        provider.setLanguage(locale);
+        return provider.getCurrentForecast(coordinates);
     }
 }

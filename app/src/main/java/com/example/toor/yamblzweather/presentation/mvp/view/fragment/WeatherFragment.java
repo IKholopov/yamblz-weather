@@ -1,18 +1,17 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.model.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherScreenModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
@@ -22,7 +21,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.disposables.CompositeDisposable;
 
 public class WeatherFragment extends BaseFragment implements WeatherView {
 
@@ -51,7 +49,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new WeatherScreenModule()).inject(this);
+        App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new ScreenModule()).inject(this);
     }
 
     @Override
@@ -66,8 +64,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         unbinder = ButterKnife.bind(this, view);
 
         Coord coord = new Coord();
-        coord.setLat(64.5472507);
-        coord.setLon(40.5601553);
+        coord.setLat(55.751244);
+        coord.setLon(37.618423);
         presenter.updateCurrentWeather(coord);
     }
 

@@ -1,6 +1,6 @@
 package com.example.toor.yamblzweather.domain.listener;
 
-import com.example.toor.yamblzweather.data.model.OWResponse;
+import com.example.toor.yamblzweather.data.model.weather.OWResponse;
 
 public interface OWRequestListener<T> {
 
@@ -8,3 +8,7 @@ public interface OWRequestListener<T> {
 
     void onFailure(Throwable t);
 }
+
+
+
+

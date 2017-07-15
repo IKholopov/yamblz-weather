@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.domain.api;
 
-import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.model.gson.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.model.weather.gson.five_day.ExtendedWeather;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

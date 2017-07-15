@@ -1,8 +1,8 @@
 package com.example.toor.yamblzweather.domain.service;
 
-import com.example.toor.yamblzweather.data.model.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.model.gson.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.model.weather.gson.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.api.OpenWeatherAPI;
 import com.example.toor.yamblzweather.domain.listener.OWRequestListener;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;

@@ -1,4 +1,5 @@
-package com.example.toor.yamblzweather.data.model.gson.common;
+
+package com.example.toor.yamblzweather.data.model.weather.gson.current_day;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

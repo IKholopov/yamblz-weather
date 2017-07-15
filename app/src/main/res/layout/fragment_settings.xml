@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="25dp">
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/temperatureSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:layout_constraintTop_creator="1"
