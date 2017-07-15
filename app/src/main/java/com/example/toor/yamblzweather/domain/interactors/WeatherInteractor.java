@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.weather.gson.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.providers.WeatherProvider;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;

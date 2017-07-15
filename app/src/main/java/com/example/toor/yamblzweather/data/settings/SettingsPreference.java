@@ -1,10 +1,6 @@
-package com.example.toor.yamblzweather.data.model.settings;
+package com.example.toor.yamblzweather.data.settings;
 
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
-import javax.inject.Inject;
 
 public class SettingsPreference {
 
@@ -12,8 +8,7 @@ public class SettingsPreference {
     private static final String intervalKey = "intervalKey";
     private static final long MIN_UPDATE_INTERVAL = 60000;
 
-    @Inject
-    SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     public SettingsPreference(SharedPreferences sharedPreferences) {
         this.sharedPreferences = sharedPreferences;

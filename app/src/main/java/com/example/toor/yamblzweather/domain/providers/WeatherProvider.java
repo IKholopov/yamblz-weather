@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.domain.providers;
 
-import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.weather.gson.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.service.OWService;
 
 import java.util.Locale;
@@ -12,9 +12,9 @@ import io.reactivex.Observable;
 
 public class WeatherProvider {
 
-    @Inject
-    OWService service;
+    private OWService service;
 
+    @Inject
     public WeatherProvider(OWService service) {
         this.service = service;
     }

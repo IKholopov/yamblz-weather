@@ -1,6 +1,6 @@
 package com.example.toor.yamblzweather.presentation.di.modules;
 
-import com.example.toor.yamblzweather.data.model.settings.SettingsPreference;
+import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.providers.SettingsProvider;
@@ -10,8 +10,6 @@ import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
 
 import dagger.Module;
 import dagger.Provides;
-
-import static com.example.toor.yamblzweather.domain.api.ApiKeys.OPEN_WEATHER_MAP_API_KEY;
 
 @Module
 public class WeatherModule {

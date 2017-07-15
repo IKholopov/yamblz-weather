@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.presentation.di.modules;
 
-import com.example.toor.yamblzweather.data.model.settings.SettingsPreference;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.di.scopes.ScreenScope;

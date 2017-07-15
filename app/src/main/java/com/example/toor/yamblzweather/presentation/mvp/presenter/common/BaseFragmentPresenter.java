@@ -4,11 +4,11 @@ import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.presentation.mvp.view.common.BaseView;
 
-public abstract class BaseFragmentPresenter<T extends BaseView>{
+public abstract class BaseFragmentPresenter<V extends BaseView>{
 
-    private T view;
+    private V view;
 
-    public void onAttach(T view) {
+    public void onAttach(V view) {
         this.view = view;
     }
 
@@ -20,7 +20,8 @@ public abstract class BaseFragmentPresenter<T extends BaseView>{
 
     }
 
-    protected @Nullable T getView() {
+    protected @Nullable
+    V getView() {
         return view;
     }
 

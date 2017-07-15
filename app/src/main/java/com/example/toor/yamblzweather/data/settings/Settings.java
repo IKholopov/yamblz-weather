@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.data.model.settings;
+package com.example.toor.yamblzweather.data.settings;
 
 public class Settings {
 

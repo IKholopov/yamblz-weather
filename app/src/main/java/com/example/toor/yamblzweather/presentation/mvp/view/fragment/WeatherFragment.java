@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.weather.gson.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;

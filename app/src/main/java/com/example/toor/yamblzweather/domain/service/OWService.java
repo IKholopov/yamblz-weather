@@ -1,10 +1,8 @@
 package com.example.toor.yamblzweather.domain.service;
 
-import com.example.toor.yamblzweather.data.model.weather.gson.common.Coord;
-import com.example.toor.yamblzweather.data.model.weather.gson.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.model.weather.gson.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.weather.gson.common.Coord;
+import com.example.toor.yamblzweather.data.weather.gson.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.api.OpenWeatherAPI;
-import com.example.toor.yamblzweather.domain.listener.OWRequestListener;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 
@@ -115,14 +113,7 @@ public class OWService {
         }
     }
 
-    /**
-     * Obtain five days forecast for any given Latitude/Longitude pair.
-     *
-     * @param coordinate the latitude/longitude pair of the location you need the weather for.
-     * @param listener   the OWRequestListener of the request result.
-     */
-    public void getFiveDayForecast(final Coord coordinate,
-                                   final OWRequestListener<ExtendedWeather> listener) {
+    public void getFiveDayForecast(final Coord coordinate) {
 //        Call<ExtendedWeather> fiveDayForecastCall = mOpenWeatherAPI.getFiveDayExtendedWeather(
 //                coordinate.getLat(),
 //                coordinate.getLon(),

@@ -1,16 +1,16 @@
 package com.example.toor.yamblzweather.domain.providers;
 
-import com.example.toor.yamblzweather.data.model.settings.Settings;
-import com.example.toor.yamblzweather.data.model.settings.SettingsPreference;
-import com.example.toor.yamblzweather.data.model.settings.TemperatureType;
+import com.example.toor.yamblzweather.data.settings.Settings;
+import com.example.toor.yamblzweather.data.settings.SettingsPreference;
+import com.example.toor.yamblzweather.data.settings.TemperatureType;
 
 import javax.inject.Inject;
 
 public class SettingsProvider {
 
-    @Inject
-    SettingsPreference preference;
+    private SettingsPreference preference;
 
+    @Inject
     public SettingsProvider(SettingsPreference preference) {
         this.preference = preference;
     }

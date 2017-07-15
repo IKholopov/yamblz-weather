@@ -1,5 +1,5 @@
 
-package com.example.toor.yamblzweather.data.model.weather.gson.five_day;
+package com.example.toor.yamblzweather.data.weather.gson.five_day;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -4,9 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.toor.yamblzweather.data.model.settings.SettingsPreference;
+import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.domain.service.OWService;
-import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
 
 import javax.inject.Singleton;
 
