@@ -1,8 +1,9 @@
 package com.example.toor.yamblzweather.presentation.mvp.view;
 
-import com.example.toor.yamblzweather.data.WeatherRepository.WeatherRepository;
+import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.presentation.mvp.view.common.BaseView;
 
-public interface WeatherView {
+public interface WeatherView extends BaseView {
 
-    void showCurrentWeather(WeatherRepository weather);
+    void showCurrentWeather(CurrentWeather weather);
 }

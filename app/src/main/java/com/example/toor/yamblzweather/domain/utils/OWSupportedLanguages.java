@@ -1,13 +1,4 @@
-package com.example.toor.myopenweather.utils;
-
-/**
- * Created by az on 13/10/16.
- * Open Weather API supports the following languages: English - en, Russian - ru, Italian - it,
- * Spanish - es (or sp), Ukrainian - uk (or ua), German - de, Portuguese - pt,
- * Romanian - ro, Polish - pl, Finnish - fi, Dutch - nl, French - fr,
- * Bulgarian - bg, Swedish - sv (or se), Chinese Traditional - zh_tw,
- * Chinese Simplified - zh (or zh_cn), Turkish - tr, Croatian - hr, Catalan - ca
- */
+package com.example.toor.yamblzweather.domain.utils;
 
 public enum OWSupportedLanguages {
     ENGLISH("en"),

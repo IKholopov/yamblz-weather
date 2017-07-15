@@ -1,19 +1,20 @@
-package com.example.toor.myopenweather;
+package com.example.toor.yamblzweather.domain.service;
 
-import com.example.toor.myopenweather.listener.OWRequestListener;
-import com.example.toor.myopenweather.model.OWResponse;
-import com.example.toor.myopenweather.model.gson.common.Coord;
-import com.example.toor.myopenweather.model.gson.current_day.CurrentWeather;
-import com.example.toor.myopenweather.model.gson.five_day.ExtendedWeather;
-import com.example.toor.myopenweather.utils.OWSupportedLanguages;
-import com.example.toor.myopenweather.utils.OWSupportedUnits;
+import com.example.toor.yamblzweather.data.model.gson.common.Coord;
+import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.model.gson.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.domain.api.OpenWeatherAPI;
+import com.example.toor.yamblzweather.domain.listener.OWRequestListener;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 
 import java.util.Locale;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OWService {
@@ -39,6 +40,7 @@ public class OWService {
         Retrofit mRetrofitOWInstance = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         mOpenWeatherAPI = mRetrofitOWInstance.create(OpenWeatherAPI.class);
@@ -121,50 +123,39 @@ public class OWService {
      */
     public void getFiveDayForecast(final Coord coordinate,
                                    final OWRequestListener<ExtendedWeather> listener) {
-        Call<ExtendedWeather> fiveDayForecastCall = mOpenWeatherAPI.getFiveDayExtendedWeather(
-                coordinate.getLat(),
-                coordinate.getLon(),
-                mToken,
-                mSelectedUnits.getUnit(),
-                mSelectedLanguage.getLanguageLocale());
-        fiveDayForecastCall.enqueue(new Callback<ExtendedWeather>() {
-            @Override
-            public void onResponse(Call<ExtendedWeather> call, Response<ExtendedWeather> response) {
-                listener.onResponse(new OWResponse<ExtendedWeather>(response.body()));
-            }
-
-            @Override
-            public void onFailure(Call<ExtendedWeather> call, Throwable t) {
-                listener.onFailure(t);
-            }
-        });
+//        Call<ExtendedWeather> fiveDayForecastCall = mOpenWeatherAPI.getFiveDayExtendedWeather(
+//                coordinate.getLat(),
+//                coordinate.getLon(),
+//                mToken,
+//                mSelectedUnits.getUnit(),
+//                mSelectedLanguage.getLanguageLocale());
+//        fiveDayForecastCall.enqueue(new Callback<ExtendedWeather>() {
+//            @Override
+//            public void onResponse(Call<ExtendedWeather> call, Response<ExtendedWeather> response) {
+//                listener.onResponse(new OWResponse<ExtendedWeather>(response.body()));
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ExtendedWeather> call, Throwable t) {
+//                listener.onFailure(t);
+//            }
+//        });
     }
 
     /**
      * Obtain current day forecast for any given Latitude/Longitude pair.
      *
      * @param coordinate the latitude/longitude pair of the location you need the weather for.
-     * @param listener   the OWRequestListener of the request result.
      */
-    public void getCurrentDayForecast(final Coord coordinate,
-                                      final OWRequestListener<CurrentWeather> listener) {
-        Call<CurrentWeather> currentDayForecastCall = mOpenWeatherAPI.getCurrentWeather(
+    public Observable<CurrentWeather> getCurrentDayForecast(final Coord coordinate) {
+        return mOpenWeatherAPI.getCurrentWeather(
                 coordinate.getLat(),
                 coordinate.getLon(),
                 mToken,
                 mSelectedUnits.getUnit(),
-                mSelectedLanguage.getLanguageLocale());
-        currentDayForecastCall.enqueue(new Callback<CurrentWeather>() {
-            @Override
-            public void onResponse(Call<CurrentWeather> call, Response<CurrentWeather> response) {
-                listener.onResponse(new OWResponse<CurrentWeather>(response.body()));
-            }
-
-            @Override
-            public void onFailure(Call<CurrentWeather> call, Throwable t) {
-                listener.onFailure(t);
-            }
-        });
+                mSelectedLanguage.getLanguageLocale())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     /**

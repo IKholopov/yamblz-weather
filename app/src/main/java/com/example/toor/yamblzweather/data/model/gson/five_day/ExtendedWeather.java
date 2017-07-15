@@ -1,6 +1,6 @@
-package com.example.toor.myopenweather.model.gson.five_day;
+package com.example.toor.yamblzweather.data.model.gson.five_day;
 
-import com.example.toor.myopenweather.model.gson.common.City;
+import com.example.toor.yamblzweather.data.model.gson.common.City;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

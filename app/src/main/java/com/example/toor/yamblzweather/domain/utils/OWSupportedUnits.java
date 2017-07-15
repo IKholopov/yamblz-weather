@@ -1,8 +1,4 @@
-package com.example.toor.myopenweather.utils;
-
-/**
- * Created by az on 13/10/16.
- */
+package com.example.toor.yamblzweather.domain.utils;
 
 public enum OWSupportedUnits {
     METRIC("metric"),

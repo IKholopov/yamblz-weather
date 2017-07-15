@@ -1,8 +1,27 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter.common;
 
-public interface BaseFragmentPresenter<View>{
+import android.support.annotation.Nullable;
 
-    void setModel();
+import com.example.toor.yamblzweather.presentation.mvp.view.common.BaseView;
 
-    void bindView(View view);
+public abstract class BaseFragmentPresenter<T extends BaseView>{
+
+    private T view;
+
+    public void onAttach(T view) {
+        this.view = view;
+    }
+
+    public void onDetach() {
+        this.view = null;
+    }
+
+    public void onDestroy() {
+
+    }
+
+    protected @Nullable T getView() {
+        return view;
+    }
+
 }

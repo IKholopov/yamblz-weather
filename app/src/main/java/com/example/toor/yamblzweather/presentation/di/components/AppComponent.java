@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.presentation.di.components;
 
 import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
 import com.example.toor.yamblzweather.presentation.di.modules.DataModule;
+import com.example.toor.yamblzweather.presentation.di.modules.NetworkModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
 import javax.inject.Singleton;
@@ -9,7 +10,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {AppModule.class, DataModule.class})
+@Component(modules = {AppModule.class, DataModule.class, NetworkModule.class})
 public interface AppComponent {
 
     WeatherComponent plus(WeatherModule weatherModule);

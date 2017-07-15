@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.WeatherRepository.WeatherRepository;
+import com.example.toor.yamblzweather.data.model.gson.common.Coord;
+import com.example.toor.yamblzweather.data.model.gson.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherScreenModule;
@@ -21,9 +22,9 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.disposables.CompositeDisposable;
 
 public class WeatherFragment extends BaseFragment implements WeatherView {
-
 
     @BindView(R.id.tvCity)
     TextView tvCity;
@@ -59,18 +60,19 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        presenter.bindView(this);
+        presenter.onAttach(this);
         unbinder = ButterKnife.bind(this, view);
 
-        presenter.updateCurrentWeather();
+        Coord coord = new Coord();
+        coord.setLat(64.5472507);
+        coord.setLon(40.5601553);
+        presenter.updateCurrentWeather(coord);
     }
 
     @Override
-    public void showCurrentWeather(WeatherRepository weather) {
-
-        Log.v(WeatherFragment.class.getSimpleName(), "temp = " + weather.getTemperature() + "  city = " + weather.getCity());
-//        tvCity.setText(weather.getCity());
-//        tvTemp.setText(weather.getTemperature());
+    public void showCurrentWeather(CurrentWeather weather) {
+        tvTemp.setText(String.valueOf(weather.getMain().getTemp()));
+        tvCity.setText(weather.getName());
     }
 
     @Override
@@ -78,8 +80,5 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         super.onDestroyView();
 
         unbinder.unbind();
-
-        tvCity = null;
-        tvTemp = null;
     }
 }

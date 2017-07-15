@@ -1,4 +1,4 @@
-package com.example.toor.myopenweather.model;
+package com.example.toor.yamblzweather.data.model;
 
 public class OWResponse<T> {
     private final T body;

@@ -1,7 +1,8 @@
 package com.example.toor.yamblzweather.presentation.di.modules;
 
+import com.example.toor.yamblzweather.domain.providers.CurrentWeatherProvider;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
-import com.example.toor.yamblzweather.domain.providers.WeatherProvider;
+import com.example.toor.yamblzweather.domain.service.OWService;
 import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
 
 import dagger.Module;
@@ -12,7 +13,13 @@ public class WeatherModule {
 
     @Provides
     @WeatherScope
-    public WeatherInteractor provideWeatherInteractor(WeatherProvider provider) {
+    public WeatherInteractor provideWeatherInteractor(CurrentWeatherProvider provider) {
         return new WeatherInteractor(provider);
+    }
+
+    @Provides
+    @WeatherScope
+    public CurrentWeatherProvider provideCurrentWeatherProvider(OWService service) {
+        return new CurrentWeatherProvider(service);
     }
 }

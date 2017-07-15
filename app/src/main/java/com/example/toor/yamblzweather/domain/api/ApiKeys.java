@@ -1,4 +1,4 @@
-package com.example.toor.myopenweather;
+package com.example.toor.yamblzweather.domain.api;
 
 public final class ApiKeys {
 
