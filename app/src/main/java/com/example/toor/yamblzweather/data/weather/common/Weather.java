@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.data.weather.gson.common;
+package com.example.toor.yamblzweather.data.weather.common;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

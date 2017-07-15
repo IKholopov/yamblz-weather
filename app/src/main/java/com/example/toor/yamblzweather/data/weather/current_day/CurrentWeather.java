@@ -1,10 +1,10 @@
 
-package com.example.toor.yamblzweather.data.weather.gson.current_day;
+package com.example.toor.yamblzweather.data.weather.current_day;
 
-import com.example.toor.yamblzweather.data.weather.gson.common.Clouds;
-import com.example.toor.yamblzweather.data.weather.gson.common.Coord;
-import com.example.toor.yamblzweather.data.weather.gson.common.Rain;
-import com.example.toor.yamblzweather.data.weather.gson.common.Wind;
+import com.example.toor.yamblzweather.data.weather.common.Clouds;
+import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.data.weather.common.Rain;
+import com.example.toor.yamblzweather.data.weather.common.Wind;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -2,6 +2,8 @@ package com.example.toor.yamblzweather.data.settings;
 
 import android.content.SharedPreferences;
 
+import static com.example.toor.yamblzweather.data.settings.TemperatureType.CELSIUS;
+
 public class SettingsPreference {
 
     private static final String temperatureKey = "temperatureKey";
@@ -21,7 +23,7 @@ public class SettingsPreference {
     }
 
     public TemperatureType loadTemperatureType() {
-        int temp = sharedPreferences.getInt(temperatureKey, 1);
+        int temp = sharedPreferences.getInt(temperatureKey, CELSIUS.ordinal());
         return TemperatureType.values()[temp];
     }
 

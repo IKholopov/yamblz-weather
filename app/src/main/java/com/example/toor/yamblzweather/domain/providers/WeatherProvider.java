@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.domain.providers;
 
-import com.example.toor.yamblzweather.data.weather.gson.common.Coord;
-import com.example.toor.yamblzweather.data.weather.gson.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.service.OWService;
 
 import java.util.Locale;
