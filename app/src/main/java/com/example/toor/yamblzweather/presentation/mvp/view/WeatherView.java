@@ -7,5 +7,5 @@ import com.example.toor.yamblzweather.presentation.mvp.view.common.BaseView;
 public interface WeatherView extends BaseView {
 
     void showCurrentWeather(CurrentWeather weather);
-    void showTenperatureMetric(OWSupportedUnits metric);
+    void showTemperatureMetric(OWSupportedUnits metric);
 }

@@ -5,14 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-import com.example.toor.yamblzweather.domain.service.OWService;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-
-import static com.example.toor.yamblzweather.domain.api.ApiKeys.OPEN_WEATHER_MAP_API_KEY;
 
 @Module
 public class DataModule {
@@ -29,9 +26,4 @@ public class DataModule {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    @Provides
-    @Singleton
-    public OWService provideOwService() {
-        return new OWService(OPEN_WEATHER_MAP_API_KEY);
-    }
 }

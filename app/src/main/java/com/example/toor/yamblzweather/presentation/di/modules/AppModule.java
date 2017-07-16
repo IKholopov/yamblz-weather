@@ -3,6 +3,9 @@ package com.example.toor.yamblzweather.presentation.di.modules;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.evernote.android.job.JobManager;
+import com.example.toor.yamblzweather.domain.service.scheduler.ScheduleJobCreator;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -15,6 +18,12 @@ public class AppModule {
 
     public AppModule(@NonNull Context appContext) {
         this.context = appContext;
+
+        initScheduleJob();
+    }
+
+    private void initScheduleJob() {
+        JobManager.create(context).addJobCreator(new ScheduleJobCreator());
     }
 
     @Provides

@@ -21,4 +21,5 @@ public class WeatherModule {
     public SettingsInteractor provideSettingsInteractor() {
         return new SettingsInteractor();
     }
+
 }

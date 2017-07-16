@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.service.OWService;
@@ -29,6 +28,10 @@ public class WeatherInteractor extends BaseInteracor {
 
     public OWSupportedUnits getTemperaturMertric() {
         return preference.loadTemperatureMetric();
+    }
+
+    public long getUpdateInterval() {
+        return preference.loadUpdateWeatherInterval();
     }
 
     @Override

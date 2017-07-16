@@ -82,7 +82,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     @Override
-    public void showTenperatureMetric(OWSupportedUnits metric) {
+    public void showTemperatureMetric(OWSupportedUnits metric) {
         if (metric == CELSIUS)
             tvMetric.setText(getString(R.string.celsius));
         else

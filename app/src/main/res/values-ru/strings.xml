@@ -10,4 +10,6 @@
     <string name="weather_fragment">Погода</string>
     <string name="info_fragment">Инфо</string>
 
+    <string name="update_interval">Интервал обноввления</string>
+
 </resources>

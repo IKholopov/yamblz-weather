@@ -17,5 +17,6 @@
     <string name="weather_fragment">Weather fragment</string>
     <string name="info_fragment">Info fragment</string>
     <string name="settings_fragment">Settings fragment</string>
+    <string name="update_interval">Update interval</string>
 
 </resources>

@@ -3,12 +3,16 @@ package com.example.toor.yamblzweather.presentation.di.modules;
 import android.content.Context;
 import android.os.Build;
 
+import com.example.toor.yamblzweather.domain.service.OWService;
+
 import java.util.Locale;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+
+import static com.example.toor.yamblzweather.domain.api.ApiKeys.OPEN_WEATHER_MAP_API_KEY;
 
 @Module
 public class UtilsModule {
@@ -22,4 +26,11 @@ public class UtilsModule {
             return context.getResources().getConfiguration().locale;
         }
     }
+
+    @Provides
+    @Singleton
+    public OWService provideOwService() {
+        return new OWService(OPEN_WEATHER_MAP_API_KEY);
+    }
+
 }

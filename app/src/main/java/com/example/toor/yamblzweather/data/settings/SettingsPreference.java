@@ -11,7 +11,7 @@ public class SettingsPreference {
 
     private static final String temperatureKey = "temperatureKey";
     private static final String intervalKey = "intervalKey";
-    private static final long MIN_UPDATE_INTERVAL = 60000;
+    private static final long MIN_UPDATE_INTERVAL = 3 * 60 * 60 * 1000; // interval is 3 hours
 
     private SharedPreferences sharedPreferences;
 
