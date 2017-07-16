@@ -6,7 +6,13 @@ import com.example.toor.yamblzweather.presentation.mvp.view.common.BaseView;
 
 public abstract class BaseFragmentPresenter<V extends BaseView>{
 
+    public BaseFragmentPresenter() {
+        inject();
+    }
+
     private V view;
+
+    public abstract void inject();
 
     public void onAttach(V view) {
         this.view = view;

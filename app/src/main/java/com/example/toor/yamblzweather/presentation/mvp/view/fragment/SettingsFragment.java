@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 
 import com.example.toor.yamblzweather.R;
@@ -26,6 +27,8 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @BindView(R.id.temperatureSwitch)
     Switch temperatureSwitch;
+    @BindView(R.id.rbUpdateInterval)
+    RadioGroup rbUpdateInterval;
 
     @Inject
     SettingsFragmentPresenter presenter;
@@ -59,7 +62,31 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         presenter.showSettings();
 
         temperatureSwitch.setOnCheckedChangeListener((compoundButton, state) -> presenter.saveTemperatureState(state));
+        rbUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
     }
+
+    private void saveUpdateInterval(RadioGroup radioGroup) {
+        long interval = 1 * 1000 * 60;
+        switch (radioGroup.getCheckedRadioButtonId()) {
+            case R.id.rbMin15:
+                interval = 15 * interval;
+                break;
+            case R.id.rbMin30:
+                interval = 30 * interval;
+                break;
+            case R.id.rbMin60:
+                interval = 60 * interval;
+                break;
+            case R.id.rbMin180:
+                interval = 180 * interval;
+                break;
+            default:
+                interval = 60 * interval;
+                break;
+        }
+        presenter.saveUpdateInterval(interval);
+    }
+
 
     @Override
     public void onDestroyView() {
@@ -71,5 +98,18 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Override
     public void setTemperatureState(boolean state) {
         temperatureSwitch.setChecked(state);
+    }
+
+    @Override
+    public void setUpdateInterval(long interval) {
+        long intervalMultiplexor = 1 * 1000 * 60;
+        if (interval == 15 * intervalMultiplexor)
+            rbUpdateInterval.check(R.id.rbMin15);
+        else if (interval == 30 * intervalMultiplexor)
+            rbUpdateInterval.check(R.id.rbMin30);
+        else if (interval == 60 * intervalMultiplexor)
+            rbUpdateInterval.check(R.id.rbMin60);
+        else
+            rbUpdateInterval.check(R.id.rbMin180);
     }
 }

@@ -12,64 +12,85 @@
         android:layout_width="60dp"
         android:layout_height="30dp"
         android:layout_marginEnd="60dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginRight="58dp"
         android:showText="true"
         android:textOff="@string/fahrenheit"
         android:textOn="@string/celsius"
         android:thumb="@drawable/apptheme_switch_inner_holo_light"
         android:track="@drawable/apptheme_switch_track_holo_light"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.166"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        android:layout_marginBottom="0dp" />
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/settings_title_temperature"
-        android:textSize="@dimen/settings_text_size"
-        tools:layout_constraintTop_creator="1"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="50dp"
-        tools:layout_constraintLeft_creator="1"
+        android:text="@string/settings_title_temperature"
+        android:textSize="@dimen/settings_text_size"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp" />
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <TextView
         android:id="@+id/tvUpdateInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="101dp"
         android:text="@string/update_interval"
         android:textSize="@dimen/settings_text_size"
-        android:layout_marginRight="0dp"
-        app:layout_constraintRight_toRightOf="@+id/textView"
-        android:layout_marginLeft="0dp"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="@+id/textView"
-        android:layout_marginTop="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintHorizontal_bias="0.473" />
+        app:layout_constraintRight_toRightOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <SeekBar
-        android:id="@+id/seekBar"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="120dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="0dp"
-        android:max="4"
-        android:progress="3"
+    <RadioGroup
+        android:id="@+id/rbUpdateInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginTop="9dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvUpdateInterval"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/temperatureSwitch"
         app:layout_constraintRight_toRightOf="@+id/temperatureSwitch"
         app:layout_constraintTop_toTopOf="@+id/tvUpdateInterval"
-        app:layout_constraintVertical_bias="0.428"
-        android:layout_marginLeft="0dp"
-        android:layout_marginStart="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/temperatureSwitch" />
+        tools:layout_constraintTop_creator="1">
+
+        <RadioButton
+            android:id="@+id/rbMin15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/min_15" />
+
+        <RadioButton
+            android:id="@+id/rbMin30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/min_30" />
+
+        <RadioButton
+            android:id="@+id/rbMin60"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/min_60" />
+
+        <RadioButton
+            android:id="@+id/rbMin180"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/min_180" />
+    </RadioGroup>
+
 </android.support.constraint.ConstraintLayout>

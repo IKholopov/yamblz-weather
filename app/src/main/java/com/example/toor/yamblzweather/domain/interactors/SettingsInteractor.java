@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
 import com.example.toor.yamblzweather.data.settings.Settings;
+import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
@@ -20,6 +21,7 @@ public class SettingsInteractor extends BaseInteracor {
     public void saveUpdateInterval(long interval) {
         preference.saveUpdateWeatherInterval(interval);
     }
+
 
     @Override
     protected void inject() {

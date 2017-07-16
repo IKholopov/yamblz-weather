@@ -27,7 +27,10 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
 
     public WeatherFragmentPresenter(WeatherInteractor interactor) {
         this.interactor = interactor;
+    }
 
+    @Override
+    public void inject() {
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
     }
 

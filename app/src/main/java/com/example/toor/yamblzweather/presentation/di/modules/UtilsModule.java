@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Build;
 
 import com.example.toor.yamblzweather.domain.service.OWService;
+import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
+import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
 
 import java.util.Locale;
 
@@ -31,6 +33,11 @@ public class UtilsModule {
     @Singleton
     public OWService provideOwService() {
         return new OWService(OPEN_WEATHER_MAP_API_KEY);
+    }
+
+    @Provides @Singleton
+    public WeatherScheduleJob provideWeatherScheduleJob() {
+        return new WeatherScheduleJob();
     }
 
 }
