@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.domain.service.scheduler;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -16,7 +17,6 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.io.Writer;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -32,6 +32,8 @@ public class WeatherScheduleJob extends Job {
     OWService service;
     @Inject
     SettingsPreference preference;
+    @Inject
+    Context context;
 
     private Coord coordinates;
 
@@ -44,7 +46,7 @@ public class WeatherScheduleJob extends Job {
     protected Result onRunJob(Params params) {
         Log.v(WeatherFragment.class.getSimpleName(), "print");
 
-        if (NetworkConectionChecker.isNetworkAvailable(getContext()))
+        if (NetworkConectionChecker.isNetworkAvailable(context))
             serializeCurrentWeather();
         return Result.SUCCESS;
     }
@@ -52,10 +54,9 @@ public class WeatherScheduleJob extends Job {
     private void serializeCurrentWeather() {
         Gson gson = new Gson();
         try {
-            File file = new File(getContext().getApplicationContext().getFilesDir(), SERIALIZE_FILE_NAME);
-            Writer writer = new FileWriter(file, false);
+            File file = new File(context.getFilesDir(), SERIALIZE_FILE_NAME);
+            FileWriter writer = new FileWriter(file, false);
             service.getCurrentDayForecast(coordinates).subscribe(currentWeather -> gson.toJson(currentWeather, writer));
-            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,15 +66,12 @@ public class WeatherScheduleJob extends Job {
         this.coordinates = coordinates;
         long interval = preference.loadUpdateWeatherInterval();
         double flexTime = (double) interval * FLEX_TIME_PERCENT;
-        Log.v(WeatherFragment.class.getSimpleName(), "flexTime = " + flexTime);
-        int jobId = new JobRequest.Builder(WeatherScheduleJob.TAG)
+        new JobRequest.Builder(WeatherScheduleJob.TAG)
                 .setPeriodic(TimeUnit.MILLISECONDS.toMillis(interval), TimeUnit.MILLISECONDS.toMillis((long) flexTime))
                 .setUpdateCurrent(true)
                 .setPersisted(true)
                 .build()
                 .schedule();
-        Log.v(WeatherFragment.class.getSimpleName(), "id = " + jobId);
-        serializeCurrentWeather();
     }
 
 }

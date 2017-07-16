@@ -5,7 +5,7 @@ import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 
 public class Settings {
 
-    public static final String SERIALIZE_FILE_NAME = "weather_store.gson";
+    public static final String SERIALIZE_FILE_NAME = "weather_store.json";
     private OWSupportedUnits metric;
     private long updateWeatherInterval;
     private Coord coordinates;
