@@ -4,7 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="color_yellow">#ffbb27</color>
+    <color name="color_fragments_background">#FF8100</color>
+    <color name="color_left_bar">#FFB300</color>
+    <color name="color_text">#1533AD</color>
+    <color name="color_app_bar">#A65400</color>
 
-
+    <!--https://colorscheme.ru/#0.31Tw0w0w0w0-->
 </resources>

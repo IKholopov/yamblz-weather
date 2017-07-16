@@ -66,6 +66,7 @@
 
         <RadioButton
             android:id="@+id/rbMin15"
+            style="@style/TextRadiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -73,6 +74,7 @@
 
         <RadioButton
             android:id="@+id/rbMin30"
+            style="@style/TextRadiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -80,6 +82,7 @@
 
         <RadioButton
             android:id="@+id/rbMin60"
+            style="@style/TextRadiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -87,6 +90,7 @@
 
         <RadioButton
             android:id="@+id/rbMin180"
+            style="@style/TextRadiobutton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

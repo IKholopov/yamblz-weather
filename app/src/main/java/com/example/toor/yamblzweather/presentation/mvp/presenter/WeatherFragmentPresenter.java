@@ -42,18 +42,16 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     public void updateCurrentWeather(Coord coordinates) {
         if (NetworkConectionChecker.isNetworkAvailable(context))
             interactor.getCurrentWeather(coordinates)
-                    .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather));
+                    .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather, interactor.getTemperaturMertric()));
         else {
             Gson gson = new Gson();
             try {
                 Reader reader = new FileReader(context.getFilesDir());
                 CurrentWeather currentWeather = gson.fromJson(reader, CurrentWeather.class);
-                getView().showCurrentWeather(currentWeather);
+                getView().showCurrentWeather(currentWeather, interactor.getTemperaturMertric());
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-
-        getView().showTemperatureMetric(interactor.getTemperaturMertric());
     }
 }

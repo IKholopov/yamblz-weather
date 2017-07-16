@@ -31,8 +31,6 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     TextView tvCity;
     @BindView(R.id.tvTemp)
     TextView tvTemp;
-    @BindView(R.id.tvMetric)
-    TextView tvMetric;
     @BindView(R.id.tvDescription)
     TextView tvDescription;
 
@@ -75,20 +73,20 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     @Override
-    public void showCurrentWeather(CurrentWeather weather) {
-        tvTemp.setText(String.valueOf(weather.getMain().getTemp()));
+    public void showCurrentWeather(CurrentWeather weather, OWSupportedUnits metric) {
+        String metricStr = convertMetricToString(metric);
+        String temperature = String.valueOf(weather.getMain().getTemp()) + metricStr;
+        tvTemp.setText(temperature);
         tvCity.setText(weather.getName());
         tvDescription.setText(weather.getWeather().get(0).getDescription());
     }
 
-    @Override
-    public void showTemperatureMetric(OWSupportedUnits metric) {
+    private String convertMetricToString(OWSupportedUnits metric) {
         if (metric == CELSIUS)
-            tvMetric.setText(getString(R.string.celsius));
+            return getString(R.string.celsius);
         else
-            tvMetric.setText(getString(R.string.fahrenheit));
+            return getString(R.string.fahrenheit);
     }
-
 
     @Override
     public void onDestroyView() {

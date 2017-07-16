@@ -10,12 +10,13 @@
 
     <TextView
         android:id="@+id/tvCity"
-        android:layout_width="161dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="59dp"
+        android:layout_width="165dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="66dp"
         android:ems="10"
         android:gravity="center"
-        android:text=""
+        android:text="Moscow"
+        android:textSize="@dimen/weather_city_size"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,45 +27,37 @@
 
     <TextView
         android:id="@+id/tvTemp"
-        android:layout_width="50dp"
-        android:layout_height="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_width="149dp"
+        android:layout_height="54dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:gravity="center"
-        android:text="Temperature"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvMetric"
-        app:layout_constraintRight_toLeftOf="@+id/tvMetric"
+        android:text="15"
+        android:textSize="@dimen/weather_current_temperature_size"
+        app:layout_constraintLeft_toLeftOf="@+id/tvCity"
+        app:layout_constraintRight_toRightOf="@+id/tvCity"
+        app:layout_constraintTop_toBottomOf="@+id/tvCity"
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintTop_creator="1" />
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteX="119dp"
+        app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
         android:id="@+id/tvDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="71dp"
         android:text="Description"
-        app:layout_constraintLeft_toLeftOf="@+id/tvCity"
-        app:layout_constraintRight_toRightOf="@+id/tvCity"
-        app:layout_constraintTop_toBottomOf="@+id/tvCity" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/tvTemp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/tvTemp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTemp"
+        app:layout_constraintHorizontal_bias="0.461" />
 
-    <TextView
-        android:id="@+id/tvMetric"
-        android:layout_width="50dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="TextView"
-        app:layout_constraintRight_toRightOf="@+id/tvCity"
-        app:layout_constraintTop_toBottomOf="@+id/tvCity"
-        tools:layout_constraintLeft_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
 </android.support.constraint.ConstraintLayout>
