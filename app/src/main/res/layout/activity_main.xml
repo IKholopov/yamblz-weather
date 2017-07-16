@@ -22,7 +22,7 @@
             android:id="@+id/flContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/color_fragments_background" />
+            android:background="@android:color/white" />
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

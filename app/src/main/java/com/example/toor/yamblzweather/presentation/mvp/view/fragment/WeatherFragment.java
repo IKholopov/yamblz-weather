@@ -1,9 +1,12 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
@@ -33,6 +36,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     TextView tvTemp;
     @BindView(R.id.tvDescription)
     TextView tvDescription;
+    @BindView(R.id.ivCurrent)
+    ImageView ivCurrentWeatherImage;
 
     private Unbinder unbinder;
 
@@ -79,6 +84,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         tvTemp.setText(temperature);
         tvCity.setText(weather.getName());
         tvDescription.setText(weather.getWeather().get(0).getDescription());
+        Log.v(WeatherFragment.class.getSimpleName(), "icon = " + weather.getWeather().get(0).getIcon());
+
+        setImageFromName(weather.getWeather().get(0).getIcon());
     }
 
     private String convertMetricToString(OWSupportedUnits metric) {
@@ -86,6 +94,13 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
             return getString(R.string.celsius);
         else
             return getString(R.string.fahrenheit);
+    }
+
+    private void setImageFromName(String name) {
+        String mDrawableName = "icon_" + name;
+        int resID = getResources().getIdentifier(mDrawableName, "drawable", getContext().getPackageName());
+        Drawable drawable = getResources().getDrawable(resID);
+        ivCurrentWeatherImage.setImageDrawable(drawable);
     }
 
     @Override
