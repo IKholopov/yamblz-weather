@@ -62,7 +62,5 @@ dependencies {
 
     compile "com.evernote:android-job:$android_job_version"
 
-    compile "com.google.code.gson:gson:$gson_version"
-
     testCompile 'junit:junit:4.12'
 }

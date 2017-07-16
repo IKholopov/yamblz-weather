@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 import android.content.Context;
 
+import com.example.toor.yamblzweather.data.settings.Settings;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
@@ -12,11 +13,14 @@ import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFrag
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Reader;
 
 import javax.inject.Inject;
+
+import static com.example.toor.yamblzweather.data.settings.Settings.SERIALIZE_FILE_NAME;
 
 public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView> {
 
@@ -46,7 +50,8 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
         else {
             Gson gson = new Gson();
             try {
-                Reader reader = new FileReader(context.getFilesDir());
+                File file= new File(context.getFilesDir(), SERIALIZE_FILE_NAME);
+                Reader reader = new FileReader(file);
                 CurrentWeather currentWeather = gson.fromJson(reader, CurrentWeather.class);
                 getView().showCurrentWeather(currentWeather, interactor.getTemperaturMertric());
             } catch (FileNotFoundException e) {

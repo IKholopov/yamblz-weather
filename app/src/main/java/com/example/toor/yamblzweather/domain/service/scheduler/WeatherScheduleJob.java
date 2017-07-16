@@ -14,11 +14,14 @@ import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
 import com.google.gson.Gson;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import static com.example.toor.yamblzweather.data.settings.Settings.SERIALIZE_FILE_NAME;
 
 public class WeatherScheduleJob extends Job {
 
@@ -49,7 +52,8 @@ public class WeatherScheduleJob extends Job {
     private void serializeCurrentWeather() {
         Gson gson = new Gson();
         try {
-            Writer writer = new FileWriter(getContext().getFilesDir());
+            File file = new File(getContext().getApplicationContext().getFilesDir(), SERIALIZE_FILE_NAME);
+            Writer writer = new FileWriter(file, false);
             service.getCurrentDayForecast(coordinates).subscribe(currentWeather -> gson.toJson(currentWeather, writer));
             writer.close();
         } catch (Exception e) {
@@ -69,6 +73,7 @@ public class WeatherScheduleJob extends Job {
                 .build()
                 .schedule();
         Log.v(WeatherFragment.class.getSimpleName(), "id = " + jobId);
+        serializeCurrentWeather();
     }
 
 }
