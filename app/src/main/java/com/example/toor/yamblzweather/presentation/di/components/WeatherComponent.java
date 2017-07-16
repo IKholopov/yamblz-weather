@@ -12,8 +12,8 @@ import dagger.Subcomponent;
 @Subcomponent(modules = WeatherModule.class)
 public interface WeatherComponent {
 
-    void inject(WeatherInteractor interactor);
-    void inject(SettingsInteractor interactor);
+    void inject(SettingsInteractor interacor);
+    void inject(WeatherInteractor interacor);
 
     ScreenComponent plus(ScreenModule screenModule);
 }

@@ -21,5 +21,6 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     public void updateCurrentWeather(Coord coordinates) {
         interactor.getCurrentWeather(coordinates)
                 .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather));
+        getView().showTenperatureMetric(interactor.getTemperaturMertric());
     }
 }

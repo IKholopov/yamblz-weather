@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
@@ -22,12 +23,16 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
+
 public class WeatherFragment extends BaseFragment implements WeatherView {
 
     @BindView(R.id.tvCity)
     TextView tvCity;
     @BindView(R.id.tvTemp)
     TextView tvTemp;
+    @BindView(R.id.tvMetric)
+    TextView tvMetric;
     @BindView(R.id.tvDescription)
     TextView tvDescription;
 
@@ -75,6 +80,15 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         tvCity.setText(weather.getName());
         tvDescription.setText(weather.getWeather().get(0).getDescription());
     }
+
+    @Override
+    public void showTenperatureMetric(OWSupportedUnits metric) {
+        if (metric == CELSIUS)
+            tvMetric.setText(getString(R.string.celsius));
+        else
+            tvMetric.setText(getString(R.string.fahrenheit));
+    }
+
 
     @Override
     public void onDestroyView() {
