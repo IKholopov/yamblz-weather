@@ -3,7 +3,7 @@ package com.example.toor.yamblzweather.domain.interactors;
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.domain.providers.WeatherProvider;
+import com.example.toor.yamblzweather.domain.service.OWService;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
@@ -16,21 +16,19 @@ import io.reactivex.Observable;
 public class WeatherInteractor {
 
     @Inject
-    WeatherProvider provider;
+    OWService service;
     @Inject
     Locale locale;
     @Inject
     SettingsPreference preference;
 
-    public WeatherInteractor(WeatherProvider provider) {
-        this.provider = provider;
-
+    public WeatherInteractor() {
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
     }
 
     public Observable<CurrentWeather> getCurrentWeather(Coord coordinates) {
-        provider.setLanguage(locale);
-        provider.setMetric(preference.loadTemperatureMetric());
-        return provider.getCurrentForecast(coordinates);
+        service.setLanguage(locale);
+        service.setMetricUnits(preference.loadTemperatureMetric());
+        return service.getCurrentDayForecast(coordinates);
     }
 }

@@ -19,7 +19,7 @@ public class SettingsPreference {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void saveTemperatureType(OWSupportedUnits metric) {
+    public void saveTemperatureMetric(OWSupportedUnits metric) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(temperatureKey, metric.getUnit());
         editor.apply();
@@ -38,5 +38,11 @@ public class SettingsPreference {
 
     public long loadUpdateWeatherInterval() {
         return sharedPreferences.getLong(intervalKey, MIN_UPDATE_INTERVAL);
+    }
+
+    public Settings loadUserSettings() {
+        OWSupportedUnits metric = loadTemperatureMetric();
+        long interval = loadUpdateWeatherInterval();
+        return new Settings(metric, interval);
     }
 }

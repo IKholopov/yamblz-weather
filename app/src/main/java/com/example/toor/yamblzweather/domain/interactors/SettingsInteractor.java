@@ -1,7 +1,7 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
 import com.example.toor.yamblzweather.data.settings.Settings;
-import com.example.toor.yamblzweather.domain.providers.SettingsProvider;
+import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
@@ -13,24 +13,22 @@ import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.FAHRE
 public class SettingsInteractor {
 
     @Inject
-    SettingsProvider provider;
+    SettingsPreference preference;
 
-    public SettingsInteractor(SettingsProvider provider) {
-        this.provider = provider;
-
+    public SettingsInteractor() {
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
     }
 
     public Settings getUserSettings() {
-        return provider.loadSettings();
+        return preference.loadUserSettings();
     }
 
     public void saveTemperatureMetric(boolean type) {
-        provider.saveTemperatureMetric(type ? CELSIUS : FAHRENHEIT);
+        preference.saveTemperatureMetric(type ? CELSIUS : FAHRENHEIT);
     }
 
     public void saveUpdateInterval(long interval) {
-        provider.saveUpdateWeatherInterval(interval);
+        preference.saveUpdateWeatherInterval(interval);
     }
 
 }
