@@ -7,24 +7,6 @@
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp">
 
-    <Switch
-        android:id="@+id/temperatureSwitch"
-        android:layout_width="60dp"
-        android:layout_height="30dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="58dp"
-        android:showText="true"
-        android:textOff="@string/fahrenheit"
-        android:textOn="@string/celsius"
-        android:thumb="@drawable/apptheme_switch_inner_holo_light"
-        android:track="@drawable/apptheme_switch_track_holo_light"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.166"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -55,13 +37,16 @@
         android:id="@+id/rbUpdateInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvUpdateInterval"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/temperatureSwitch"
-        app:layout_constraintRight_toRightOf="@+id/temperatureSwitch"
+        app:layout_constraintLeft_toLeftOf="@+id/rgTempMetric"
+        app:layout_constraintRight_toRightOf="@+id/rgTempMetric"
         app:layout_constraintTop_toTopOf="@+id/tvUpdateInterval"
+        tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1">
 
         <RadioButton
@@ -95,6 +80,52 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/min_180" />
+    </RadioGroup>
+
+    <RadioGroup
+        android:id="@+id/rgTempMetric"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginRight="45dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/toggle_metric_shape"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.571"
+        tools:layout_constraintRight_creator="1">
+
+        <RadioButton
+            android:id="@+id/celsius"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_metric_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/celsius"
+            android:textColor="@drawable/toggle_metric_text" />
+
+        <RadioButton
+            android:id="@+id/fahrenheit"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="1dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_metric_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/fahrenheit"
+            android:textColor="@drawable/toggle_metric_text" />
     </RadioGroup>
 
 </android.support.constraint.ConstraintLayout>

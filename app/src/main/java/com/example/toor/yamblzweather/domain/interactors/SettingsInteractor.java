@@ -1,12 +1,12 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
 import com.example.toor.yamblzweather.data.settings.Settings;
-import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.FAHRENHEIT;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.FAHRENHEIT;
 
 public class SettingsInteractor extends BaseInteracor {
 
@@ -14,8 +14,8 @@ public class SettingsInteractor extends BaseInteracor {
         return preference.loadUserSettings();
     }
 
-    public void saveTemperatureMetric(boolean type) {
-        preference.saveTemperatureMetric(type ? CELSIUS : FAHRENHEIT);
+    public void saveTemperatureMetric(OWSupportedMetric metric) {
+        preference.saveTemperatureMetric(metric);
     }
 
     public void saveUpdateInterval(long interval) {

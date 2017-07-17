@@ -3,15 +3,13 @@ package com.example.toor.yamblzweather.presentation.mvp.presenter;
 import com.example.toor.yamblzweather.data.settings.Settings;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
 
 import javax.inject.Inject;
-
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
 
 public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsView> {
 
@@ -40,11 +38,8 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         showUpdateWeatherInterval(settings.getUpdateWeatherInterval());
     }
 
-    private void showTemperatureMetric(OWSupportedUnits metric) {
-        if (metric == CELSIUS)
-            getView().setTemperatureState(true);
-        else
-            getView().setTemperatureState(false);
+    private void showTemperatureMetric(OWSupportedMetric metric) {
+        getView().setTemperatureMetric(metric);
     }
 
     private void showUpdateWeatherInterval(long interval) {
@@ -52,12 +47,13 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         getView().setUpdateInterval(interval);
     }
 
-    public void saveTemperatureState(boolean state) {
-        interactor.saveTemperatureMetric(state);
+    public void saveTemperatureMetric(OWSupportedMetric metric) {
+        interactor.saveTemperatureMetric(metric);
     }
 
     public void saveUpdateInterval(long interval) {
         interactor.saveUpdateInterval(interval);
         weatherScheduleJob.startJob(interactor.getUserSettings().getCoordinates());
     }
+
 }

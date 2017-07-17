@@ -1,22 +1,22 @@
 package com.example.toor.yamblzweather.data.settings;
 
 import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 
 public class Settings {
 
     public static final String SERIALIZE_FILE_NAME = "weather_store.json";
-    private OWSupportedUnits metric;
+    private OWSupportedMetric metric;
     private long updateWeatherInterval;
     private Coord coordinates;
 
-    public Settings(OWSupportedUnits metric, long updateWeatherInterval, Coord coordinates) {
+    public Settings(OWSupportedMetric metric, long updateWeatherInterval, Coord coordinates) {
         this.metric = metric;
         this.updateWeatherInterval = updateWeatherInterval;
         this.coordinates = coordinates;
     }
 
-    public void setOWSupportedUnits(OWSupportedUnits metric) {
+    public void setOWSupportedUnits(OWSupportedMetric metric) {
         this.metric = metric;
     }
 
@@ -24,7 +24,7 @@ public class Settings {
         this.updateWeatherInterval = timeInterval;
     }
 
-    public OWSupportedUnits getMetric() {
+    public OWSupportedMetric getMetric() {
         return this.metric;
     }
 
