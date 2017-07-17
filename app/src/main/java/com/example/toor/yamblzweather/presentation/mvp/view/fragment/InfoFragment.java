@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 public class InfoFragment extends BaseFragment {

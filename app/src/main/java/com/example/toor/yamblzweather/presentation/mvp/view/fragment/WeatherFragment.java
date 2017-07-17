@@ -17,7 +17,7 @@ import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
-import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
@@ -40,6 +40,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     ImageView ivCurrentWeatherImage;
 
     private Unbinder unbinder;
+
+    private static final String IMAGE_RESOURCES_SUFFIX = "icon_";
+    private static final String IMAGE_RESOURCES_FOLDER= "drawable";
 
     @Inject
     WeatherFragmentPresenter presenter;
@@ -101,8 +104,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     private void setImageFromName(String name) {
-        String mDrawableName = "icon_" + name;
-        int resID = getResources().getIdentifier(mDrawableName, "drawable", getContext().getPackageName());
+        String mDrawableName = IMAGE_RESOURCES_SUFFIX + name;
+        int resID = getResources().getIdentifier(mDrawableName, IMAGE_RESOURCES_FOLDER, getContext().getPackageName());
         Drawable drawable = getResources().getDrawable(resID);
         ivCurrentWeatherImage.setImageDrawable(drawable);
     }

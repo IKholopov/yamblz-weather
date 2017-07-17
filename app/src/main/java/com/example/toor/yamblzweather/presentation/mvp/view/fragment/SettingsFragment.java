@@ -14,7 +14,7 @@ import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
-import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Inject
     SettingsFragmentPresenter presenter;
 
-    private static final long intervalMultiplexor = 1 * 60 * 1000;
+    private static final long INTERVAL_MULTIPLEXOR = 1 * 60 * 1000;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -100,19 +100,19 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         long interval = 0;
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.rbMin15:
-                interval = 15 * intervalMultiplexor;
+                interval = 15 * INTERVAL_MULTIPLEXOR;
                 break;
             case R.id.rbMin30:
-                interval = 30 * intervalMultiplexor;
+                interval = 30 * INTERVAL_MULTIPLEXOR;
                 break;
             case R.id.rbMin60:
-                interval = 60 * intervalMultiplexor;
+                interval = 60 * INTERVAL_MULTIPLEXOR;
                 break;
             case R.id.rbMin180:
-                interval = 180 * intervalMultiplexor;
+                interval = 180 * INTERVAL_MULTIPLEXOR;
                 break;
             default:
-                interval = 60 * intervalMultiplexor;
+                interval = 60 * INTERVAL_MULTIPLEXOR;
                 break;
         }
         presenter.saveUpdateInterval(interval);
@@ -136,11 +136,11 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @Override
     public void setUpdateInterval(long interval) {
-        if (interval == 15 * intervalMultiplexor)
+        if (interval == 15 * INTERVAL_MULTIPLEXOR)
             rgUpdateInterval.check(R.id.rbMin15);
-        else if (interval == 30 * intervalMultiplexor)
+        else if (interval == 30 * INTERVAL_MULTIPLEXOR)
             rgUpdateInterval.check(R.id.rbMin30);
-        else if (interval == 60 * intervalMultiplexor)
+        else if (interval == 60 * INTERVAL_MULTIPLEXOR)
             rgUpdateInterval.check(R.id.rbMin60);
         else
             rgUpdateInterval.check(R.id.rbMin180);

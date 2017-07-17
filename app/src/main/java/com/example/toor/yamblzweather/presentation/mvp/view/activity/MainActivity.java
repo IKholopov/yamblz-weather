@@ -15,7 +15,7 @@ import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
