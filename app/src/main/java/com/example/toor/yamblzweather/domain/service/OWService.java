@@ -4,7 +4,7 @@ import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.api.OpenWeatherAPI;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 
 import java.util.Locale;
 
@@ -23,7 +23,7 @@ public class OWService {
 
     private String mToken;
 
-    private OWSupportedUnits mSelectedUnits = OWSupportedUnits.CELSIUS;
+    private OWSupportedMetric mSelectedUnits = OWSupportedMetric.CELSIUS;
 
     private OWSupportedLanguages mSelectedLanguage = OWSupportedLanguages.ENGLISH;
 
@@ -47,9 +47,9 @@ public class OWService {
     /**
      * This configures the Metric Units in which the results of the requests need to be in.
      *
-     * @param units a valid OWSupportedUnits object.
+     * @param units a valid OWSupportedMetric object.
      */
-    public void setMetricUnits(OWSupportedUnits units) {
+    public void setMetricUnits(OWSupportedMetric units) {
         mSelectedUnits = units;
     }
 
@@ -151,9 +151,9 @@ public class OWService {
 
     /**
      * Method used to check current selected metric system of the service.
-     * @return OWSupportedUnits selected Units System.
+     * @return OWSupportedMetric selected Units System.
      */
-    public OWSupportedUnits getSelectedMetricSystem() {
+    public OWSupportedMetric getSelectedMetricSystem() {
         return this.mSelectedUnits;
     }
 

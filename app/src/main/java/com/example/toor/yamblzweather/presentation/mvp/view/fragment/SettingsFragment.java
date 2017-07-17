@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
@@ -22,17 +23,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.FAHRENHEIT;
+
 public class SettingsFragment extends BaseFragment implements SettingsView {
 
     private Unbinder unbinder;
 
-    @BindView(R.id.temperatureSwitch)
-    Switch temperatureSwitch;
+    @BindView(R.id.rgTempMetric)
+    RadioGroup rgTempMetric;
+    @BindView(R.id.celsius)
+    RadioButton rbCelsius;
+    @BindView(R.id.fahrenheit)
+    RadioButton rbFahrenheit;
     @BindView(R.id.rbUpdateInterval)
-    RadioGroup rbUpdateInterval;
+    RadioGroup rgUpdateInterval;
 
     @Inject
     SettingsFragmentPresenter presenter;
+
+    private static final long intervalMultiplexor = 1 * 60 * 1000;
 
     public static SettingsFragment newInstance() {
         return new SettingsFragment();
@@ -45,7 +55,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @Override
     protected void setDrawableEnabled() {
-        ((DrawerLocker)getActivity()).setDrawerEnable(false);
+        ((DrawerLocker) getActivity()).setDrawerEnable(false);
     }
 
     @Override
@@ -66,27 +76,43 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         unbinder = ButterKnife.bind(this, view);
         presenter.showSettings();
 
-        temperatureSwitch.setOnCheckedChangeListener((compoundButton, state) -> presenter.saveTemperatureState(state));
-        rbUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
+        rgTempMetric.setOnCheckedChangeListener((radioGroup, checkedId) -> saveTemperatureMetric(radioGroup));
+        rgUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
+    }
+
+    private void saveTemperatureMetric(RadioGroup radioGroup) {
+        OWSupportedMetric metric;
+        switch (radioGroup.getCheckedRadioButtonId()) {
+            case R.id.celsius:
+                metric = CELSIUS;
+                break;
+            case R.id.fahrenheit:
+                metric = FAHRENHEIT;
+                break;
+            default:
+                metric = CELSIUS;
+                break;
+        }
+        presenter.saveTemperatureMetric(metric);
     }
 
     private void saveUpdateInterval(RadioGroup radioGroup) {
-        long interval = 1 * 1000 * 60;
+        long interval = 0;
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.rbMin15:
-                interval = 15 * interval;
+                interval = 15 * intervalMultiplexor;
                 break;
             case R.id.rbMin30:
-                interval = 30 * interval;
+                interval = 30 * intervalMultiplexor;
                 break;
             case R.id.rbMin60:
-                interval = 60 * interval;
+                interval = 60 * intervalMultiplexor;
                 break;
             case R.id.rbMin180:
-                interval = 180 * interval;
+                interval = 180 * intervalMultiplexor;
                 break;
             default:
-                interval = 60 * interval;
+                interval = 60 * intervalMultiplexor;
                 break;
         }
         presenter.saveUpdateInterval(interval);
@@ -101,20 +127,22 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
-    public void setTemperatureState(boolean state) {
-        temperatureSwitch.setChecked(state);
+    public void setTemperatureMetric(OWSupportedMetric metric) {
+        if (metric == CELSIUS)
+            rgTempMetric.check(R.id.celsius);
+        else
+            rgTempMetric.check(R.id.fahrenheit);
     }
 
     @Override
     public void setUpdateInterval(long interval) {
-        long intervalMultiplexor = 1 * 1000 * 60;
         if (interval == 15 * intervalMultiplexor)
-            rbUpdateInterval.check(R.id.rbMin15);
+            rgUpdateInterval.check(R.id.rbMin15);
         else if (interval == 30 * intervalMultiplexor)
-            rbUpdateInterval.check(R.id.rbMin30);
+            rgUpdateInterval.check(R.id.rbMin30);
         else if (interval == 60 * intervalMultiplexor)
-            rbUpdateInterval.check(R.id.rbMin60);
+            rgUpdateInterval.check(R.id.rbMin60);
         else
-            rbUpdateInterval.check(R.id.rbMin180);
+            rgUpdateInterval.check(R.id.rbMin180);
     }
 }

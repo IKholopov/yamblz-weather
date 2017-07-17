@@ -3,10 +3,10 @@ package com.example.toor.yamblzweather.data.settings;
 import android.content.SharedPreferences;
 
 import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.fromString;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.fromString;
 
 public class SettingsPreference {
 
@@ -23,13 +23,13 @@ public class SettingsPreference {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void saveTemperatureMetric(OWSupportedUnits metric) {
+    public void saveTemperatureMetric(OWSupportedMetric metric) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(temperatureKey, metric.getUnit());
         editor.apply();
     }
 
-    public OWSupportedUnits loadTemperatureMetric() {
+    public OWSupportedMetric loadTemperatureMetric() {
         String metric = sharedPreferences.getString(temperatureKey, CELSIUS.getUnit());
         return fromString(metric);
     }
@@ -45,7 +45,7 @@ public class SettingsPreference {
     }
 
     public Settings loadUserSettings() {
-        OWSupportedUnits metric = loadTemperatureMetric();
+        OWSupportedMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
         Coord coordinates = loadCoordinates();
         return new Settings(metric, interval, coordinates);

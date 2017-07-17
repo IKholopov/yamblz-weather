@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedUnits;
+import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
@@ -26,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedUnits.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
 
 public class WeatherFragment extends BaseFragment implements WeatherView {
 
@@ -55,7 +55,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
 
     @Override
     protected void setDrawableEnabled() {
-        ((DrawerLocker)getActivity()).setDrawerEnable(true);
+        ((DrawerLocker) getActivity()).setDrawerEnable(true);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     @Override
-    public void showCurrentWeather(CurrentWeather weather, OWSupportedUnits metric) {
+    public void showCurrentWeather(CurrentWeather weather, OWSupportedMetric metric) {
         String metricStr = convertMetricToString(metric);
         String temperature = String.valueOf(weather.getMain().getTemp()) + metricStr;
         tvTemp.setText(temperature);
@@ -93,7 +93,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         setImageFromName(weather.getWeather().get(0).getIcon());
     }
 
-    private String convertMetricToString(OWSupportedUnits metric) {
+    private String convertMetricToString(OWSupportedMetric metric) {
         if (metric == CELSIUS)
             return getString(R.string.celsius);
         else
