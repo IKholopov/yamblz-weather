@@ -72,6 +72,8 @@ public class WeatherScheduleJob extends Job {
                 .setPersisted(true)
                 .build()
                 .schedule();
+        if (NetworkConectionChecker.isNetworkAvailable(context))
+            serializeCurrentWeather();
     }
 
 }

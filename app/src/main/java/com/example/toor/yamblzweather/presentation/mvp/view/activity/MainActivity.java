@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-import com.example.toor.yamblzweather.domain.service.scheduler.ScheduleJobCreator;
 import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
@@ -59,14 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupDrawerContent(NavigationView navigationView) {
         setupToolbar();
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        selectDrawerItem(menuItem);
-                        return true;
-                    }
-                });
+        navigationView.setNavigationItemSelectedListener(item -> {
+            selectDrawerItem(item);
+            return true;
+        });
     }
 
     private void setupToolbar() {
