@@ -1,9 +1,8 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment.common;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-
-import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
 
 public abstract class BaseFragment extends Fragment {
 
@@ -12,6 +11,12 @@ public abstract class BaseFragment extends Fragment {
         super.onAttach(context);
 
         setTitle();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle saveInstanceState) {
+        super.onActivityCreated(saveInstanceState);
+
         setDrawableEnabled();
     }
 
