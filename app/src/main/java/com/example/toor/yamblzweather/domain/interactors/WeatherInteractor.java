@@ -30,10 +30,6 @@ public class WeatherInteractor extends BaseInteracor {
         return preference.loadTemperatureMetric();
     }
 
-    public long getUpdateInterval() {
-        return preference.loadUpdateWeatherInterval();
-    }
-
     @Override
     protected void inject() {
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);

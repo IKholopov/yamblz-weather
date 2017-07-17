@@ -8,7 +8,7 @@
     tools:layout_editor_absoluteY="25dp">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvTemperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -25,13 +25,14 @@
         android:id="@+id/tvUpdateInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="101dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="174dp"
         android:text="@string/update_interval"
         android:textSize="@dimen/settings_text_size"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="@+id/textView"
-        app:layout_constraintRight_toRightOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintTop_creator="1" />
 
     <RadioGroup
         android:id="@+id/rbUpdateInterval"
@@ -39,12 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="13dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="13dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginRight="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvUpdateInterval"
-        app:layout_constraintLeft_toLeftOf="@+id/rgTempMetric"
-        app:layout_constraintRight_toRightOf="@+id/rgTempMetric"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvUpdateInterval"
         tools:layout_constraintRight_creator="1"
         tools:layout_constraintTop_creator="1">
@@ -86,16 +84,17 @@
         android:id="@+id/rgTempMetric"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginBottom="0dp"
         android:layout_marginEnd="45dp"
-        android:layout_marginRight="45dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/toggle_metric_shape"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTemperature"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.571"
-        tools:layout_constraintRight_creator="1">
+        app:layout_constraintTop_toTopOf="@+id/tvTemperature"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1">
 
         <RadioButton
             android:id="@+id/celsius"

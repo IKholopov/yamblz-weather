@@ -22,7 +22,6 @@ public class SettingsInteractor extends BaseInteracor {
         preference.saveUpdateWeatherInterval(interval);
     }
 
-
     @Override
     protected void inject() {
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
