@@ -7,23 +7,15 @@ import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.service.OWService;
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Reader;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
-import static com.example.toor.yamblzweather.data.settings.Settings.SERIALIZE_FILE_NAME;
 
 public class WeatherScheduleJob extends Job {
 
@@ -53,13 +45,7 @@ public class WeatherScheduleJob extends Job {
 
     private void serializeCurrentWeather() {
         Gson gson = new Gson();
-        try {
-            File file = new File(context.getFilesDir(), SERIALIZE_FILE_NAME);
-            FileWriter writer = new FileWriter(file, false);
-            service.getCurrentDayForecast(coordinates).subscribe(currentWeather -> gson.toJson(currentWeather, writer));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        service.getCurrentDayForecast(coordinates).subscribe(currentWeather -> preference.saveCurrentWeather(gson.toJson(currentWeather)));
     }
 
     public void startJob(Coord coordinates) {
@@ -72,16 +58,5 @@ public class WeatherScheduleJob extends Job {
                 .setPersisted(true)
                 .build()
                 .schedule();
-        if (NetworkConectionChecker.isNetworkAvailable(context))
-            serializeCurrentWeather();
-        Gson gson = new Gson();
-        try {
-            File file= new File(context.getFilesDir(), SERIALIZE_FILE_NAME);
-            Reader reader = new FileReader(file);
-            CurrentWeather currentWeather = gson.fromJson(reader, CurrentWeather.class);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
     }
-
 }

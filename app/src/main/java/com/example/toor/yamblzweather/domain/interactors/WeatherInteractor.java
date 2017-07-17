@@ -6,6 +6,7 @@ import com.example.toor.yamblzweather.domain.service.OWService;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
+import com.google.gson.Gson;
 
 import java.util.Locale;
 
@@ -28,6 +29,11 @@ public class WeatherInteractor extends BaseInteracor {
 
     public OWSupportedMetric getTemperaturMertric() {
         return preference.loadTemperatureMetric();
+    }
+
+    public CurrentWeather loadCachedCurrentWeather() {
+        Gson gson = new Gson();
+        return gson.fromJson(preference.loadCurrentWeather(), CurrentWeather.class);
     }
 
     @Override
