@@ -85,7 +85,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     @Override
     public void showCurrentWeather(CurrentWeather weather, OWSupportedMetric metric) {
         String metricStr = convertMetricToString(metric);
-        String temperature = String.valueOf(weather.getMain().getTemp()) + metricStr;
+        String temperature = String.valueOf((int) Math.round(weather.getMain().getTemp())) + " " + metricStr;
         tvTemp.setText(temperature);
         tvCity.setText(weather.getName());
         tvDescription.setText(weather.getWeather().get(0).getDescription());
