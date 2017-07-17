@@ -2,9 +2,12 @@ package com.example.toor.yamblzweather.presentation.di;
 
 import android.app.Application;
 
+import com.example.toor.yamblzweather.BuildConfig;
 import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
 import com.example.toor.yamblzweather.presentation.di.components.DaggerAppComponent;
 import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
+
+import timber.log.Timber;
 
 public class App extends Application {
 
@@ -15,6 +18,9 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (BuildConfig.DEBUG)
+            Timber.plant(new Timber.DebugTree());
 
         setInstance(this);
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();

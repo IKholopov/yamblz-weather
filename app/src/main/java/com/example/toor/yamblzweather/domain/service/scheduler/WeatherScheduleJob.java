@@ -2,7 +2,6 @@ package com.example.toor.yamblzweather.domain.service.scheduler;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
@@ -12,7 +11,6 @@ import com.example.toor.yamblzweather.domain.service.OWService;
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
-import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -44,8 +42,6 @@ public class WeatherScheduleJob extends Job {
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
-        Log.v(WeatherFragment.class.getSimpleName(), "print");
-
         if (NetworkConectionChecker.isNetworkAvailable(context))
             serializeCurrentWeather();
         return Result.SUCCESS;

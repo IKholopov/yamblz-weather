@@ -2,7 +2,6 @@ package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,7 @@ import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
+import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
@@ -54,6 +54,11 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     @Override
+    protected void setDrawableEnabled() {
+        ((DrawerLocker)getActivity()).setDrawerEnable(true);
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
@@ -84,7 +89,6 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         tvTemp.setText(temperature);
         tvCity.setText(weather.getName());
         tvDescription.setText(weather.getWeather().get(0).getDescription());
-        Log.v(WeatherFragment.class.getSimpleName(), "icon = " + weather.getWeather().get(0).getIcon());
 
         setImageFromName(weather.getWeather().get(0).getIcon());
     }

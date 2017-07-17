@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,6 +16,7 @@ import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
@@ -24,13 +26,18 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DrawerLocker {
 
     @BindView(R.id.nav_view)
     NavigationView nvDrawer;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    private ActionBarDrawerToggle toggle;
 
     private Unbinder unbinder;
 
@@ -65,14 +72,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.BLACK);
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.setDrawerListener(toggle);
+        drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        toggle.setToolbarNavigationClickListener(view -> {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+                setDrawerUnlocked();
+            }
+            Timber.v("click");
+        });
     }
 
     void selectDrawerItem(MenuItem menuItem) {
@@ -97,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = (Fragment) fragmentClass.newInstance();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.flContent, fragment, fragmentClass.getSimpleName())
+                        .addToBackStack(null)
                         .commit();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -109,16 +122,39 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+            setDrawerUnlocked();
+        } else
             super.onBackPressed();
-        }
     }
 
     @Override
     protected void onDestroy() {
         unbinder.unbind();
         super.onDestroy();
+    }
+
+    @Override
+    public void setDrawerEnable(boolean enabled) {
+        if (enabled)
+            setDrawerUnlocked();
+        else
+            setDrawerLocked();
+    }
+
+    private void setDrawerLocked() {
+        toggle.setDrawerIndicatorEnabled(false);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        toggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        toolbar.setNavigationIcon(R.drawable.ic_close);
+    }
+
+    private void setDrawerUnlocked() {
+        toggle.setDrawerIndicatorEnabled(true);
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        toggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 }

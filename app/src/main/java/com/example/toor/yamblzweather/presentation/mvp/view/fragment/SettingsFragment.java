@@ -13,6 +13,7 @@ import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
+import com.example.toor.yamblzweather.presentation.mvp.view.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
@@ -43,9 +44,13 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
+    protected void setDrawableEnabled() {
+        ((DrawerLocker)getActivity()).setDrawerEnable(false);
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-
         App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new ScreenModule()).inject(this);
     }
 
