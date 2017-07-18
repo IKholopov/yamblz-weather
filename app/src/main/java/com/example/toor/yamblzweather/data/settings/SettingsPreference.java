@@ -76,7 +76,8 @@ public class SettingsPreference {
     }
 
     public
-    @Nullable String loadCurrentWeather() {
+    @Nullable
+    String loadCurrentWeather() {
         return sharedPreferences.getString(CURRENT_WEATHER_KEY, null);
     }
 }

@@ -33,4 +33,10 @@ public class ScreenModule {
     public InfoFragmentPresenter provideInfoFragmentPresenter(InfoInteractor infoInteractor) {
         return new InfoFragmentPresenter(infoInteractor);
     }
+
+    @ScreenScope
+    @Provides
+    public ConnectionErrorFragmentPresenter provideConnectionErrorFragmentPresenter() {
+        return new ConnectionErrorFragmentPresenter();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.domain.service.scheduler;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
@@ -24,9 +25,8 @@ public class WeatherScheduleJob extends Job {
     @Inject
     WeatherInteractor interactor;
 
-
     @Inject
-    NetworkConectionChecker conectionChecker;
+    Context context;
 
     private Coord coordinates;
 
@@ -37,7 +37,7 @@ public class WeatherScheduleJob extends Job {
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
-        if (conectionChecker.isNetworkAvailable())
+        if (NetworkConectionChecker.isNetworkAvailable(context))
             serializeCurrentWeather();
         Timber.v("onRunJob");
         return Result.SUCCESS;
@@ -48,8 +48,10 @@ public class WeatherScheduleJob extends Job {
     }
 
     public void startJob(Coord coordinates) {
+
         this.coordinates = coordinates;
         long interval = interactor.getUpdateInterval();
+        Timber.v("startJob = " + interval);
         double flexTime = (double) interval * FLEX_TIME_PERCENT;
         new JobRequest.Builder(WeatherScheduleJob.TAG)
                 .setPeriodic(TimeUnit.MILLISECONDS.toMillis(interval), TimeUnit.MILLISECONDS.toMillis((long) flexTime))

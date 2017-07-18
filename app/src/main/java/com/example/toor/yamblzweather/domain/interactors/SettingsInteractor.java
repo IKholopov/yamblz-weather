@@ -5,9 +5,6 @@ import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.FAHRENHEIT;
-
 public class SettingsInteractor extends BaseInteracor {
 
     public Settings getUserSettings() {

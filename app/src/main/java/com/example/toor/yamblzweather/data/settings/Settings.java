@@ -5,7 +5,6 @@ import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 
 public class Settings {
 
-    public static final String SERIALIZE_FILE_NAME = "weather_store.json";
     private OWSupportedMetric metric;
     private long updateWeatherInterval;
     private Coord coordinates;

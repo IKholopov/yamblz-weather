@@ -1,5 +1,7 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
+import android.content.Context;
+
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
@@ -11,11 +13,7 @@ import javax.inject.Inject;
 public class ConnectionErrorFragmentPresenter extends BaseFragmentPresenter<ConnectionErrorView> {
 
     @Inject
-    NetworkConectionChecker conectionChecker;
-
-    @Inject
-    public ConnectionErrorFragmentPresenter() {
-    }
+    Context context;
 
     @Override
     public void inject() {
@@ -23,7 +21,7 @@ public class ConnectionErrorFragmentPresenter extends BaseFragmentPresenter<Conn
     }
 
     public void retryConnection() {
-        if (conectionChecker.isNetworkAvailable()) {
+        if (NetworkConectionChecker.isNetworkAvailable(context)) {
             getView().showWeatherFragment();
         }
     }
