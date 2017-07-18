@@ -1,11 +1,11 @@
-package com.example.toor.yamblzweather.domain.service.scheduler;
+package com.example.toor.yamblzweather.domain.scheduler;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
-import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
@@ -14,6 +14,8 @@ import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 public class WeatherScheduleJob extends Job {
 
@@ -45,6 +47,7 @@ public class WeatherScheduleJob extends Job {
     }
 
     public void startJob(Coord coordinates) {
+        Timber.v("startJob");
         this.coordinates = coordinates;
         long interval = interactor.getUpdateInterval();
         double flexTime = (double) interval * FLEX_TIME_PERCENT;
@@ -54,5 +57,8 @@ public class WeatherScheduleJob extends Job {
                 .setPersisted(true)
                 .build()
                 .schedule();
+
+        if (NetworkConectionChecker.isNetworkAvailable(context))
+            serializeCurrentWeather();
     }
 }

@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
+import com.example.toor.yamblzweather.data.repositories.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
@@ -84,18 +84,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         coord.setLat(55.751244);
         coord.setLon(37.618423);
 
-        try {
-            presenter.updateCurrentWeather(coord);
-        } catch (Exception e) {
-            createNetworkErrorFragment();
-        }
-    }
-
-    private void createNetworkErrorFragment() {
-        Fragment fragment = ConnectionConnectionErrorFragment.newInstance();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.flContent, fragment, ConnectionConnectionErrorFragment.class.getSimpleName())
-                .commit();
+        presenter.updateCurrentWeather(coord);
     }
 
     @Override
@@ -107,6 +96,18 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         tvDescription.setText(weather.getWeather().get(0).getDescription());
 
         setImageFromName(weather.getWeather().get(0).getIcon());
+    }
+
+    @Override
+    public void showErrorFragment() {
+        createNetworkErrorFragment();
+    }
+
+    private void createNetworkErrorFragment() {
+        Fragment fragment = ConnectionConnectionErrorFragment.newInstance();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.flContent, fragment, ConnectionConnectionErrorFragment.class.getSimpleName())
+                .commit();
     }
 
     private String convertMetricToString(OWSupportedMetric metric) {

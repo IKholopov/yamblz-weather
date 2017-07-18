@@ -1,8 +1,8 @@
-package com.example.toor.yamblzweather.domain.service;
+package com.example.toor.yamblzweather.data.network;
 
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.domain.api.OpenWeatherAPI;
+import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
+import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
+import com.example.toor.yamblzweather.data.repositories.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 

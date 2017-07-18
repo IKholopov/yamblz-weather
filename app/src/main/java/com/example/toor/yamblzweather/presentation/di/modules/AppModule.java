@@ -4,9 +4,8 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.JobManager;
-import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-import com.example.toor.yamblzweather.domain.service.scheduler.ScheduleJobCreator;
-import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
+import com.example.toor.yamblzweather.data.repositories.settings.SettingsPreference;
+import com.example.toor.yamblzweather.domain.scheduler.ScheduleJobCreator;
 
 import javax.inject.Singleton;
 

@@ -1,4 +1,4 @@
-package com.example.toor.yamblzweather.domain.api;
+package com.example.toor.yamblzweather.data.network.api;
 
 public final class ApiKeys {
 

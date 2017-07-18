@@ -1,8 +1,8 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.domain.service.OWService;
+import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
+import com.example.toor.yamblzweather.data.repositories.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;

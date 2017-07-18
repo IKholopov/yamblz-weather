@@ -13,8 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
+import com.example.toor.yamblzweather.data.repositories.settings.SettingsPreference;
+import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;

@@ -3,10 +3,8 @@ package com.example.toor.yamblzweather.presentation.di.modules;
 import android.content.Context;
 import android.os.Build;
 
-import com.example.toor.yamblzweather.domain.service.OWService;
-import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
-import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
-import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
+import com.example.toor.yamblzweather.data.network.OWService;
+import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 
 import java.util.Locale;
 
@@ -15,7 +13,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
-import static com.example.toor.yamblzweather.domain.api.ApiKeys.OPEN_WEATHER_MAP_API_KEY;
+import static com.example.toor.yamblzweather.data.network.api.ApiKeys.OPEN_WEATHER_MAP_API_KEY;
 
 @Module
 public class UtilsModule {

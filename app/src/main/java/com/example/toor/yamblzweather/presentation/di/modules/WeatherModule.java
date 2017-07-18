@@ -3,7 +3,7 @@ package com.example.toor.yamblzweather.presentation.di.modules;
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
-import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
+import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
 
 import dagger.Module;

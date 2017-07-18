@@ -1,9 +1,9 @@
-package com.example.toor.yamblzweather.data.settings;
+package com.example.toor.yamblzweather.data.repositories.settings;
 
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
-import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 
 import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.example.toor.yamblzweather.data.settings.SettingsPreference;
+import com.example.toor.yamblzweather.data.repositories.settings.SettingsPreference;
 
 import javax.inject.Singleton;
 
