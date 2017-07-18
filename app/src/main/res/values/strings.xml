@@ -14,8 +14,6 @@
 
     <string name="settings_title_temperature">Temperature</string>
 
-    <string name="weather_fragment">Weather fragment</string>
-    <string name="settings_fragment">Settings fragment</string>
     <string name="update_interval">Update interval</string>
     <string name="app_version">Version</string>
     <string name="copyright">© 2017 "Yandex"</string>

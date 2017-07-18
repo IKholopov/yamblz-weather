@@ -92,13 +92,10 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     private void createNetworkErrorFragment() {
-        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(ConnectionErrorFragment.class.getSimpleName());
-        if (fragment == null) {
-            fragment = ConnectionErrorFragment.newInstance();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .add(R.id.flContent, fragment, ConnectionErrorFragment.class.getSimpleName())
-                    .commit();
-        }
+        Fragment fragment = ConnectionConnectionErrorFragment.newInstance();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.flContent, fragment, ConnectionConnectionErrorFragment.class.getSimpleName())
+                .commit();
     }
 
     @Override
