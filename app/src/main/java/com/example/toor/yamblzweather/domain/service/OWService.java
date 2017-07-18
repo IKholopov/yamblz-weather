@@ -113,26 +113,6 @@ public class OWService {
         }
     }
 
-    public void getFiveDayForecast(final Coord coordinate) {
-//        Call<ExtendedWeather> fiveDayForecastCall = mOpenWeatherAPI.getFiveDayExtendedWeather(
-//                coordinate.getLat(),
-//                coordinate.getLon(),
-//                mToken,
-//                mSelectedUnits.getUnit(),
-//                mSelectedLanguage.getLanguageLocale());
-//        fiveDayForecastCall.enqueue(new Callback<ExtendedWeather>() {
-//            @Override
-//            public void onResponse(Call<ExtendedWeather> call, Response<ExtendedWeather> response) {
-//                listener.onResponse(new OWResponse<ExtendedWeather>(response.body()));
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ExtendedWeather> call, Throwable t) {
-//                listener.onFailure(t);
-//            }
-//        });
-    }
-
     /**
      * Obtain current day forecast for any given Latitude/Longitude pair.
      *
@@ -148,13 +128,4 @@ public class OWService {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
-
-    /**
-     * Method used to check current selected metric system of the service.
-     * @return OWSupportedMetric selected Units System.
-     */
-    public OWSupportedMetric getSelectedMetricSystem() {
-        return this.mSelectedUnits;
-    }
-
 }

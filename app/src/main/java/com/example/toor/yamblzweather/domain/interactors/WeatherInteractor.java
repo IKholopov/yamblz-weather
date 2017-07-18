@@ -27,13 +27,22 @@ public class WeatherInteractor extends BaseInteracor {
         return service.getCurrentDayForecast(coordinates);
     }
 
-    public OWSupportedMetric getTemperaturMertric() {
+    public OWSupportedMetric getTemperatureMertric() {
         return preference.loadTemperatureMetric();
     }
 
-    public CurrentWeather loadCachedCurrentWeather() {
+    public long getUpdateInterval() {
+        return preference.loadUpdateWeatherInterval();
+    }
+
+    public CurrentWeather loadCurrentWeatherFromCache() {
         Gson gson = new Gson();
         return gson.fromJson(preference.loadCurrentWeather(), CurrentWeather.class);
+    }
+
+    public void saveCurrentWeatherToCache(CurrentWeather currentWeather) {
+        Gson gson = new Gson();
+        preference.saveCurrentWeather(gson.toJson(currentWeather));
     }
 
     @Override

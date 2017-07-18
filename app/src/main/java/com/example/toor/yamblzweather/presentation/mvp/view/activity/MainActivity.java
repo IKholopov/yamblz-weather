@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -108,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
                 fragment = (Fragment) fragmentClass.newInstance();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.flContent, fragment, fragmentClass.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                         .addToBackStack(null)
                         .commit();
             } catch (Exception e) {

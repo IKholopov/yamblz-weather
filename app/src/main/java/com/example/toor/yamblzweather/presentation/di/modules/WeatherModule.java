@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.di.modules;
 
+import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
@@ -21,6 +22,12 @@ public class WeatherModule {
     @WeatherScope
     public SettingsInteractor provideSettingsInteractor() {
         return new SettingsInteractor();
+    }
+
+    @Provides
+    @WeatherScope
+    public InfoInteractor provideInfoInteractor() {
+        return new InfoInteractor();
     }
 
 }

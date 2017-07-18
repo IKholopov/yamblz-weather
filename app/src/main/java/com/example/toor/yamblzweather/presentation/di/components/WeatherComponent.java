@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.presentation.di.components;
 
 import com.example.toor.yamblzweather.data.settings.Settings;
+import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.service.scheduler.WeatherScheduleJob;
@@ -18,8 +19,11 @@ public interface WeatherComponent {
 
     void inject(WeatherFragmentPresenter presenter);
     void inject(SettingsFragmentPresenter presenter);
+
     void inject(SettingsInteractor interacor);
     void inject(WeatherInteractor interacor);
+    void inject(InfoInteractor interactor);
+
     void inject(WeatherScheduleJob weatherScheduleJob);
 
     ScreenComponent plus(ScreenModule screenModule);

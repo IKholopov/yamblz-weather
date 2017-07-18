@@ -1,7 +1,5 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
-import android.content.Context;
-
 import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
@@ -17,7 +15,7 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     private WeatherInteractor interactor;
 
     @Inject
-    Context context;
+    NetworkConectionChecker conectionChecker;
 
     public WeatherFragmentPresenter(WeatherInteractor interactor) {
         this.interactor = interactor;
@@ -34,10 +32,10 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     }
 
     public void updateCurrentWeather(Coord coordinates) {
-        if (NetworkConectionChecker.isNetworkAvailable(context))
+        if (conectionChecker.isNetworkAvailable())
             interactor.getCurrentWeather(coordinates)
-                    .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather, interactor.getTemperaturMertric()));
+                    .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather, interactor.getTemperatureMertric()));
         else
-            getView().showCurrentWeather(interactor.loadCachedCurrentWeather(), interactor.getTemperaturMertric());
+            getView().showCurrentWeather(interactor.loadCurrentWeatherFromCache(), interactor.getTemperatureMertric());
     }
 }

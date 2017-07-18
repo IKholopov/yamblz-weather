@@ -7,6 +7,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="settings_text_size">18sp</dimen>
+    <dimen name="info_app_name_text_size">25sp</dimen>
+    <dimen name="info_version_text_size">15sp</dimen>
     <dimen name="settings_text_radiobutton_size">12sp</dimen>
     <dimen name="weather_current_temperature_size">40sp</dimen>
     <dimen name="weather_city_size">30sp</dimen>
