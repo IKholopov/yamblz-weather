@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     private Unbinder unbinder;
 
     private static final String IMAGE_RESOURCES_SUFFIX = "icon_";
-    private static final String IMAGE_RESOURCES_FOLDER= "drawable";
+    private static final String IMAGE_RESOURCES_FOLDER = "drawable";
 
     @Inject
     WeatherFragmentPresenter presenter;
@@ -82,7 +83,22 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         Coord coord = new Coord();
         coord.setLat(55.751244);
         coord.setLon(37.618423);
-        presenter.updateCurrentWeather(coord);
+
+        try {
+            presenter.updateCurrentWeather(coord);
+        } catch (Exception e) {
+            createNetworkErrorFragment();
+        }
+    }
+
+    private void createNetworkErrorFragment() {
+        Fragment fragment = getActivity().getSupportFragmentManager().findFragmentByTag(ConnectionErrorFragment.class.getSimpleName());
+        if (fragment == null) {
+            fragment = ConnectionErrorFragment.newInstance();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .add(R.id.flContent, fragment, ConnectionErrorFragment.class.getSimpleName())
+                    .commit();
+        }
     }
 
     @Override

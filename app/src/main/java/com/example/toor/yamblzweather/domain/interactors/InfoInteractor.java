@@ -17,6 +17,8 @@ public class InfoInteractor extends BaseInteracor {
     @Inject
     Context context;
 
+    private static final String DEFAULT_VERSION = "0.0";
+
     @Override
     protected void inject() {
         App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
@@ -30,7 +32,7 @@ public class InfoInteractor extends BaseInteracor {
             return info.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
-            return null;
+            return DEFAULT_VERSION;
         }
     }
 }

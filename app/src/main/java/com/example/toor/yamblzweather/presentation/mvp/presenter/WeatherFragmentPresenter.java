@@ -31,11 +31,12 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
         super.onAttach(view);
     }
 
-    public void updateCurrentWeather(Coord coordinates) {
+    public void updateCurrentWeather(Coord coordinates) throws Exception {
         if (conectionChecker.isNetworkAvailable())
             interactor.getCurrentWeather(coordinates)
                     .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather, interactor.getTemperatureMertric()));
-        else
+        else {
             getView().showCurrentWeather(interactor.loadCurrentWeatherFromCache(), interactor.getTemperatureMertric());
+        }
     }
 }

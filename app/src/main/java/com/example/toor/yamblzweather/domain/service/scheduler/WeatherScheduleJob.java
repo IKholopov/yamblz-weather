@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import timber.log.Timber;
+
 public class WeatherScheduleJob extends Job {
 
     static final String TAG = "show_notification_job_tag";
@@ -37,6 +39,7 @@ public class WeatherScheduleJob extends Job {
     protected Result onRunJob(Params params) {
         if (conectionChecker.isNetworkAvailable())
             serializeCurrentWeather();
+        Timber.v("onRunJob");
         return Result.SUCCESS;
     }
 

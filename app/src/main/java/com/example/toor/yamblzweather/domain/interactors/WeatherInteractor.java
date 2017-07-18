@@ -35,7 +35,7 @@ public class WeatherInteractor extends BaseInteracor {
         return preference.loadUpdateWeatherInterval();
     }
 
-    public CurrentWeather loadCurrentWeatherFromCache() {
+    public CurrentWeather loadCurrentWeatherFromCache() throws Exception {
         Gson gson = new Gson();
         return gson.fromJson(preference.loadCurrentWeather(), CurrentWeather.class);
     }

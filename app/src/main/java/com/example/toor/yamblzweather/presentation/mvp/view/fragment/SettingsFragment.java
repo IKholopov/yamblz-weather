@@ -8,6 +8,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.settings.Settings;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
@@ -127,15 +128,19 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
-    public void setTemperatureMetric(OWSupportedMetric metric) {
+    public void setSettings(Settings settings) {
+        setTemperatureMetric(settings.getMetric());
+        setUpdateInterval(settings.getUpdateWeatherInterval());
+    }
+
+    private void setTemperatureMetric(OWSupportedMetric metric) {
         if (metric == CELSIUS)
             rgTempMetric.check(R.id.celsius);
         else
             rgTempMetric.check(R.id.fahrenheit);
     }
 
-    @Override
-    public void setUpdateInterval(long interval) {
+    private void setUpdateInterval(long interval) {
         if (interval == 15 * INTERVAL_MULTIPLEXOR)
             rgUpdateInterval.check(R.id.rbMin15);
         else if (interval == 30 * INTERVAL_MULTIPLEXOR)

@@ -34,17 +34,7 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
 
     public void showSettings() {
         Settings settings = interactor.getUserSettings();
-        showTemperatureMetric(settings.getMetric());
-        showUpdateWeatherInterval(settings.getUpdateWeatherInterval());
-    }
-
-    private void showTemperatureMetric(OWSupportedMetric metric) {
-        getView().setTemperatureMetric(metric);
-    }
-
-    private void showUpdateWeatherInterval(long interval) {
-        interactor.saveUpdateInterval(interval);
-        getView().setUpdateInterval(interval);
+        getView().setSettings(settings);
     }
 
     public void saveTemperatureMetric(OWSupportedMetric metric) {
@@ -55,5 +45,4 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         interactor.saveUpdateInterval(interval);
         weatherScheduleJob.startJob(interactor.getUserSettings().getCoordinates());
     }
-
 }

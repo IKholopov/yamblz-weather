@@ -19,6 +19,9 @@
     <string name="update_interval">Update interval</string>
     <string name="app_version">Version</string>
     <string name="copyright">© 2017 "Yandex"</string>
+    <string name="no_data">No data</string>
+    <string name="no_internet">No Internet connection</string>
+    <string name="retry">Retry</string>
 
     <string name="min_15">15 minutes</string>
     <string name="min_30">30 minutes</string>
