@@ -26,7 +26,6 @@ public class AppModule {
 
     private void initScheduleJob() {
         JobManager.create(context).addJobCreator(new ScheduleJobCreator());
-
     }
 
     @Provides

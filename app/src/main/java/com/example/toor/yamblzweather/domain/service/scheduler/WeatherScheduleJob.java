@@ -15,8 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import timber.log.Timber;
-
 public class WeatherScheduleJob extends Job {
 
     static final String TAG = "show_notification_job_tag";
@@ -39,7 +37,6 @@ public class WeatherScheduleJob extends Job {
     protected Result onRunJob(Params params) {
         if (NetworkConectionChecker.isNetworkAvailable(context))
             serializeCurrentWeather();
-        Timber.v("onRunJob");
         return Result.SUCCESS;
     }
 
@@ -48,13 +45,11 @@ public class WeatherScheduleJob extends Job {
     }
 
     public void startJob(Coord coordinates) {
-
         this.coordinates = coordinates;
         long interval = interactor.getUpdateInterval();
-        Timber.v("startJob = " + interval);
         double flexTime = (double) interval * FLEX_TIME_PERCENT;
         new JobRequest.Builder(WeatherScheduleJob.TAG)
-                .setPeriodic(TimeUnit.MILLISECONDS.toMillis(interval), TimeUnit.MILLISECONDS.toMillis((long) flexTime))
+                .setPeriodic(TimeUnit.MILLISECONDS.toMillis(interval), TimeUnit.MILLISECONDS.toMillis((long)flexTime))
                 .setUpdateCurrent(true)
                 .setPersisted(true)
                 .build()
