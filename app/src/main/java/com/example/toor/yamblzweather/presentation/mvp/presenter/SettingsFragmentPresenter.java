@@ -1,6 +1,6 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
-import com.example.toor.yamblzweather.data.repositories.settings.Settings;
+import com.example.toor.yamblzweather.data.settings.Settings;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;

@@ -1,6 +1,6 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.repositories.settings.SettingsPreference;
+import com.example.toor.yamblzweather.data.settings.SettingsPreference;
 
 import javax.inject.Inject;
 

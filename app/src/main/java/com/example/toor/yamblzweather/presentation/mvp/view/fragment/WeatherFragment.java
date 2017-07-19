@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
-import com.example.toor.yamblzweather.data.repositories.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;

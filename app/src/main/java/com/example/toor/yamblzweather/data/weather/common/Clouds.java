@@ -1,5 +1,5 @@
 
-package com.example.toor.yamblzweather.data.repositories.weather.common;
+package com.example.toor.yamblzweather.data.weather.common;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

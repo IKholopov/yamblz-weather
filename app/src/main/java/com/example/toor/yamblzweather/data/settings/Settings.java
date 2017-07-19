@@ -1,6 +1,6 @@
-package com.example.toor.yamblzweather.data.repositories.settings;
+package com.example.toor.yamblzweather.data.settings;
 
-import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
+import com.example.toor.yamblzweather.data.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
 
 public class Settings {

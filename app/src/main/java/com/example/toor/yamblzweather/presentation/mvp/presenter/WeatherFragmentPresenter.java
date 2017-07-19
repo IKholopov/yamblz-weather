@@ -2,8 +2,8 @@ package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 import android.content.Context;
 
-import com.example.toor.yamblzweather.data.repositories.weather.common.Coord;
-import com.example.toor.yamblzweather.data.repositories.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.weather.common.Coord;
+import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
