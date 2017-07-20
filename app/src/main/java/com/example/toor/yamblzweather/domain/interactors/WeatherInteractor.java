@@ -1,52 +1,43 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.network.OWService;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
-import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
-import com.google.gson.Gson;
+import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
+import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
+import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
+import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
-import java.util.Locale;
+import io.reactivex.Single;
 
-import javax.inject.Inject;
+public class WeatherInteractor {
 
-import io.reactivex.Observable;
 
-public class WeatherInteractor extends BaseInteracor {
+    private WeatherRepository weatherRepository;
+    private SettingsRepository settingsRepository;
 
-    @Inject
-    OWService service;
-    @Inject
-    Locale locale;
-
-    public Observable<CurrentWeather> getCurrentWeather(Coord coordinates) {
-        service.setLanguage(locale);
-        service.setMetricUnits(preference.loadTemperatureMetric());
-        return service.getCurrentDayForecast(coordinates);
+    public WeatherInteractor(WeatherRepository weatherRepository, SettingsRepository settingsRepository) {
+        this.weatherRepository = weatherRepository;
+        this.settingsRepository = settingsRepository;
     }
 
-    public OWSupportedMetric getTemperatureMertric() {
-        return preference.loadTemperatureMetric();
+    private Single<CurrentWeather> getCurrentWeather(City city) {
+        return weatherRepository.getCurrentWeather(city);
     }
 
-    public long getUpdateInterval() {
-        return preference.loadUpdateWeatherInterval();
+    private Single<ExtendedWeather> getExtendedWeather(City city) {
+        return weatherRepository.getExtendedWeather(city);
     }
 
-    public CurrentWeather loadCurrentWeatherFromCache() throws Exception {
-        Gson gson = new Gson();
-        return gson.fromJson(preference.loadCurrentWeather(), CurrentWeather.class);
+    private Single<SettingsModel> getTemperatureMetric() {
+        return settingsRepository.getUserSettings();
     }
 
-    public void saveCurrentWeatherToCache(CurrentWeather currentWeather) {
-        Gson gson = new Gson();
-        preference.saveCurrentWeather(gson.toJson(currentWeather));
+    public Single<FullWeatherModel> getFullWeather(City city) {
+        return Single.zip(getCurrentWeather(city), getExtendedWeather(city), getTemperatureMetric(), this::convert);
     }
 
-    @Override
-    protected void inject() {
-        App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
+    private FullWeatherModel convert(CurrentWeather currentWeather, ExtendedWeather extendedWeather, SettingsModel settingsModel) {
+        return new FullWeatherModel(currentWeather, extendedWeather, settingsModel.getMetric());
     }
 }

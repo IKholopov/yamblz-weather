@@ -13,15 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
-import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,18 +37,16 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
 
     private Unbinder unbinder;
 
-    @Inject
-    SettingsPreference preference;
-    @Inject
-    WeatherScheduleJob weatherScheduleJob;
+//    @Inject
+//    WeatherScheduleJob weatherScheduleJob;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        App.getInstance().getAppComponent().inject(this);
-        weatherScheduleJob.startJob(preference.loadCoordinates());
+//        App.getInstance().getAppComponent().inject(this);
+//        weatherScheduleJob.startJob(preference.loadCoordinates());
 
         unbinder = ButterKnife.bind(this);
         setupDrawerContent(nvDrawer);

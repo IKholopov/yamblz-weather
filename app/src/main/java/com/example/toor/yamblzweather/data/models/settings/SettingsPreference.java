@@ -1,13 +1,16 @@
-package com.example.toor.yamblzweather.data.settings;
+package com.example.toor.yamblzweather.data.models.settings;
 
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.fromString;
+import io.reactivex.Single;
+
+import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.fromString;
 
 public class SettingsPreference {
 
@@ -25,13 +28,13 @@ public class SettingsPreference {
         this.sharedPreferences = sharedPreferences;
     }
 
-    public void saveTemperatureMetric(OWSupportedMetric metric) {
+    public void saveTemperatureMetric(TemperatureMetric metric) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(TEMPERATURE_KEY, metric.getUnit());
         editor.apply();
     }
 
-    public OWSupportedMetric loadTemperatureMetric() {
+    public TemperatureMetric loadTemperatureMetric() {
         String metric = sharedPreferences.getString(TEMPERATURE_KEY, CELSIUS.getUnit());
         return fromString(metric);
     }
@@ -46,11 +49,10 @@ public class SettingsPreference {
         return sharedPreferences.getLong(INTERVAL_KEY, MIN_UPDATE_INTERVAL);
     }
 
-    public Settings loadUserSettings() {
-        OWSupportedMetric metric = loadTemperatureMetric();
+    public Single<SettingsModel> loadUserSettings() {
+        TemperatureMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
-        Coord coordinates = loadCoordinates();
-        return new Settings(metric, interval, coordinates);
+        return Single.fromCallable(() -> new SettingsModel(metric, interval));
     }
 
     public void saveCoordinates(Coord coordinates) {

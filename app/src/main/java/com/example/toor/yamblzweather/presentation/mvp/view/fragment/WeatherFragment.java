@@ -10,9 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
+import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
@@ -27,7 +28,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 
 public class WeatherFragment extends BaseFragment implements WeatherView {
 
@@ -84,18 +85,21 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         coord.setLat(55.751244);
         coord.setLon(37.618423);
 
-        presenter.updateCurrentWeather(coord);
+        City city = new City();
+        city.setCoord(coord);
+
+        presenter.updateCurrentWeather(city);
     }
 
     @Override
-    public void showCurrentWeather(CurrentWeather weather, OWSupportedMetric metric) {
-        String metricStr = convertMetricToString(metric);
-        String temperature = String.valueOf((int) Math.round(weather.getMain().getTemp())) + " " + metricStr;
-        tvTemp.setText(temperature);
-        tvCity.setText(weather.getName());
-        tvDescription.setText(weather.getWeather().get(0).getDescription());
-
-        setImageFromName(weather.getWeather().get(0).getIcon());
+    public void showCurrentWeather(FullWeatherModel fullWeatherModel) {
+        String metricStr = convertMetricToString(fullWeatherModel.getTemperatureMetric());
+        String temperature = String.valueOf(fullWeatherModel.getCurrentWeather().getMain().getTemp());
+        tvTemp.setText(temperature + " " + metricStr);
+        tvCity.setText(fullWeatherModel.getCurrentWeather().getName());
+//        tvDescription.setText(weather.getWeather().get(0).getDescription());
+//
+//        setImageFromName(weather.getWeather().get(0).getIcon());
     }
 
     @Override
@@ -110,7 +114,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
                 .commit();
     }
 
-    private String convertMetricToString(OWSupportedMetric metric) {
+    private String convertMetricToString(TemperatureMetric metric) {
         if (metric == CELSIUS)
             return getString(R.string.celsius);
         else

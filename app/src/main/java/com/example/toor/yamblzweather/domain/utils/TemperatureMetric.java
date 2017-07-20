@@ -1,12 +1,12 @@
 package com.example.toor.yamblzweather.domain.utils;
 
-public enum OWSupportedMetric {
+public enum TemperatureMetric {
     CELSIUS("metric"),
     FAHRENHEIT("imperial");
 
     String unit;
 
-    OWSupportedMetric(String unit) {
+    TemperatureMetric(String unit) {
         this.unit = unit;
     }
 
@@ -14,8 +14,8 @@ public enum OWSupportedMetric {
         return unit;
     }
 
-    public static OWSupportedMetric fromString(String text) {
-        for (OWSupportedMetric b : OWSupportedMetric.values()) {
+    public static TemperatureMetric fromString(String text) {
+        for (TemperatureMetric b : TemperatureMetric.values()) {
             if (b.unit.equalsIgnoreCase(text)) {
                 return b;
             }

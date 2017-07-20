@@ -1,21 +1,24 @@
 package com.example.toor.yamblzweather.data.network;
 
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
-import com.example.toor.yamblzweather.data.weather.common.Coord;
-import com.example.toor.yamblzweather.data.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
+import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
+import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 
 import java.util.Locale;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OWService {
+public class OWService implements WeatherRepository {
 
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
@@ -23,7 +26,7 @@ public class OWService {
 
     private String mToken;
 
-    private OWSupportedMetric mSelectedUnits = OWSupportedMetric.CELSIUS;
+    private TemperatureMetric mSelectedUnits = TemperatureMetric.CELSIUS;
 
     private OWSupportedLanguages mSelectedLanguage = OWSupportedLanguages.ENGLISH;
 
@@ -47,14 +50,15 @@ public class OWService {
     /**
      * This configures the Metric Units in which the results of the requests need to be in.
      *
-     * @param units a valid OWSupportedMetric object.
+     * @param units a valid TemperatureMetric object.
      */
-    public void setMetricUnits(OWSupportedMetric units) {
+    public void setMetricUnits(TemperatureMetric units) {
         mSelectedUnits = units;
     }
 
     /**
      * Sets the API language based on a Locale.
+     *
      * @param language Locale of current language.
      */
     public void setLanguage(Locale language) {
@@ -113,19 +117,33 @@ public class OWService {
         }
     }
 
-    /**
-     * Obtain current day forecast for any given Latitude/Longitude pair.
-     *
-     * @param coordinate the latitude/longitude pair of the location you need the weather for.
-     */
-    public Observable<CurrentWeather> getCurrentDayForecast(final Coord coordinate) {
+    @Override
+    public Single<CurrentWeather> getCurrentWeather(City city) {
         return mOpenWeatherAPI.getCurrentWeather(
-                coordinate.getLat(),
-                coordinate.getLon(),
+                city.getCoord().getLat(),
+                city.getCoord().getLon(),
                 mToken,
                 mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public Single<ExtendedWeather> getExtendedWeather(City city) {
+        return mOpenWeatherAPI.getFiveDayExtendedWeather(
+                city.getCoord().getLat(),
+                city.getCoord().getLon(),
+                mToken,
+                mSelectedUnits.getUnit(),
+                mSelectedLanguage.getLanguageLocale())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public void saveWeather(FullWeatherModel weather) {
+
+    }
+
 }

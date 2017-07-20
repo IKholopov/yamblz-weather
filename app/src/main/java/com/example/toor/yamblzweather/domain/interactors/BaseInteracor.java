@@ -1,13 +1,11 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.settings.SettingsPreference;
-
-import javax.inject.Inject;
+import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 
 public abstract class BaseInteracor {
 
-    @Inject
-    SettingsPreference preference;
+//    @Inject
+//    SettingsPreference preference;
 
     public BaseInteracor() {
         inject();

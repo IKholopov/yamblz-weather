@@ -1,9 +1,8 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
-import com.example.toor.yamblzweather.data.settings.Settings;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
@@ -33,16 +32,15 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
     }
 
     public void showSettings() {
-        Settings settings = interactor.getUserSettings();
-        getView().setSettings(settings);
+        interactor.getUserSettings().subscribe((settings, throwable) -> getView().setSettings(settings));
     }
 
-    public void saveTemperatureMetric(OWSupportedMetric metric) {
+    public void saveTemperatureMetric(TemperatureMetric metric) {
         interactor.saveTemperatureMetric(metric);
     }
 
     public void saveUpdateInterval(long interval) {
         interactor.saveUpdateInterval(interval);
-        weatherScheduleJob.startJob(interactor.getUserSettings().getCoordinates());
+//        weatherScheduleJob.startJob(interactor.getUserSettings().getCoordinates());
     }
 }

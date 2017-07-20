@@ -1,26 +1,28 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.settings.Settings;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
-import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
+import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 
-public class SettingsInteractor extends BaseInteracor {
+import io.reactivex.Single;
 
-    public Settings getUserSettings() {
-        return preference.loadUserSettings();
+public class SettingsInteractor {
+
+    private SettingsRepository repository;
+
+    public SettingsInteractor(SettingsRepository repository) {
+        this.repository = repository;
     }
 
-    public void saveTemperatureMetric(OWSupportedMetric metric) {
-        preference.saveTemperatureMetric(metric);
+    public Single<SettingsModel> getUserSettings() {
+        return repository.getUserSettings();
+    }
+
+    public void saveTemperatureMetric(TemperatureMetric metric) {
+        repository.saveTemperatureMetric(metric);
     }
 
     public void saveUpdateInterval(long interval) {
-        preference.saveUpdateWeatherInterval(interval);
-    }
-
-    @Override
-    protected void inject() {
-        App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
+        repository.saveUpdateInterval(interval);
     }
 }

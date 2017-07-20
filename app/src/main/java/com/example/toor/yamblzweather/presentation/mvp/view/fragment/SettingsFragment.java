@@ -8,8 +8,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.settings.Settings;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedMetric;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
@@ -24,8 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.CELSIUS;
-import static com.example.toor.yamblzweather.domain.utils.OWSupportedMetric.FAHRENHEIT;
+import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
+import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.FAHRENHEIT;
 
 public class SettingsFragment extends BaseFragment implements SettingsView {
 
@@ -82,7 +82,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     private void saveTemperatureMetric(RadioGroup radioGroup) {
-        OWSupportedMetric metric;
+        TemperatureMetric metric;
         switch (radioGroup.getCheckedRadioButtonId()) {
             case R.id.celsius:
                 metric = CELSIUS;
@@ -128,12 +128,12 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
-    public void setSettings(Settings settings) {
-        setTemperatureMetric(settings.getMetric());
-        setUpdateInterval(settings.getUpdateWeatherInterval());
+    public void setSettings(SettingsModel settingsModel) {
+        setTemperatureMetric(settingsModel.getMetric());
+        setUpdateInterval(settingsModel.getUpdateWeatherInterval());
     }
 
-    private void setTemperatureMetric(OWSupportedMetric metric) {
+    private void setTemperatureMetric(TemperatureMetric metric) {
         if (metric == CELSIUS)
             rgTempMetric.check(R.id.celsius);
         else
