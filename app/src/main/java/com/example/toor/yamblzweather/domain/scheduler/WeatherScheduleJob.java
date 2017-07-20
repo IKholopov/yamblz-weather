@@ -8,7 +8,7 @@ import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
+import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +30,7 @@ public class WeatherScheduleJob extends Job {
     private City city;
 
     public WeatherScheduleJob() {
-        App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
+        App.getInstance().getAppComponent().plus(new ActivityModule()).inject(this);
     }
 
     @NonNull

@@ -8,8 +8,6 @@ import android.widget.Button;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.ConnectionErrorFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.ConnectionErrorView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
@@ -21,7 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class ConnectionConnectionErrorFragment extends BaseFragment implements ConnectionErrorView {
+public class ErrorFragment extends BaseFragment implements ConnectionErrorView {
 
     @BindView(R.id.btnRetry)
     Button btnRetry;
@@ -31,15 +29,15 @@ public class ConnectionConnectionErrorFragment extends BaseFragment implements C
     @Inject
     ConnectionErrorFragmentPresenter presenter;
 
-    public static ConnectionConnectionErrorFragment newInstance() {
-        return new ConnectionConnectionErrorFragment();
+    public static ErrorFragment newInstance() {
+        return new ErrorFragment();
     }
 
     @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new ScreenModule()).inject(this);
+        App.getInstance().plusActivityComponent().inject(this);
     }
 
     @Override
@@ -53,13 +51,13 @@ public class ConnectionConnectionErrorFragment extends BaseFragment implements C
         presenter.onAttach(this);
         unbinder = ButterKnife.bind(this, view);
 
-        btnRetry.setOnClickListener(btnView ->presenter.retryConnection());
+        btnRetry.setOnClickListener(btnView -> presenter.retryConnection());
     }
 
     @Override
     public void showWeatherFragment() {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.flContent, WeatherFragment.newInstance(), ConnectionConnectionErrorFragment.class.getSimpleName())
+                .replace(R.id.flContent, WeatherFragment.newInstance(), ErrorFragment.class.getSimpleName())
                 .commit();
     }
 

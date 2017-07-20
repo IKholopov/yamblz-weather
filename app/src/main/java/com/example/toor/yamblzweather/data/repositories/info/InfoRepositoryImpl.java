@@ -5,7 +5,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
+import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 
 import javax.inject.Inject;
 
@@ -19,7 +19,7 @@ public class InfoRepositoryImpl implements InfoRepository {
     private static final String DEFAULT_VERSION = "0.0";
 
     public InfoRepositoryImpl() {
-        App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
+        App.getInstance().getAppComponent().plus(new ActivityModule()).inject(this);
     }
 
     @Override

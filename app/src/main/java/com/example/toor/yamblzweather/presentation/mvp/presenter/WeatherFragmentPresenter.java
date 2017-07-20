@@ -5,10 +5,13 @@ import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
+import javax.inject.Inject;
+
 public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView> {
 
     private WeatherInteractor interactor;
 
+    @Inject
     public WeatherFragmentPresenter(WeatherInteractor interactor) {
         this.interactor = interactor;
     }
@@ -23,7 +26,10 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     }
 
     public void updateCurrentWeather(City city) {
-        interactor.getFullWeather(city)
-                .subscribe((fullWeatherModel, throwable) -> getView().showCurrentWeather(fullWeatherModel));
+//        unSubcribeOnDetach(interactor.getFullWeather(city).onErrorResumeNext(поход в базу )
+//                .subscribe((fullWeatherModel, throwable) -> {getView().showCurrentWeather(fullWeatherModel));
+//                if (throwable != null)});
+        unSubcribeOnDetach(interactor.getFullWeather(city)
+                .subscribe((fullWeatherModel, throwable) -> getView().showCurrentWeather(fullWeatherModel)));
     }
 }

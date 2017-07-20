@@ -3,8 +3,10 @@ package com.example.toor.yamblzweather.presentation.di;
 import android.app.Application;
 
 import com.example.toor.yamblzweather.BuildConfig;
+import com.example.toor.yamblzweather.presentation.di.components.ActivityComponent;
 import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
 import com.example.toor.yamblzweather.presentation.di.components.DaggerAppComponent;
+import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
 
 import timber.log.Timber;
@@ -14,6 +16,7 @@ public class App extends Application {
     private static App instance;
 
     private AppComponent appComponent;
+    private ActivityComponent activityComponent;
 
     @Override
     public void onCreate() {
@@ -38,4 +41,15 @@ public class App extends Application {
         return appComponent;
     }
 
+    public ActivityComponent plusActivityComponent() {
+        if (activityComponent == null) {
+            activityComponent = appComponent.plus(new ActivityModule());
+        }
+
+        return activityComponent;
+    }
+
+    public void releaseActivityComponent() {
+        activityComponent = null;
+    }
 }

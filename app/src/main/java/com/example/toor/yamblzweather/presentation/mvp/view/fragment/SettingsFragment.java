@@ -10,8 +10,6 @@ import android.widget.RadioGroup;
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
@@ -62,7 +60,9 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new ScreenModule()).inject(this);
+
+        App.getInstance().plusActivityComponent().inject(this);
+        presenter.onAttach(this);
     }
 
     @Override
@@ -73,7 +73,6 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        presenter.onAttach(this);
         unbinder = ButterKnife.bind(this, view);
         presenter.showSettings();
 
@@ -125,6 +124,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         super.onDestroyView();
 
         unbinder.unbind();
+        presenter.onDetach();
     }
 
     @Override

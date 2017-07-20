@@ -14,8 +14,6 @@ import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
@@ -67,7 +65,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new ScreenModule()).inject(this);
+        App.getInstance().plusActivityComponent().inject(this);
+        presenter.onAttach(this);
     }
 
     @Override
@@ -78,7 +77,6 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        presenter.onAttach(this);
         unbinder = ButterKnife.bind(this, view);
 
         Coord coord = new Coord();
@@ -113,9 +111,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     private void createNetworkErrorFragment() {
-        Fragment fragment = ConnectionConnectionErrorFragment.newInstance();
+        Fragment fragment = ErrorFragment.newInstance();
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.flContent, fragment, ConnectionConnectionErrorFragment.class.getSimpleName())
+                .replace(R.id.flContent, fragment, ErrorFragment.class.getSimpleName())
                 .commit();
     }
 
@@ -138,5 +136,12 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         super.onDestroyView();
 
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        presenter.onDetach();
     }
 }

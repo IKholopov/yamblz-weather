@@ -36,16 +36,10 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
 
     private Unbinder unbinder;
 
-//    @Inject
-//    WeatherScheduleJob weatherScheduleJob;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        App.getInstance().getAppComponent().inject(this);
-//        weatherScheduleJob.startJob(preference.loadCoordinates());
 
         unbinder = ButterKnife.bind(this);
         setupDrawerContent(nvDrawer);
@@ -127,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     @Override
     protected void onDestroy() {
         unbinder.unbind();
+
         super.onDestroy();
     }
 

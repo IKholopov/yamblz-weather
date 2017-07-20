@@ -6,28 +6,28 @@ import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepositor
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
-import com.example.toor.yamblzweather.presentation.di.scopes.WeatherScope;
+import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
 
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class WeatherModule {
+public class ActivityModule {
 
     @Provides
-    @WeatherScope
+    @ActivityScope
     public WeatherInteractor provideWeatherInteractor(WeatherRepository repository, SettingsRepository settingsRepository) {
         return new WeatherInteractor(repository, settingsRepository);
     }
 
     @Provides
-    @WeatherScope
+    @ActivityScope
     public SettingsInteractor provideSettingsInteractor(SettingsRepository repository) {
         return new SettingsInteractor(repository);
     }
 
     @Provides
-    @WeatherScope
+    @ActivityScope
     public InfoInteractor provideInfoInteractor(InfoRepository repository) {
         return new InfoInteractor(repository);
     }

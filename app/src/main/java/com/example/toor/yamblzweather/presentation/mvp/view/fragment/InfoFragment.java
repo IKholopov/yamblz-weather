@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.InfoFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.InfoView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
@@ -49,7 +47,8 @@ public class InfoFragment extends BaseFragment implements InfoView {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().getAppComponent().plus(new WeatherModule()).plus(new ScreenModule()).inject(this);
+        App.getInstance().plusActivityComponent().inject(this);
+        presenter.onAttach(this);
     }
 
 
@@ -61,7 +60,6 @@ public class InfoFragment extends BaseFragment implements InfoView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        presenter.onAttach(this);
         unbinder = ButterKnife.bind(this, view);
 
         presenter.showAppVersion();
@@ -72,6 +70,7 @@ public class InfoFragment extends BaseFragment implements InfoView {
         super.onDestroyView();
 
         unbinder.unbind();
+        presenter.onDetach();
     }
 
     @Override
