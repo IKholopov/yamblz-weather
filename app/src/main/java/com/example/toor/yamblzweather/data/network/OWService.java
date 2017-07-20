@@ -1,13 +1,13 @@
 package com.example.toor.yamblzweather.data.network;
 
-import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
-import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
+import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import java.util.Locale;
 

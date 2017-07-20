@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.di.modules;
 
+import com.example.toor.yamblzweather.data.repositories.info.InfoRepository;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
@@ -27,8 +28,8 @@ public class WeatherModule {
 
     @Provides
     @WeatherScope
-    public InfoInteractor provideInfoInteractor() {
-        return new InfoInteractor();
+    public InfoInteractor provideInfoInteractor(InfoRepository repository) {
+        return new InfoInteractor(repository);
     }
 
 }

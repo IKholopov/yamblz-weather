@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.di.components;
 
+import com.example.toor.yamblzweather.data.repositories.info.InfoRepositoryImpl;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepositoryImpl;
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
@@ -16,17 +17,23 @@ import dagger.Subcomponent;
 @Subcomponent(modules = WeatherModule.class)
 public interface WeatherComponent {
 
+    void inject(WeatherRepositoryImpl repository);
+
+    void inject(InfoRepositoryImpl repository);
+
+    void inject(InfoInteractor interactor);
+
     void inject(WeatherFragmentPresenter presenter);
 
     void inject(SettingsFragmentPresenter presenter);
 
     void inject(ConnectionErrorFragmentPresenter presenter);
 
-    void inject(InfoInteractor interactor);
+
 
     void inject(WeatherScheduleJob weatherScheduleJob);
 
-    void inject(WeatherRepositoryImpl repository);
+
 
     ScreenComponent plus(ScreenModule screenModule);
 }

@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.example.toor.yamblzweather.data.database.DataBase;
+import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.network.OWService;
+import com.example.toor.yamblzweather.data.repositories.info.InfoRepository;
+import com.example.toor.yamblzweather.data.repositories.info.InfoRepositoryImpl;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepositoryImpl;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepositoryImpl;
-import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 
 import javax.inject.Singleton;
 
@@ -30,6 +32,12 @@ public class DataModule {
     @Singleton
     SettingsRepository provideSettingsRepository(SettingsPreference preference) {
         return new SettingsRepositoryImpl(preference);
+    }
+
+    @Provides
+    @Singleton
+    InfoRepository provideInfoRepository() {
+        return new InfoRepositoryImpl();
     }
 
     @Provides

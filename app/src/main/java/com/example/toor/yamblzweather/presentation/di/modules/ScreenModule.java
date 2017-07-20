@@ -3,7 +3,6 @@ package com.example.toor.yamblzweather.presentation.di.modules;
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
-import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.scopes.ScreenScope;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.ConnectionErrorFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.InfoFragmentPresenter;

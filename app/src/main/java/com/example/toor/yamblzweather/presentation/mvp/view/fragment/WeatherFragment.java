@@ -10,13 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.modules.ScreenModule;
 import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
+import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
@@ -93,13 +93,18 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
 
     @Override
     public void showCurrentWeather(FullWeatherModel fullWeatherModel) {
-        String metricStr = convertMetricToString(fullWeatherModel.getTemperatureMetric());
-        String temperature = String.valueOf(fullWeatherModel.getCurrentWeather().getMain().getTemp());
-        tvTemp.setText(temperature + " " + metricStr);
+        String temperatureStr = getCurrentTemperatureString(fullWeatherModel);
+        tvTemp.setText(temperatureStr);
         tvCity.setText(fullWeatherModel.getCurrentWeather().getName());
-//        tvDescription.setText(weather.getWeather().get(0).getDescription());
-//
-//        setImageFromName(weather.getWeather().get(0).getIcon());
+        tvDescription.setText(fullWeatherModel.getCurrentWeather().getWeather().get(0).getDescription());
+        setImageFromName(fullWeatherModel.getCurrentWeather().getWeather().get(0).getIcon());
+    }
+
+    private String getCurrentTemperatureString(FullWeatherModel fullWeatherModel) {
+        String metricStr = convertMetricToString(fullWeatherModel.getTemperatureMetric());
+        int temperature = (int) Math.round(fullWeatherModel.getCurrentWeather().getMain().getTemp());
+        String temperatureStr = String.valueOf(temperature);
+        return temperatureStr + " " + metricStr;
     }
 
     @Override

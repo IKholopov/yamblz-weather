@@ -1,34 +1,18 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
+import com.example.toor.yamblzweather.data.repositories.info.InfoRepository;
 
-import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.WeatherModule;
+import io.reactivex.Single;
 
-import javax.inject.Inject;
+public class InfoInteractor {
 
-public class InfoInteractor extends BaseInteracor {
+    private InfoRepository repository;
 
-    @Inject
-    Context context;
-
-    private static final String DEFAULT_VERSION = "0.0";
-
-    @Override
-    protected void inject() {
-        App.getInstance().getAppComponent().plus(new WeatherModule()).inject(this);
+    public InfoInteractor(InfoRepository repository) {
+        this.repository = repository;
     }
 
-    public String getAppVersion() {
-        try {
-            PackageManager manager = context.getPackageManager();
-            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-            return info.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-            return DEFAULT_VERSION;
-        }
+    public Single<String> getAppVersion() {
+        return repository.getAppVersion();
     }
 }

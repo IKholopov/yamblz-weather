@@ -25,17 +25,5 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     public void updateCurrentWeather(City city) {
         interactor.getFullWeather(city)
                 .subscribe((fullWeatherModel, throwable) -> getView().showCurrentWeather(fullWeatherModel));
-//        interactor.
-//        if (NetworkConectionChecker.isNetworkAvailable(context))
-//            interactor.getCurrentWeather(coordinates)
-//                    .subscribe(currentWeather -> getView().showCurrentWeather(currentWeather, interactor.getTemperatureMertric()));
-//        else {
-//            try {
-//                CurrentWeather currentWeather = interactor.loadCurrentWeatherFromCache();
-//                getView().showCurrentWeather(currentWeather, interactor.getTemperatureMertric());
-//            } catch (Exception e) {
-//                getView().showErrorFragment();
-//            }
-//        }
     }
 }

@@ -17,6 +17,6 @@ public class InfoFragmentPresenter extends BaseFragmentPresenter<InfoView> {
     }
 
     public void showAppVersion() {
-        getView().showAppVersion(interactor.getAppVersion());
+        interactor.getAppVersion().subscribe((version, throwable) -> getView().showAppVersion(version));
     }
 }
