@@ -37,7 +37,7 @@ public class ErrorFragment extends BaseFragment implements ConnectionErrorView {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().plusActivityComponent().inject(this);
+        presenter.onAttach(this);
     }
 
     @Override
@@ -48,7 +48,6 @@ public class ErrorFragment extends BaseFragment implements ConnectionErrorView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        presenter.onAttach(this);
         unbinder = ButterKnife.bind(this, view);
 
         btnRetry.setOnClickListener(btnView -> presenter.retryConnection());
@@ -72,9 +71,21 @@ public class ErrorFragment extends BaseFragment implements ConnectionErrorView {
     }
 
     @Override
+    protected void inject() {
+        App.getInstance().plusActivityComponent().inject(this);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
 
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        presenter.onDetach();
     }
 }

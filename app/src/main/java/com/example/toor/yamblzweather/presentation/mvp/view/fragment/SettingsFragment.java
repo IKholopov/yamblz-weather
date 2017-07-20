@@ -58,10 +58,15 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
+    protected void inject() {
+        App.getInstance().plusActivityComponent().inject(this);
+
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().plusActivityComponent().inject(this);
         presenter.onAttach(this);
     }
 
@@ -124,6 +129,12 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         super.onDestroyView();
 
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
         presenter.onDetach();
     }
 

@@ -44,10 +44,15 @@ public class InfoFragment extends BaseFragment implements InfoView {
     }
 
     @Override
+    protected void inject() {
+        App.getInstance().plusActivityComponent().inject(this);
+
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().plusActivityComponent().inject(this);
         presenter.onAttach(this);
     }
 
@@ -70,6 +75,12 @@ public class InfoFragment extends BaseFragment implements InfoView {
         super.onDestroyView();
 
         unbinder.unbind();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
         presenter.onDetach();
     }
 

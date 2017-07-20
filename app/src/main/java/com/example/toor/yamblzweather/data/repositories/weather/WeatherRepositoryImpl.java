@@ -10,7 +10,6 @@ import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeath
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import java.util.Locale;
@@ -35,7 +34,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         this.service = service;
         this.preference = preference;
 
-        App.getInstance().getAppComponent().plus(new ActivityModule()).inject(this);
+        App.getInstance().getAppComponent().inject(this);
     }
 
     @Override

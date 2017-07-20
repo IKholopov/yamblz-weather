@@ -62,10 +62,15 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     @Override
+    protected void inject() {
+        App.getInstance().plusActivityComponent().inject(this);
+
+    }
+
+    @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        App.getInstance().plusActivityComponent().inject(this);
         presenter.onAttach(this);
     }
 
