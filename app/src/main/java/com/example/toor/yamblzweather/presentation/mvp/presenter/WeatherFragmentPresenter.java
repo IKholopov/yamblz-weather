@@ -24,9 +24,6 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     }
 
     public void updateCurrentWeather() {
-//        unSubcribeOnDetach(interactor.getFullWeather(city).onErrorResumeNext(поход в базу )
-//                .subscribe((fullWeatherModel, throwable) -> {getView().showCurrentWeather(fullWeatherModel));
-//                if (throwable != null)});
         unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe((settingsModel, throwable)
                 -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId()).subscribe((fullWeatherModel, throwable1)
                 -> {

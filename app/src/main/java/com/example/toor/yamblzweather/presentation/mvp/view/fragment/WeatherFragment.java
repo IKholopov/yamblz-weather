@@ -3,6 +3,7 @@ package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ import butterknife.Unbinder;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 
-public class WeatherFragment extends BaseFragment implements WeatherView {
+public class WeatherFragment extends BaseFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.tvCity)
     TextView tvCity;
@@ -37,6 +38,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     TextView tvDescription;
     @BindView(R.id.ivCurrent)
     ImageView ivCurrentWeatherImage;
+    @BindView(R.id.swiper)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     private Unbinder unbinder;
 
@@ -82,7 +85,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
-
+        swipeRefreshLayout.setOnRefreshListener(this);
 
         int moscowCityId = 524901;
         presenter.saveSelectedCity(moscowCityId);
@@ -146,5 +149,13 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         super.onDestroy();
 
         presenter.onDetach();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        presenter.updateCurrentWeather();
+        swipeRefreshLayout.setRefreshing(false);
+
     }
 }
