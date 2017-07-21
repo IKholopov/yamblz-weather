@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.evernote.android.job.JobManager;
+import com.example.toor.yamblzweather.BuildConfig;
 import com.example.toor.yamblzweather.domain.scheduler.ScheduleJobCreator;
 
 import javax.inject.Singleton;
@@ -24,6 +25,8 @@ public class AppModule {
 
     private void initScheduleJob() {
         JobManager.create(context).addJobCreator(new ScheduleJobCreator());
+        if (BuildConfig.DEBUG)
+            JobManager.instance().getConfig().setAllowSmallerIntervalsForMarshmallow(true);
     }
 
     @Provides

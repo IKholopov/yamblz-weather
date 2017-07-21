@@ -6,6 +6,7 @@ import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
 import com.example.toor.yamblzweather.presentation.di.modules.DataModule;
 import com.example.toor.yamblzweather.presentation.di.modules.UtilsModule;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
 
 import javax.inject.Singleton;
 
@@ -20,4 +21,6 @@ public interface AppComponent {
     void inject(WeatherRepositoryImpl repository);
 
     void inject(InfoRepositoryImpl repository);
+
+    void inject(SettingsFragmentPresenter presenter);
 }

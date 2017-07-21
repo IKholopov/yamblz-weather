@@ -8,7 +8,7 @@ import android.widget.Button;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.mvp.presenter.ConnectionErrorFragmentPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.ErrorFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.ConnectionErrorView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
@@ -27,7 +27,7 @@ public class ErrorFragment extends BaseFragment implements ConnectionErrorView {
     private Unbinder unbinder;
 
     @Inject
-    ConnectionErrorFragmentPresenter presenter;
+    ErrorFragmentPresenter presenter;
 
     public static ErrorFragment newInstance() {
         return new ErrorFragment();

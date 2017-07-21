@@ -3,6 +3,7 @@ package com.example.toor.yamblzweather.presentation.di;
 import android.app.Application;
 
 import com.example.toor.yamblzweather.BuildConfig;
+import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.components.ActivityComponent;
 import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
 import com.example.toor.yamblzweather.presentation.di.components.DaggerAppComponent;
@@ -27,6 +28,13 @@ public class App extends Application {
 
         setInstance(this);
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+
+        startJob();
+    }
+
+    private void startJob() {
+        WeatherScheduleJob scheduleJob = new WeatherScheduleJob();
+        scheduleJob.startJob();
     }
 
     private static void setInstance(App instance) {

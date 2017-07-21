@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
@@ -88,6 +87,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         coord.setLat(55.751244);
         coord.setLon(37.618423);
 
+        presenter.saveSelectedCity(coord);
+
         presenter.updateCurrentWeather();
     }
 
@@ -145,5 +146,6 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         super.onDestroy();
 
         presenter.onDetach();
+
     }
 }

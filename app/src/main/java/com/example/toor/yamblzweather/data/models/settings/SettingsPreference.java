@@ -1,7 +1,6 @@
 package com.example.toor.yamblzweather.data.models.settings;
 
 import android.content.SharedPreferences;
-import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;

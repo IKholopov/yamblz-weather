@@ -17,8 +17,11 @@ public interface ActivityComponent {
     void inject(WeatherScheduleJob scheduleJob);
 
     void inject(WeatherFragment fragment);
+
     void inject(SettingsFragment fragment);
+
     void inject(InfoFragment fragment);
+
     void inject(ErrorFragment fragment);
 
 }

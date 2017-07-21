@@ -20,10 +20,6 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     }
 
     @Override
-    public void inject() {
-    }
-
-    @Override
     public void onAttach(WeatherView view) {
         super.onAttach(view);
     }

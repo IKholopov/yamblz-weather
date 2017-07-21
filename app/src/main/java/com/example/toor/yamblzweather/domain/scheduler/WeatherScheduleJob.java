@@ -34,6 +34,7 @@ public class WeatherScheduleJob extends Job {
     protected Result onRunJob(Params params) {
         Timber.v("onRunJob");
         serializeCurrentWeather();
+
         return Result.SUCCESS;
     }
 
@@ -44,13 +45,15 @@ public class WeatherScheduleJob extends Job {
     }
 
     public void startJob() {
-        Timber.v("startJob");
-        settingsInteractor.getUserSettings().subscribe((settings, throwable) -> new JobRequest.Builder(TAG)
-                .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
-                        , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
-                .setUpdateCurrent(true)
-                .setPersisted(true)
-                .build()
-                .schedule());
+
+        settingsInteractor.getUserSettings().subscribe((settings, throwable) -> {
+            new JobRequest.Builder(TAG)
+                    .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
+                            , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
+                    .setUpdateCurrent(true)
+                    .setPersisted(true)
+                    .build()
+                    .schedule();
+        });
     }
 }

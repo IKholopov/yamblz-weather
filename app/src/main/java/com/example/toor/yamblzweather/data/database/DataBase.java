@@ -3,7 +3,6 @@ package com.example.toor.yamblzweather.data.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
