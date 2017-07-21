@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
@@ -20,20 +19,20 @@ public class WeatherInteractor {
         this.settingsRepository = settingsRepository;
     }
 
-    private Single<CurrentWeather> getCurrentWeather(Coord coord) {
-        return weatherRepository.getCurrentWeather(coord);
+    private Single<CurrentWeather> getCurrentWeather(int cityId) {
+        return weatherRepository.getCurrentWeather(cityId);
     }
 
-    private Single<ExtendedWeather> getExtendedWeather(Coord coord) {
-        return weatherRepository.getExtendedWeather(coord);
+    private Single<ExtendedWeather> getExtendedWeather(int cityId) {
+        return weatherRepository.getExtendedWeather(cityId);
     }
 
     private Single<SettingsModel> getTemperatureMetric() {
         return settingsRepository.getUserSettings();
     }
 
-    public Single<FullWeatherModel> getFullWeather(Coord coord) {
-        return Single.zip(getCurrentWeather(coord), getExtendedWeather(coord), getTemperatureMetric(), this::convert);
+    public Single<FullWeatherModel> getFullWeather(int cityId) {
+        return Single.zip(getCurrentWeather(cityId), getExtendedWeather(cityId), getTemperatureMetric(), this::convert);
     }
 
     private FullWeatherModel convert(CurrentWeather currentWeather, ExtendedWeather extendedWeather, SettingsModel settingsModel) {
@@ -44,7 +43,7 @@ public class WeatherInteractor {
         weatherRepository.saveWeather(fullWeatherModel);
     }
 
-    public void saveSelectedCity(Coord coord) {
-        settingsRepository.saveSelectedCity(coord);
+    public void saveSelectedCity(int cityId) {
+        settingsRepository.saveSelectedCity(cityId);
     }
 }

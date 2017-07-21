@@ -2,7 +2,6 @@ package com.example.toor.yamblzweather.data.models.settings;
 
 import android.content.SharedPreferences;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 
@@ -15,8 +14,7 @@ public class SettingsPreference {
 
     private static final String TEMPERATURE_KEY = "temperature_key";
     private static final String INTERVAL_KEY = "interval_key";
-    private static final String LATITUDE_KEY = "latitude_key";
-    private static final String LONGITUDE_KEY = "longitude_key";
+    private static final String CITY_ID = "city_id";
 
     private static final long MIN_UPDATE_INTERVAL = 1 * 60 * 60 * 1000; // interval is 1 hour
 
@@ -50,23 +48,17 @@ public class SettingsPreference {
     public Single<SettingsModel> loadUserSettings() {
         TemperatureMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
-        Coord coord = loadSelectedCityCoordinates();
-        return Single.fromCallable(() -> new SettingsModel.Builder(metric, interval).coords(coord).build());
+        int cityId = loadSelectedCityId();
+        return Single.fromCallable(() -> new SettingsModel.Builder(metric, interval).cityId(cityId).build());
     }
 
-    public void saveSelectedCityCoordinates(Coord coordinates) {
+    public void saveSelectedCityId(int cityId) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(LATITUDE_KEY, Double.doubleToLongBits(coordinates.getLat()));
-        editor.putLong(LONGITUDE_KEY, Double.doubleToLongBits(coordinates.getLon()));
+        editor.putInt(CITY_ID, cityId);
         editor.apply();
     }
 
-    public Coord loadSelectedCityCoordinates() {
-        double latitude = Double.longBitsToDouble(sharedPreferences.getLong(LATITUDE_KEY, Double.doubleToLongBits(55.751244)));
-        double longitude = Double.longBitsToDouble(sharedPreferences.getLong(LONGITUDE_KEY, Double.doubleToLongBits(37.618423)));
-        Coord coordinates = new Coord();
-        coordinates.setLat(latitude);
-        coordinates.setLon(longitude);
-        return coordinates;
+    public int loadSelectedCityId() {
+        return sharedPreferences.getInt(CITY_ID, 524901);
     }
 }

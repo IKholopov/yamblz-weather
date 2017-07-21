@@ -9,16 +9,15 @@ import retrofit2.http.Query;
 
 public interface OpenWeatherAPI {
     @GET("forecast?")
-    Single<ExtendedWeather> getFiveDayExtendedWeather(@Query("lat") double lat,
-                                                          @Query("lon") double lon,
-                                                          @Query("appid") String appId,
-                                                          @Query("units") String units,
-                                                          @Query("lang") String lang);
+    Single<ExtendedWeather> getFiveDayExtendedWeather(@Query("id") int cityId,
+                                                      @Query("appid") String appId,
+                                                      @Query("units") String units,
+                                                      @Query("lang") String lang);
 
     @GET("weather?")
-    Single<CurrentWeather> getCurrentWeather(@Query("lat") double lat,
-                                             @Query("lon") double lon,
+    Single<CurrentWeather> getCurrentWeather(@Query("id") int cityId,
                                              @Query("appid") String appId,
                                              @Query("units") String units,
                                              @Query("lang") String lang);
+
 }

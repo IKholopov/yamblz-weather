@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
@@ -27,7 +26,7 @@ public class SettingsInteractor {
         repository.saveUpdateInterval(interval);
     }
 
-    public void saveSelectedCity(Coord coord) {
-        repository.saveSelectedCity(coord);
+    public void saveSelectedCity(int cityId) {
+        repository.saveSelectedCity(cityId);
     }
 }

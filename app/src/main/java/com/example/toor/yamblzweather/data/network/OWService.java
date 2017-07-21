@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.data.network;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
@@ -23,11 +22,8 @@ public class OWService implements WeatherRepository {
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
     private final OpenWeatherAPI mOpenWeatherAPI;
-
     private String mToken;
-
     private TemperatureMetric mSelectedUnits = TemperatureMetric.CELSIUS;
-
     private OWSupportedLanguages mSelectedLanguage = OWSupportedLanguages.ENGLISH;
 
     /**
@@ -118,10 +114,9 @@ public class OWService implements WeatherRepository {
     }
 
     @Override
-    public Single<CurrentWeather> getCurrentWeather(Coord coord) {
+    public Single<CurrentWeather> getCurrentWeather(int cityId) {
         return mOpenWeatherAPI.getCurrentWeather(
-                coord.getLat(),
-                coord.getLon(),
+                cityId,
                 mToken,
                 mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())
@@ -130,10 +125,9 @@ public class OWService implements WeatherRepository {
     }
 
     @Override
-    public Single<ExtendedWeather> getExtendedWeather(Coord coord) {
+    public Single<ExtendedWeather> getExtendedWeather(int cityId) {
         return mOpenWeatherAPI.getFiveDayExtendedWeather(
-                coord.getLat(),
-                coord.getLon(),
+                cityId,
                 mToken,
                 mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())

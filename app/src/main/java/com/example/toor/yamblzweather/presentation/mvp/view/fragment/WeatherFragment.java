@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
@@ -83,11 +82,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
 
-        Coord coord = new Coord();
-        coord.setLat(55.751244);
-        coord.setLon(37.618423);
 
-        presenter.saveSelectedCity(coord);
+        int moscowCityId = 524901;
+        presenter.saveSelectedCity(moscowCityId);
 
         presenter.updateCurrentWeather();
     }
@@ -146,6 +143,5 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         super.onDestroy();
 
         presenter.onDetach();
-
     }
 }

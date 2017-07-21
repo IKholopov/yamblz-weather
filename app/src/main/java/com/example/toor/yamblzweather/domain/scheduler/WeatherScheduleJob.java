@@ -40,7 +40,7 @@ public class WeatherScheduleJob extends Job {
 
     private void serializeCurrentWeather() {
         settingsInteractor.getUserSettings()
-                .subscribe((settingsModel, throwable) -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityCoords())
+                .subscribe((settingsModel, throwable) -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId())
                         .subscribe((fullWeatherModel, throwable1) -> weatherInteractor.saveWeather(fullWeatherModel)));
     }
 

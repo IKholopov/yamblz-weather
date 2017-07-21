@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
@@ -29,11 +28,15 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
 //                .subscribe((fullWeatherModel, throwable) -> {getView().showCurrentWeather(fullWeatherModel));
 //                if (throwable != null)});
         unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe((settingsModel, throwable)
-                -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityCoords()).subscribe((fullWeatherModel, throwable1)
-                -> getView().showCurrentWeather(fullWeatherModel))));
+                -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId()).subscribe((fullWeatherModel, throwable1)
+                -> {
+            getView().showCurrentWeather(fullWeatherModel);
+            weatherInteractor.saveWeather(fullWeatherModel);
+        })));
+
     }
 
-    public void saveSelectedCity(Coord coord) {
-        settingsInteractor.saveSelectedCity(coord);
+    public void saveSelectedCity(int cityId) {
+        settingsInteractor.saveSelectedCity(cityId);
     }
 }

@@ -10,15 +10,14 @@ import org.greenrobot.greendao.annotation.Id;
 // KEEP INCLUDES END
 
 /**
- * Entity mapped to table "WEATHER".
+ * Entity mapped to table "WEATHER_MODEL".
  */
 @Entity
-public class Weather {
+public class WeatherModel {
 
     @Id(autoincrement = true)
     private Long id;
-    private double latitude;
-    private double longitude;
+    private int cityId;
     private String currentWeather;
     private String forecastWeather;
 
@@ -26,18 +25,17 @@ public class Weather {
     // KEEP FIELDS END
 
     @Generated
-    public Weather() {
+    public WeatherModel() {
     }
 
-    public Weather(Long id) {
+    public WeatherModel(Long id) {
         this.id = id;
     }
 
     @Generated
-    public Weather(Long id, double latitude, double longitude, String currentWeather, String forecastWeather) {
+    public WeatherModel(Long id, int cityId, String currentWeather, String forecastWeather) {
         this.id = id;
-        this.latitude = latitude;
-        this.longitude = longitude;
+        this.cityId = cityId;
         this.currentWeather = currentWeather;
         this.forecastWeather = forecastWeather;
     }
@@ -50,20 +48,12 @@ public class Weather {
         this.id = id;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public int getCityId() {
+        return cityId;
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 
     public String getCurrentWeather() {

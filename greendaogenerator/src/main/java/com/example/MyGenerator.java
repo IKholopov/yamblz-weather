@@ -27,13 +27,11 @@ public class MyGenerator {
     }
 
     private static Entity addWeather(final Schema schema) {
-        Entity weather = schema.addEntity("Weather");
+        Entity weather = schema.addEntity("WeatherModel");
         weather.addIdProperty().primaryKey().autoincrement();
-        weather.addDoubleProperty("latitude").notNull();
-        weather.addDoubleProperty("longitude").notNull();
+        weather.addIntProperty("cityId").notNull();
         weather.addStringProperty("currentWeather");
         weather.addStringProperty("forecastWeather");
-
         return weather;
     }
 

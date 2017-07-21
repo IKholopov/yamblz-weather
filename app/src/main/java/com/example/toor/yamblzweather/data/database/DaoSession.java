@@ -17,28 +17,28 @@ import java.util.Map;
  */
 public class DaoSession extends AbstractDaoSession {
 
-    private final DaoConfig weatherDaoConfig;
+    private final DaoConfig weatherModelDaoConfig;
 
-    private final WeatherDao weatherDao;
+    private final WeatherModelDao weatherModelDao;
 
     public DaoSession(Database db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
         super(db);
 
-        weatherDaoConfig = daoConfigMap.get(WeatherDao.class).clone();
-        weatherDaoConfig.initIdentityScope(type);
+        weatherModelDaoConfig = daoConfigMap.get(WeatherModelDao.class).clone();
+        weatherModelDaoConfig.initIdentityScope(type);
 
-        weatherDao = new WeatherDao(weatherDaoConfig, this);
+        weatherModelDao = new WeatherModelDao(weatherModelDaoConfig, this);
 
-        registerDao(Weather.class, weatherDao);
+        registerDao(WeatherModel.class, weatherModelDao);
     }
     
     public void clear() {
-        weatherDaoConfig.clearIdentityScope();
+        weatherModelDaoConfig.clearIdentityScope();
     }
 
-    public WeatherDao getWeatherDao() {
-        return weatherDao;
+    public WeatherModelDao getWeatherModelDao() {
+        return weatherModelDao;
     }
 
 }
