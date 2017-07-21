@@ -40,20 +40,20 @@ public class WeatherScheduleJob extends Job {
 
     private void serializeCurrentWeather() {
         settingsInteractor.getUserSettings()
-                .subscribe((settingsModel, throwable) -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId())
-                        .subscribe((fullWeatherModel, throwable1) -> weatherInteractor.saveWeather(fullWeatherModel)));
+                .subscribe((settingsModel, throwable)
+                        -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId())
+                        .subscribe((fullWeatherModel, throwable1)
+                                -> weatherInteractor.saveWeather(fullWeatherModel)));
     }
 
     public void startJob() {
-
-        settingsInteractor.getUserSettings().subscribe((settings, throwable) -> {
-            new JobRequest.Builder(TAG)
-                    .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
-                            , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
-                    .setUpdateCurrent(true)
-                    .setPersisted(true)
-                    .build()
-                    .schedule();
-        });
+        settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
+                new JobRequest.Builder(TAG)
+                        .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
+                                , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
+                        .setUpdateCurrent(true)
+                        .setPersisted(true)
+                        .build()
+                        .schedule());
     }
 }

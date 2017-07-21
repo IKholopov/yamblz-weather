@@ -16,6 +16,7 @@ public class InfoFragmentPresenter extends BaseFragmentPresenter<InfoView> {
     }
 
     public void showAppVersion() {
-        interactor.getAppVersion().subscribe((version, throwable) -> getView().showAppVersion(version));
+        if (getView() != null)
+            unSubcribeOnDetach(interactor.getAppVersion().subscribe((version, throwable) -> getView().showAppVersion(version)));
     }
 }

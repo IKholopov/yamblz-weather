@@ -24,6 +24,8 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
     }
 
     public void updateCurrentWeather() {
+        if (getView() == null)
+            return;
         unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe((settingsModel, throwable)
                 -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId()).subscribe((fullWeatherModel, throwable1)
                 -> {
@@ -34,6 +36,9 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
             getView().showCurrentWeather(fullWeatherModel);
             weatherInteractor.saveWeather(fullWeatherModel);
         })));
+    }
+
+    public void updateWeatherFromNetwork() {
 
     }
 

@@ -19,8 +19,9 @@ public class ErrorFragmentPresenter extends BaseFragmentPresenter<ConnectionErro
     }
 
     public void retryConnection() {
-        if (NetworkConectionChecker.isNetworkAvailable(context)) {
-            getView().showWeatherFragment();
-        }
+        if (getView() != null)
+            if (NetworkConectionChecker.isNetworkAvailable(context)) {
+                getView().showWeatherFragment();
+            }
     }
 }

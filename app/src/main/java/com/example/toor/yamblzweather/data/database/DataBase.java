@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.data.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
@@ -64,16 +65,21 @@ public class DataBase {
     }
 
     public Single<CurrentWeather> loadCurrentWeather(int cityId) {
-        WeatherModel weather = weatherModelDao.queryBuilder()
-                .where(WeatherModelDao.Properties.CityId.eq(cityId)).unique();
+        WeatherModel weather = getWeatherFromCityIdIfExist(cityId);
         Gson gson = new Gson();
         return Single.fromCallable(() -> gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
     }
 
     public Single<ExtendedWeather> loadWeatherForecast(int cityId) {
-        WeatherModel weather = weatherModelDao.queryBuilder()
-                .where(WeatherModelDao.Properties.CityId.eq(cityId)).unique();
+        WeatherModel weather = getWeatherFromCityIdIfExist(cityId);
         Gson gson = new Gson();
         return Single.fromCallable(() -> gson.fromJson(weather.getForecastWeather(), ExtendedWeather.class));
+    }
+
+    private
+    @Nullable
+    WeatherModel getWeatherFromCityIdIfExist(int cityId) {
+        return weatherModelDao.queryBuilder()
+                .where(WeatherModelDao.Properties.CityId.eq(cityId)).unique();
     }
 }

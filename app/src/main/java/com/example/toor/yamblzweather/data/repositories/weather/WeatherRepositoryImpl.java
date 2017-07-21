@@ -6,7 +6,6 @@ import com.example.toor.yamblzweather.data.database.DataBase;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.OWService;
-import com.example.toor.yamblzweather.domain.utils.NetworkConectionChecker;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
@@ -31,27 +30,18 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         this.service = service;
 
         App.getInstance().getAppComponent().inject(this);
+
+        service.setLanguage(locale);
     }
 
     @Override
     public Single<CurrentWeather> getCurrentWeather(int cityId) {
-        Single<CurrentWeather> weather;
-        service.setLanguage(locale);
-        weather = dataBase.loadCurrentWeather(cityId).onErrorResumeNext(throwable -> service.getCurrentWeather(cityId));
-//        weather = service.getCurrentWeather(cityId)
-//                .onErrorResumeNext(throwable -> dataBase.loadCurrentWeather(cityId));
-        return weather;
+        return dataBase.loadCurrentWeather(cityId).onErrorResumeNext(throwable -> service.getCurrentWeather(cityId));
     }
 
     @Override
     public Single<ExtendedWeather> getExtendedWeather(int cityId) {
-        Single<ExtendedWeather> weather;
-        if (NetworkConectionChecker.isNetworkAvailable(context)) {
-            service.setLanguage(locale);
-            weather = service.getExtendedWeather(cityId);
-        } else
-            weather = dataBase.loadWeatherForecast(cityId);
-        return weather;
+        return dataBase.loadWeatherForecast(cityId).onErrorResumeNext(throwable -> service.getExtendedWeather(cityId));
     }
 
     @Override

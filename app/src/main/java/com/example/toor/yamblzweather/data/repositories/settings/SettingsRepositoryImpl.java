@@ -8,7 +8,7 @@ import io.reactivex.Single;
 
 public class SettingsRepositoryImpl implements SettingsRepository {
 
-    SettingsPreference preference;
+    private SettingsPreference preference;
 
     public SettingsRepositoryImpl(SettingsPreference preference) {
         this.preference = preference;
