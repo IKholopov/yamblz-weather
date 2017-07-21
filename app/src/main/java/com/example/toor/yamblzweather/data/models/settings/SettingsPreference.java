@@ -18,7 +18,6 @@ public class SettingsPreference {
     private static final String INTERVAL_KEY = "interval_key";
     private static final String LATITUDE_KEY = "latitude_key";
     private static final String LONGITUDE_KEY = "longitude_key";
-    private static final String CURRENT_WEATHER_KEY = "current_weather_key";
 
     private static final long MIN_UPDATE_INTERVAL = 1 * 60 * 60 * 1000; // interval is 1 hour
 
@@ -52,34 +51,23 @@ public class SettingsPreference {
     public Single<SettingsModel> loadUserSettings() {
         TemperatureMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
-        return Single.fromCallable(() -> new SettingsModel(metric, interval));
+        Coord coord = loadSelectedCityCoordinates();
+        return Single.fromCallable(() -> new SettingsModel.Builder(metric, interval).coords(coord).build());
     }
 
-    public void saveCoordinates(Coord coordinates) {
+    public void saveSelectedCityCoordinates(Coord coordinates) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(LATITUDE_KEY, Double.doubleToLongBits(coordinates.getLat()));
         editor.putLong(LONGITUDE_KEY, Double.doubleToLongBits(coordinates.getLon()));
         editor.apply();
     }
 
-    public Coord loadCoordinates() {
+    public Coord loadSelectedCityCoordinates() {
         double latitude = Double.longBitsToDouble(sharedPreferences.getLong(LATITUDE_KEY, Double.doubleToLongBits(55.751244)));
         double longitude = Double.longBitsToDouble(sharedPreferences.getLong(LONGITUDE_KEY, Double.doubleToLongBits(37.618423)));
         Coord coordinates = new Coord();
         coordinates.setLat(latitude);
         coordinates.setLon(longitude);
         return coordinates;
-    }
-
-    public void saveCurrentWeather(String currentWeather) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(CURRENT_WEATHER_KEY, currentWeather);
-        editor.apply();
-    }
-
-    public
-    @Nullable
-    String loadCurrentWeather() {
-        return sharedPreferences.getString(CURRENT_WEATHER_KEY, null);
     }
 }

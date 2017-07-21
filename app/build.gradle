@@ -66,6 +66,6 @@ dependencies {
 
     compile 'org.greenrobot:greendao:3.2.0'
 
-    compile 'com.android.support:support-v4:26.+'
+    compile "com.android.support:support-v4:$support_version"
     testCompile 'junit:junit:4.12'
 }

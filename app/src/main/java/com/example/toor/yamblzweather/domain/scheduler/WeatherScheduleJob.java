@@ -4,11 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
-import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,27 +25,27 @@ public class WeatherScheduleJob extends Job {
     @Inject
     SettingsInteractor settingsInteractor;
 
-    private City city;
-
     public WeatherScheduleJob() {
-        App.getInstance().getAppComponent().plus(new ActivityModule()).inject(this);
+        App.getInstance().plusActivityComponent().inject(this);
     }
 
     @NonNull
     @Override
     protected Result onRunJob(Params params) {
-
+        Timber.v("onRunJob");
+        serializeCurrentWeather();
         return Result.SUCCESS;
     }
 
-//    private void serializeCurrentWeather() {
-//        interactor.getCurrentWeather(coordinates).subscribe(currentWeather -> interactor.saveCurrentWeatherToCache(currentWeather));
-//    }
+    private void serializeCurrentWeather() {
+        settingsInteractor.getUserSettings()
+                .subscribe((settingsModel, throwable) -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityCoords())
+                        .subscribe((fullWeatherModel, throwable1) -> weatherInteractor.saveWeather(fullWeatherModel)));
+    }
 
-    public void startJob(City city) {
+    public void startJob() {
         Timber.v("startJob");
-        this.city = city;
-        settingsInteractor.getUserSettings().subscribe((settings, throwable) -> new JobRequest.Builder(WeatherScheduleJob.TAG)
+        settingsInteractor.getUserSettings().subscribe((settings, throwable) -> new JobRequest.Builder(TAG)
                 .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
                         , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
                 .setUpdateCurrent(true)

@@ -1,6 +1,6 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
-import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
@@ -12,7 +12,6 @@ import io.reactivex.Single;
 
 public class WeatherInteractor {
 
-
     private WeatherRepository weatherRepository;
     private SettingsRepository settingsRepository;
 
@@ -21,23 +20,31 @@ public class WeatherInteractor {
         this.settingsRepository = settingsRepository;
     }
 
-    private Single<CurrentWeather> getCurrentWeather(City city) {
-        return weatherRepository.getCurrentWeather(city);
+    private Single<CurrentWeather> getCurrentWeather(Coord coord) {
+        return weatherRepository.getCurrentWeather(coord);
     }
 
-    private Single<ExtendedWeather> getExtendedWeather(City city) {
-        return weatherRepository.getExtendedWeather(city);
+    private Single<ExtendedWeather> getExtendedWeather(Coord coord) {
+        return weatherRepository.getExtendedWeather(coord);
     }
 
     private Single<SettingsModel> getTemperatureMetric() {
         return settingsRepository.getUserSettings();
     }
 
-    public Single<FullWeatherModel> getFullWeather(City city) {
-        return Single.zip(getCurrentWeather(city), getExtendedWeather(city), getTemperatureMetric(), this::convert);
+    public Single<FullWeatherModel> getFullWeather(Coord coord) {
+        return Single.zip(getCurrentWeather(coord), getExtendedWeather(coord), getTemperatureMetric(), this::convert);
     }
 
     private FullWeatherModel convert(CurrentWeather currentWeather, ExtendedWeather extendedWeather, SettingsModel settingsModel) {
         return new FullWeatherModel(currentWeather, extendedWeather, settingsModel.getMetric());
+    }
+
+    public void saveWeather(FullWeatherModel fullWeatherModel) {
+        weatherRepository.saveWeather(fullWeatherModel);
+    }
+
+    public void saveSelectedCity(Coord coord) {
+        settingsRepository.saveSelectedCity(coord);
     }
 }

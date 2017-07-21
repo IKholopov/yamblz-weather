@@ -6,6 +6,7 @@ import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepositor
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
+import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
 
 import dagger.Module;
@@ -30,6 +31,11 @@ public class ActivityModule {
     @ActivityScope
     public InfoInteractor provideInfoInteractor(InfoRepository repository) {
         return new InfoInteractor(repository);
+    }    
+    
+    @Provides
+    @ActivityScope
+    public WeatherScheduleJob provideWeatherScheduleJob() {
+        return new WeatherScheduleJob();
     }
-
 }

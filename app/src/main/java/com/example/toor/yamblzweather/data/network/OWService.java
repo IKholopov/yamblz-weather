@@ -1,6 +1,6 @@
 package com.example.toor.yamblzweather.data.network;
 
-import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
@@ -118,10 +118,10 @@ public class OWService implements WeatherRepository {
     }
 
     @Override
-    public Single<CurrentWeather> getCurrentWeather(City city) {
+    public Single<CurrentWeather> getCurrentWeather(Coord coord) {
         return mOpenWeatherAPI.getCurrentWeather(
-                city.getCoord().getLat(),
-                city.getCoord().getLon(),
+                coord.getLat(),
+                coord.getLon(),
                 mToken,
                 mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())
@@ -130,10 +130,10 @@ public class OWService implements WeatherRepository {
     }
 
     @Override
-    public Single<ExtendedWeather> getExtendedWeather(City city) {
+    public Single<ExtendedWeather> getExtendedWeather(Coord coord) {
         return mOpenWeatherAPI.getFiveDayExtendedWeather(
-                city.getCoord().getLat(),
-                city.getCoord().getLon(),
+                coord.getLat(),
+                coord.getLon(),
                 mToken,
                 mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())

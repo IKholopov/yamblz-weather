@@ -14,13 +14,11 @@ import dagger.Subcomponent;
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
 
+    void inject(WeatherScheduleJob scheduleJob);
+
     void inject(WeatherFragment fragment);
-
     void inject(SettingsFragment fragment);
-
     void inject(InfoFragment fragment);
-
     void inject(ErrorFragment fragment);
 
-    void inject(WeatherScheduleJob weatherScheduleJob);
 }

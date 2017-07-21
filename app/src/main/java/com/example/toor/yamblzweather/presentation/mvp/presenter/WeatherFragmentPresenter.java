@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
-import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
@@ -9,11 +10,13 @@ import javax.inject.Inject;
 
 public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView> {
 
-    private WeatherInteractor interactor;
+    private WeatherInteractor weatherInteractor;
+    private SettingsInteractor settingsInteractor;
 
     @Inject
-    public WeatherFragmentPresenter(WeatherInteractor interactor) {
-        this.interactor = interactor;
+    public WeatherFragmentPresenter(WeatherInteractor weatherInteractor, SettingsInteractor settingsInteractor) {
+        this.weatherInteractor = weatherInteractor;
+        this.settingsInteractor = settingsInteractor;
     }
 
     @Override
@@ -25,11 +28,16 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
         super.onAttach(view);
     }
 
-    public void updateCurrentWeather(City city) {
+    public void updateCurrentWeather() {
 //        unSubcribeOnDetach(interactor.getFullWeather(city).onErrorResumeNext(поход в базу )
 //                .subscribe((fullWeatherModel, throwable) -> {getView().showCurrentWeather(fullWeatherModel));
 //                if (throwable != null)});
-        unSubcribeOnDetach(interactor.getFullWeather(city)
-                .subscribe((fullWeatherModel, throwable) -> getView().showCurrentWeather(fullWeatherModel)));
+        unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe((settingsModel, throwable)
+                -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityCoords()).subscribe((fullWeatherModel, throwable1)
+                -> getView().showCurrentWeather(fullWeatherModel))));
+    }
+
+    public void saveSelectedCity(Coord coord) {
+        settingsInteractor.saveSelectedCity(coord);
     }
 }

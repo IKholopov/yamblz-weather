@@ -88,10 +88,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
         coord.setLat(55.751244);
         coord.setLon(37.618423);
 
-        City city = new City();
-        city.setCoord(coord);
-
-        presenter.updateCurrentWeather(city);
+        presenter.updateCurrentWeather();
     }
 
     @Override

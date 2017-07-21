@@ -34,10 +34,4 @@ public class UtilsModule {
         return new OWService(OPEN_WEATHER_MAP_API_KEY);
     }
 
-    @Provides
-    @Singleton
-    public WeatherScheduleJob provideWeatherScheduleJob() {
-        return new WeatherScheduleJob();
-    }
-
 }
