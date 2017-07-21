@@ -53,7 +53,6 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="224dp"
-        android:text="description"
         app:layout_constraintLeft_toLeftOf="@+id/tvCity"
         app:layout_constraintRight_toRightOf="@+id/tvCity"
         app:layout_constraintTop_toTopOf="parent"
@@ -61,11 +60,13 @@
 
     <ImageView
         android:id="@+id/ivCurrent"
-        android:layout_width="50dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tvDescription"
+        app:layout_constraintLeft_toLeftOf="@+id/tvTemp"
         app:layout_constraintRight_toLeftOf="@+id/tvDescription"
         app:layout_constraintTop_toTopOf="@+id/tvDescription"
         app:layout_constraintVertical_bias="0.634"
