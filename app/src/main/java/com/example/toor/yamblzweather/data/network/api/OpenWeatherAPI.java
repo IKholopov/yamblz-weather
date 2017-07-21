@@ -11,13 +11,11 @@ public interface OpenWeatherAPI {
     @GET("forecast?")
     Single<ExtendedWeather> getFiveDayExtendedWeather(@Query("id") int cityId,
                                                       @Query("appid") String appId,
-                                                      @Query("units") String units,
                                                       @Query("lang") String lang);
 
     @GET("weather?")
     Single<CurrentWeather> getCurrentWeather(@Query("id") int cityId,
                                              @Query("appid") String appId,
-                                             @Query("units") String units,
                                              @Query("lang") String lang);
 
 }

@@ -24,8 +24,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    WeatherRepository provideWeatherRepository(DataBase dataBase, OWService service, SettingsPreference preference) {
-        return new WeatherRepositoryImpl(dataBase, service, preference);
+    WeatherRepository provideWeatherRepository(DataBase dataBase, OWService service) {
+        return new WeatherRepositoryImpl(dataBase, service);
     }
 
     @Provides

@@ -5,7 +5,6 @@ import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeath
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
-import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import java.util.Locale;
@@ -23,7 +22,6 @@ public class OWService implements WeatherRepository {
 
     private final OpenWeatherAPI mOpenWeatherAPI;
     private String mToken;
-    private TemperatureMetric mSelectedUnits = TemperatureMetric.CELSIUS;
     private OWSupportedLanguages mSelectedLanguage = OWSupportedLanguages.ENGLISH;
 
     /**
@@ -41,15 +39,6 @@ public class OWService implements WeatherRepository {
                 .build();
 
         mOpenWeatherAPI = mRetrofitOWInstance.create(OpenWeatherAPI.class);
-    }
-
-    /**
-     * This configures the Metric Units in which the results of the requests need to be in.
-     *
-     * @param units a valid TemperatureMetric object.
-     */
-    public void setMetricUnits(TemperatureMetric units) {
-        mSelectedUnits = units;
     }
 
     /**
@@ -118,7 +107,6 @@ public class OWService implements WeatherRepository {
         return mOpenWeatherAPI.getCurrentWeather(
                 cityId,
                 mToken,
-                mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -129,7 +117,6 @@ public class OWService implements WeatherRepository {
         return mOpenWeatherAPI.getFiveDayExtendedWeather(
                 cityId,
                 mToken,
-                mSelectedUnits.getUnit(),
                 mSelectedLanguage.getLanguageLocale())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

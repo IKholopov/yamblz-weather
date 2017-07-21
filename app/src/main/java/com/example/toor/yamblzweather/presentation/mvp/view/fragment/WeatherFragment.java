@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.domain.utils.TemperatureMetricConverter;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
@@ -99,9 +100,11 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     }
 
     private String getCurrentTemperatureString(FullWeatherModel fullWeatherModel) {
-        String metricStr = convertMetricToString(fullWeatherModel.getTemperatureMetric());
-        int temperature = (int) Math.round(fullWeatherModel.getCurrentWeather().getMain().getTemp());
-        String temperatureStr = String.valueOf(temperature);
+        TemperatureMetric metric = fullWeatherModel.getTemperatureMetric();
+        double temperature = fullWeatherModel.getCurrentWeather().getMain().getTemp();
+        String metricStr = convertMetricToString(metric);
+        int temperatureRound = TemperatureMetricConverter.getSupportedTemperature(temperature, metric);
+        String temperatureStr = String.valueOf(temperatureRound);
         return temperatureStr + " " + metricStr;
     }
 

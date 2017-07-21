@@ -42,8 +42,4 @@ public class WeatherInteractor {
     public void saveWeather(FullWeatherModel fullWeatherModel) {
         weatherRepository.saveWeather(fullWeatherModel);
     }
-
-    public void saveSelectedCity(int cityId) {
-        settingsRepository.saveSelectedCity(cityId);
-    }
 }
