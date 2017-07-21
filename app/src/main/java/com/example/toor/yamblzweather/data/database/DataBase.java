@@ -64,19 +64,16 @@ public class DataBase {
     }
 
     public Single<CurrentWeather> loadCurrentWeather(int cityId) {
-        List<WeatherModel> list = loadAllRecords();
         WeatherModel weather = weatherModelDao.queryBuilder()
                 .where(WeatherModelDao.Properties.CityId.eq(cityId)).unique();
-        String currentWeatherStr = weather.getCurrentWeather();
         Gson gson = new Gson();
-        return Single.fromCallable(() -> gson.fromJson(currentWeatherStr, CurrentWeather.class));
+        return Single.fromCallable(() -> gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
     }
 
     public Single<ExtendedWeather> loadWeatherForecast(int cityId) {
         WeatherModel weather = weatherModelDao.queryBuilder()
                 .where(WeatherModelDao.Properties.CityId.eq(cityId)).unique();
-        String weatherForecastStr = weather.getForecastWeather();
         Gson gson = new Gson();
-        return Single.fromCallable(() -> gson.fromJson(weatherForecastStr, ExtendedWeather.class));
+        return Single.fromCallable(() -> gson.fromJson(weather.getForecastWeather(), ExtendedWeather.class));
     }
 }

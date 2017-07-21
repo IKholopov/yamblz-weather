@@ -70,7 +70,6 @@ public class WeatherFragment extends BaseFragment implements WeatherView {
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        setRetainInstance(true);
         presenter.onAttach(this);
     }
 

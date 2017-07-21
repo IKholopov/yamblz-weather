@@ -36,11 +36,10 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public Single<CurrentWeather> getCurrentWeather(int cityId) {
         Single<CurrentWeather> weather;
-        if (NetworkConectionChecker.isNetworkAvailable(context)) {
-            service.setLanguage(locale);
-            weather = service.getCurrentWeather(cityId);
-        } else
-            weather = dataBase.loadCurrentWeather(cityId);
+        service.setLanguage(locale);
+        weather = dataBase.loadCurrentWeather(cityId).onErrorResumeNext(throwable -> service.getCurrentWeather(cityId));
+//        weather = service.getCurrentWeather(cityId)
+//                .onErrorResumeNext(throwable -> dataBase.loadCurrentWeather(cityId));
         return weather;
     }
 

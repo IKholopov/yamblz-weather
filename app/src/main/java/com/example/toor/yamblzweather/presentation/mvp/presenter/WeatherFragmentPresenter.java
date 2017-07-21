@@ -30,6 +30,10 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
         unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe((settingsModel, throwable)
                 -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId()).subscribe((fullWeatherModel, throwable1)
                 -> {
+            if (throwable1 != null) {
+                getView().showErrorFragment();
+                return;
+            }
             getView().showCurrentWeather(fullWeatherModel);
             weatherInteractor.saveWeather(fullWeatherModel);
         })));

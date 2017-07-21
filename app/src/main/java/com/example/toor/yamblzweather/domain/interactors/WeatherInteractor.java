@@ -14,25 +14,17 @@ public class WeatherInteractor {
     private WeatherRepository weatherRepository;
     private SettingsRepository settingsRepository;
 
-    private Single<CurrentWeather> currentWeather;
-    private Single<ExtendedWeather> weatherForecast;
-
     public WeatherInteractor(WeatherRepository weatherRepository, SettingsRepository settingsRepository) {
         this.weatherRepository = weatherRepository;
         this.settingsRepository = settingsRepository;
     }
 
     private Single<CurrentWeather> getCurrentWeather(int cityId) {
-        if (currentWeather == null) {
-            currentWeather = weatherRepository.getCurrentWeather(cityId);
-        }
-        return currentWeather;
+        return weatherRepository.getCurrentWeather(cityId);
     }
 
     private Single<ExtendedWeather> getExtendedWeather(int cityId) {
-        if (weatherForecast == null)
-            weatherForecast = weatherRepository.getExtendedWeather(cityId);
-        return weatherForecast;
+        return weatherRepository.getExtendedWeather(cityId);
 
     }
 
