@@ -1,16 +1,18 @@
 package com.example.toor.yamblzweather.domain.utils;
 
+import android.support.annotation.NonNull;
+
 public enum TemperatureMetric {
     CELSIUS("metric"),
     FAHRENHEIT("imperial");
 
-    String unit;
+    private String unit;
 
     TemperatureMetric(String unit) {
         this.unit = unit;
     }
 
-    public String getUnit() {
+    public @NonNull String getUnit() {
         return unit;
     }
 

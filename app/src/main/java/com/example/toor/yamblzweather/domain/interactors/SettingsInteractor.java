@@ -1,5 +1,8 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
+import android.support.annotation.NonNull;
+
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
@@ -14,7 +17,7 @@ public class SettingsInteractor {
         this.repository = repository;
     }
 
-    public Single<SettingsModel> getUserSettings() {
+    public @NonNull Single<SettingsModel> getUserSettings() {
         return repository.getUserSettings();
     }
 
@@ -28,5 +31,9 @@ public class SettingsInteractor {
 
     public void saveSelectedCity(int cityId) {
         repository.saveSelectedCity(cityId);
+    }
+
+    public void saveSelectedCityCoords(Coord coords) {
+        repository.saveSelectedCity(coords);
     }
 }

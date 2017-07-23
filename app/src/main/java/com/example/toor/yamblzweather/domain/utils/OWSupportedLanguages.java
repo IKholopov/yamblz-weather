@@ -1,5 +1,7 @@
 package com.example.toor.yamblzweather.domain.utils;
 
+import android.support.annotation.NonNull;
+
 public enum OWSupportedLanguages {
     ENGLISH("en"),
     RUSSIAN("ru"),
@@ -24,7 +26,7 @@ public enum OWSupportedLanguages {
         this.language = languageLocale;
     }
 
-    public String getLanguageLocale() {
+    public @NonNull String getLanguageLocale() {
         return language;
     }
 }

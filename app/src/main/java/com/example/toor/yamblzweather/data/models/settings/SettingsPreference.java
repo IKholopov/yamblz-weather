@@ -1,7 +1,9 @@
 package com.example.toor.yamblzweather.data.models.settings;
 
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 
@@ -15,6 +17,9 @@ public class SettingsPreference {
     private static final String TEMPERATURE_KEY = "temperature_key";
     private static final String INTERVAL_KEY = "interval_key";
     private static final String CITY_ID = "city_id";
+    private static final String CITY_LAT = "city_lat";
+    private static final String CITY_LON = "city_lon";
+    private static final String CACHE_TIME = "cache_time";
 
     private static final long MIN_UPDATE_INTERVAL = 1 * 60 * 60 * 1000; // interval is 1 hour
 
@@ -30,7 +35,9 @@ public class SettingsPreference {
         editor.apply();
     }
 
-    public TemperatureMetric loadTemperatureMetric() {
+    public
+    @NonNull
+    TemperatureMetric loadTemperatureMetric() {
         String metric = sharedPreferences.getString(TEMPERATURE_KEY, CELSIUS.getUnit());
         return fromString(metric);
     }
@@ -41,15 +48,21 @@ public class SettingsPreference {
         editor.apply();
     }
 
-    public long loadUpdateWeatherInterval() {
+    public
+    @NonNull
+    long loadUpdateWeatherInterval() {
         return sharedPreferences.getLong(INTERVAL_KEY, MIN_UPDATE_INTERVAL);
     }
 
-    public Single<SettingsModel> loadUserSettings() {
+    public
+    @NonNull
+    Single<SettingsModel> loadUserSettings() {
         TemperatureMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
         int cityId = loadSelectedCityId();
-        return Single.fromCallable(() -> new SettingsModel.Builder(metric, interval).cityId(cityId).build());
+        Coord coords = loadSelectedCityCoords();
+        return Single.fromCallable(() -> new SettingsModel.Builder(metric, interval)
+                .cityId(cityId).coords(coords).build());
     }
 
     public void saveSelectedCityId(int cityId) {
@@ -58,7 +71,37 @@ public class SettingsPreference {
         editor.apply();
     }
 
-    public int loadSelectedCityId() {
+    public void saveSelectedCityCoords(Coord coords) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat(CITY_LAT, coords.getLat().floatValue());
+        editor.putFloat(CITY_LON, coords.getLon().floatValue());
+        editor.apply();
+    }
+
+    public
+    @NonNull
+    int loadSelectedCityId() {
         return sharedPreferences.getInt(CITY_ID, 524901);
+    }
+
+    public
+    @NonNull
+    Coord loadSelectedCityCoords() {
+        Coord coords = new Coord();
+        coords.setLat((double) sharedPreferences.getFloat(CITY_LAT, 55.754f));
+        coords.setLon((double) sharedPreferences.getFloat(CITY_LON, 37.615f));
+        return coords;
+    }
+
+    public void saveCacheTime(long time) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putLong(CACHE_TIME, time);
+        editor.apply();
+    }
+
+    public
+    @NonNull
+    int loadCacheTime() {
+        return sharedPreferences.getInt(CACHE_TIME, 0);
     }
 }

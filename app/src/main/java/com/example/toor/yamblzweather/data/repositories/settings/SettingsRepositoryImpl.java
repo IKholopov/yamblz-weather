@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.data.repositories.settings;
 
 import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 
@@ -34,4 +35,13 @@ public class SettingsRepositoryImpl implements SettingsRepository {
         preference.saveSelectedCityId(cityId);
     }
 
+    @Override
+    public void saveSelectedCity(Coord coords) {
+        preference.saveSelectedCityCoords(coords);
+    }
+
+    @Override
+    public void saveCacheTime(long time) {
+        preference.saveCacheTime(time);
+    }
 }

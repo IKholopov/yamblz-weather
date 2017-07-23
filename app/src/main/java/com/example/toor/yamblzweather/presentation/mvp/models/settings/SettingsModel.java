@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.mvp.models.settings;
 
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 
 public class SettingsModel {
@@ -7,6 +8,7 @@ public class SettingsModel {
     private final TemperatureMetric metric;
     private final long updateWeatherInterval;
     private final int selectedCityId;
+    private final Coord coords;
 
     public static class Builder {
         //Requered params
@@ -15,6 +17,7 @@ public class SettingsModel {
 
         //Optional params
         private int cityId;
+        private Coord coords;
 
         public Builder(TemperatureMetric metric, long updateWeatherInterval) {
             this.metric = metric;
@@ -23,6 +26,11 @@ public class SettingsModel {
 
         public Builder cityId(int val) {
             cityId = val;
+            return this;
+        }
+
+        public Builder coords(Coord coords) {
+            this.coords = coords;
             return this;
         }
 
@@ -36,6 +44,7 @@ public class SettingsModel {
         metric = builder.metric;
         updateWeatherInterval = builder.updateWeatherInterval;
         selectedCityId = builder.cityId;
+        coords = builder.coords;
     }
 
     public TemperatureMetric getMetric() {
@@ -48,5 +57,9 @@ public class SettingsModel {
 
     public int getSelectedCityId() {
         return this.selectedCityId;
+    }
+
+    public Coord getCityCoords() {
+        return this.coords;
     }
 }

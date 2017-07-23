@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
@@ -31,7 +32,11 @@ public class DataBase {
         return daoSession.getWeatherModelDao();
     }
 
-    public void saveOrUpdateWeather(FullWeatherModel fullWeatherModel) {
+    public void saveWeather(FullWeatherModel weather) {
+        saveOrUpdateWeather(weather);
+    }
+
+    private void saveOrUpdateWeather(FullWeatherModel fullWeatherModel) {
         WeatherModel weather = getDataBaseWeatherModelFromFullWeatherModel(fullWeatherModel);
         List<WeatherModel> weatherModels = loadAllRecords();
         for (WeatherModel weatherModel : weatherModels) {
@@ -52,6 +57,9 @@ public class DataBase {
         weather.setCityId(fullWeatherModel.getCurrentWeather().getId());
         weather.setCurrentWeather(gson.toJson(fullWeatherModel.getCurrentWeather()));
         weather.setForecastWeather(gson.toJson(fullWeatherModel.getWeatherForecast()));
+        Coord coords = fullWeatherModel.getCurrentWeather().getCoord();
+        weather.setLat(coords.getLat());
+        weather.setLon(coords.getLon());
         return weather;
     }
 
@@ -64,22 +72,41 @@ public class DataBase {
         return weatherModelDao.queryBuilder().list();
     }
 
-    public Single<CurrentWeather> loadCurrentWeather(int cityId) {
-        WeatherModel weather = getWeatherFromCityIdIfExist(cityId);
-        Gson gson = new Gson();
-        return Single.fromCallable(() -> gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
-    }
-
-    public Single<ExtendedWeather> loadWeatherForecast(int cityId) {
-        WeatherModel weather = getWeatherFromCityIdIfExist(cityId);
-        Gson gson = new Gson();
-        return Single.fromCallable(() -> gson.fromJson(weather.getForecastWeather(), ExtendedWeather.class));
-    }
-
     private
     @Nullable
     WeatherModel getWeatherFromCityIdIfExist(int cityId) {
         return weatherModelDao.queryBuilder()
                 .where(WeatherModelDao.Properties.CityId.eq(cityId)).unique();
+    }
+
+    @Nullable
+    WeatherModel getWeatherFromCityIdIfExist(Coord coords) {
+        return weatherModelDao.queryBuilder()
+                .where(WeatherModelDao.Properties.Lat.eq(coords.getLat()),
+                        WeatherModelDao.Properties.Lon.eq(coords.getLon())).unique();
+    }
+
+    public Single<CurrentWeather> getCurrentWeather(int cityId) {
+        WeatherModel weather = getWeatherFromCityIdIfExist(cityId);
+        Gson gson = new Gson();
+        return Single.fromCallable(() -> gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
+    }
+
+    public Single<CurrentWeather> getCurrentWeather(Coord coords) {
+        WeatherModel weather = getWeatherFromCityIdIfExist(coords);
+        Gson gson = new Gson();
+        return Single.fromCallable(() -> gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
+    }
+
+    public Single<ExtendedWeather> getExtendedWeather(int cityId) {
+        WeatherModel weather = getWeatherFromCityIdIfExist(cityId);
+        Gson gson = new Gson();
+        return Single.fromCallable(() -> gson.fromJson(weather.getForecastWeather(), ExtendedWeather.class));
+    }
+
+    public Single<ExtendedWeather> getExtendedWeather(Coord coords) {
+        WeatherModel weather = getWeatherFromCityIdIfExist(coords);
+        Gson gson = new Gson();
+        return Single.fromCallable(() -> gson.fromJson(weather.getForecastWeather(), ExtendedWeather.class));
     }
 }

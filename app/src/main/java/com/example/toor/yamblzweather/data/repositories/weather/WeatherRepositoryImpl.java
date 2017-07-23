@@ -1,8 +1,11 @@
 package com.example.toor.yamblzweather.data.repositories.weather;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.database.DataBase;
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.OWService;
@@ -30,22 +33,56 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         this.service = service;
 
         App.getInstance().getAppComponent().inject(this);
-
         service.setLanguage(locale);
     }
 
     @Override
-    public Single<CurrentWeather> getCurrentWeather(int cityId) {
-        return dataBase.loadCurrentWeather(cityId).onErrorResumeNext(throwable -> service.getCurrentWeather(cityId));
+    public Single<CurrentWeather> getCurrentWeatherFromDB(int cityId) {
+        return dataBase.getCurrentWeather(cityId);
+    }
+
+    @Nullable
+    @Override
+    public Single<CurrentWeather> getCurrentWeatherFromDB(Coord coords) {
+        return dataBase.getCurrentWeather(coords);
+    }
+
+    @Nullable
+    @Override
+    public Single<CurrentWeather> loadCurrentWeatherFromNW(int cityId) {
+        return service.getCurrentWeather(cityId);
+    }
+    @Nullable
+    @Override
+    public Single<CurrentWeather> loadCurrentWeatherFromNW(Coord coord) {
+        return service.getCurrentWeatherForCoords(coord);
     }
 
     @Override
-    public Single<ExtendedWeather> getExtendedWeather(int cityId) {
-        return dataBase.loadWeatherForecast(cityId).onErrorResumeNext(throwable -> service.getExtendedWeather(cityId));
+    public Single<ExtendedWeather> getExtendedWeatherFromDB(int cityId) {
+        return dataBase.getExtendedWeather(cityId);
+    }
+
+    @Nullable
+    @Override
+    public Single<ExtendedWeather> getExtendedWeatherFromDB(Coord coords) {
+        return dataBase.getExtendedWeather(coords);
+    }
+
+    @Nullable
+    @Override
+    public Single<ExtendedWeather> loadExtendedWeatherFromNW(int cityId) {
+        return service.getExtendedWeather(cityId);
+    }
+
+    @Nullable
+    @Override
+    public Single<ExtendedWeather> loadExtendedWeatherFromNW(Coord coords) {
+        return service.getExtendedWeather(coords);
     }
 
     @Override
-    public void saveWeather(FullWeatherModel weather) {
-        dataBase.saveOrUpdateWeather(weather);
+    public void saveWeather(@NonNull FullWeatherModel weather) {
+        dataBase.saveWeather(weather);
     }
 }

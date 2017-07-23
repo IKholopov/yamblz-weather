@@ -13,9 +13,20 @@ public interface OpenWeatherAPI {
                                                       @Query("appid") String appId,
                                                       @Query("lang") String lang);
 
+    @GET("forecast?")
+    Single<ExtendedWeather> getFiveDayExtendedWeather(@Query("lat") double lat,
+                                                      @Query("lon") double lon,
+                                                      @Query("appid") String appId,
+                                                      @Query("lang") String lang);
+
     @GET("weather?")
     Single<CurrentWeather> getCurrentWeather(@Query("id") int cityId,
                                              @Query("appid") String appId,
                                              @Query("lang") String lang);
 
+    @GET("weather?")
+    Single<CurrentWeather> getCurrentWeatherForCoords(@Query("lat") double lat,
+                                             @Query("lon") double lon,
+                                             @Query("appid") String appId,
+                                             @Query("lang") String lang);
 }

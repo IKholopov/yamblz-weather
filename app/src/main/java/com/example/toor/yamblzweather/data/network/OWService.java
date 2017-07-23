@@ -1,11 +1,12 @@
 package com.example.toor.yamblzweather.data.network;
 
+import android.support.annotation.Nullable;
+
+import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
-import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import java.util.Locale;
 
@@ -16,7 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class OWService implements WeatherRepository {
+public class OWService {
 
     private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
 
@@ -102,8 +103,9 @@ public class OWService implements WeatherRepository {
         }
     }
 
-    @Override
-    public Single<CurrentWeather> getCurrentWeather(int cityId) {
+    public
+    @Nullable
+    Single<CurrentWeather> getCurrentWeather(int cityId) {
         return mOpenWeatherAPI.getCurrentWeather(
                 cityId,
                 mToken,
@@ -112,8 +114,21 @@ public class OWService implements WeatherRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    @Override
-    public Single<ExtendedWeather> getExtendedWeather(int cityId) {
+    public
+    @Nullable
+    Single<CurrentWeather> getCurrentWeatherForCoords(Coord coords) {
+        return mOpenWeatherAPI.getCurrentWeatherForCoords(
+                coords.getLat(),
+                coords.getLon(),
+                mToken,
+                mSelectedLanguage.getLanguageLocale())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public
+    @Nullable
+    Single<ExtendedWeather> getExtendedWeather(int cityId) {
         return mOpenWeatherAPI.getFiveDayExtendedWeather(
                 cityId,
                 mToken,
@@ -122,9 +137,15 @@ public class OWService implements WeatherRepository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    @Override
-    public void saveWeather(FullWeatherModel weather) {
-
+    public
+    @Nullable
+    Single<ExtendedWeather> getExtendedWeather(Coord coords) {
+        return mOpenWeatherAPI.getFiveDayExtendedWeather(
+                coords.getLat(),
+                coords.getLon(),
+                mToken,
+                mSelectedLanguage.getLanguageLocale())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
-
 }

@@ -3,6 +3,7 @@ package com.example.toor.yamblzweather.data.repositories.info;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 
 import com.example.toor.yamblzweather.presentation.di.App;
 
@@ -22,7 +23,7 @@ public class InfoRepositoryImpl implements InfoRepository {
     }
 
     @Override
-    public Single<String> getAppVersion() {
+    public @NonNull Single<String> getAppVersion() {
         try {
             PackageManager manager = context.getPackageManager();
             PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);

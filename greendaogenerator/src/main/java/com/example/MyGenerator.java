@@ -32,6 +32,8 @@ public class MyGenerator {
         weather.addIntProperty("cityId").notNull();
         weather.addStringProperty("currentWeather");
         weather.addStringProperty("forecastWeather");
+        weather.addDoubleProperty("lat");
+        weather.addDoubleProperty("lon");
         return weather;
     }
 

@@ -26,6 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -67,5 +68,9 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.0'
 
     compile "com.android.support:support-v4:$support_version"
+
+    compile "com.google.android.gms:play-services-places:$play_services_version"
+
+
     testCompile 'junit:junit:4.12'
 }

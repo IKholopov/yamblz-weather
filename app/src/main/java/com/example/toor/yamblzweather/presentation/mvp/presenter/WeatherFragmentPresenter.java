@@ -23,22 +23,32 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
         super.onAttach(view);
     }
 
-    public void updateCurrentWeather() {
+    public void getWeather() {
         if (getView() == null)
             return;
         unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe((settingsModel, throwable)
-                -> weatherInteractor.getFullWeather(settingsModel.getSelectedCityId()).subscribe((fullWeatherModel, throwable1)
+                -> weatherInteractor.getFullWeatherFromDB(settingsModel.getCityCoords()).subscribe((fullWeatherModel, throwable1)
                 -> {
             if (throwable1 != null) {
                 getView().showErrorFragment();
                 return;
             }
             getView().showCurrentWeather(fullWeatherModel);
-            weatherInteractor.saveWeather(fullWeatherModel);
         })));
     }
 
-    public void updateWeatherFromNetwork() {
+    public void updateWeather() {
+        if (getView() == null)
+            return;
+        unSubcribeOnDetach(settingsInteractor.getUserSettings().subscribe(settingsModel
+                -> weatherInteractor.updateWeather(settingsModel.getCityCoords()).subscribe((fullWeatherModel, throwable)
+                -> {
+            if (throwable != null) {
+                getView().showErrorFragment();
+                return;
+            }
+            getView().showCurrentWeather(fullWeatherModel);
+        })));
 
     }
 

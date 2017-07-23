@@ -87,10 +87,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
         unbinder = ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        int moscowCityId = 524901;
-        presenter.saveSelectedCity(moscowCityId);
-
-        presenter.updateCurrentWeather();
+        //int moscowCityId = 524901;
+        //presenter.saveSelectedCity(moscowCityId);
+        presenter.getWeather();
     }
 
     @Override
@@ -154,7 +153,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     @Override
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
-        presenter.updateCurrentWeather();
+        presenter.updateWeather();
         swipeRefreshLayout.setRefreshing(false);
 
     }
