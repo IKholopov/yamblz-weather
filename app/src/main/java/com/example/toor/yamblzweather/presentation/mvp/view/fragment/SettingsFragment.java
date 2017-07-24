@@ -1,26 +1,37 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.transition.TransitionManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Observable;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.FAHRENHEIT;
@@ -29,6 +40,8 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     private Unbinder unbinder;
 
+    @BindView(R.id.clSettings)
+    ConstraintLayout clSettings;
     @BindView(R.id.rgTempMetric)
     RadioGroup rgTempMetric;
     @BindView(R.id.celsius)
@@ -37,9 +50,16 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     RadioButton rbFahrenheit;
     @BindView(R.id.rbUpdateInterval)
     RadioGroup rgUpdateInterval;
+    @BindView(R.id.etSearchCity)
+    EditText etSearchCity;
+    @BindView(R.id.rvCityAutocomplete)
+    RecyclerView rvCityAutocomplete;
 
     @Inject
     SettingsFragmentPresenter presenter;
+
+    private ConstraintSet normalSet;
+    private ConstraintSet searchCitySet;
 
     private static final long INTERVAL_MULTIPLEXOR = 1 * 60 * 1000;
 
@@ -83,6 +103,21 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
         rgTempMetric.setOnCheckedChangeListener((radioGroup, checkedId) -> saveTemperatureMetric(radioGroup));
         rgUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
+        etSearchCity.setOnFocusChangeListener((editText, hasFocus) -> onSearchCityEditTextSelected(hasFocus));
+        //DEBUG
+        etSearchCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.clearFocus();
+            }
+        });
+
+        setUpConstraintSets();
+
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        rvCityAutocomplete.setLayoutManager(llm);
+        rvCityAutocomplete.setAdapter(new CityNameAdapter(null));
     }
 
     private void saveTemperatureMetric(RadioGroup radioGroup) {
@@ -144,6 +179,16 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         setUpdateInterval(settingsModel.getUpdateWeatherInterval());
     }
 
+    @Override
+    public Observable<CharSequence> getSelectedCityObservable() {
+        return RxTextView.textChanges(etSearchCity);
+    }
+
+    @Override
+    public void updateCitiesSuggestionList(PlacesAutocompleteModel places) {
+        rvCityAutocomplete.swapAdapter(new CityNameAdapter(places), false);
+    }
+
     private void setTemperatureMetric(TemperatureMetric metric) {
         if (metric == CELSIUS)
             rgTempMetric.check(R.id.celsius);
@@ -160,5 +205,32 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
             rgUpdateInterval.check(R.id.rbMin60);
         else
             rgUpdateInterval.check(R.id.rbMin180);
+    }
+
+    private void setUpConstraintSets() {
+        normalSet = new ConstraintSet();
+        normalSet.clone(clSettings);
+        searchCitySet = new ConstraintSet();
+        searchCitySet.clone(normalSet);
+        searchCitySet.setVisibility(R.id.rgTempMetric, ConstraintSet.INVISIBLE);
+        searchCitySet.setVisibility(R.id.rbUpdateInterval, ConstraintSet.INVISIBLE);
+        searchCitySet.setVisibility(R.id.tvTemperature, ConstraintSet.INVISIBLE);
+        searchCitySet.setVisibility(R.id.tvUpdateInterval, ConstraintSet.INVISIBLE);
+        searchCitySet.connect(R.id.etSearchCity, ConstraintSet.TOP, R.id.clSettings, ConstraintSet.TOP);
+        searchCitySet.setVerticalBias(R.id.etSearchCity, 0.0f);
+    }
+
+    private void onSearchCityEditTextSelected(boolean hasFocus) {
+        if(clSettings == null) {
+            return;
+        }
+        TransitionManager.beginDelayedTransition(clSettings);
+        ConstraintSet set;
+        if(hasFocus) {
+            set = searchCitySet;
+        } else {
+            set = normalSet;
+        }
+        set.applyTo(clSettings);
     }
 }

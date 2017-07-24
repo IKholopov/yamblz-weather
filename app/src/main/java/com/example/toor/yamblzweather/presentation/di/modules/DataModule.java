@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.example.toor.yamblzweather.data.database.DataBase;
 import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.network.OWService;
+import com.example.toor.yamblzweather.data.network.PlacesService;
 import com.example.toor.yamblzweather.data.repositories.info.InfoRepository;
 import com.example.toor.yamblzweather.data.repositories.info.InfoRepositoryImpl;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
@@ -30,8 +31,8 @@ public class DataModule {
 
     @Provides
     @Singleton
-    SettingsRepository provideSettingsRepository(SettingsPreference preference) {
-        return new SettingsRepositoryImpl(preference);
+    SettingsRepository provideSettingsRepository(SettingsPreference preference, PlacesService service) {
+        return new SettingsRepositoryImpl(preference, service);
     }
 
     @Provides

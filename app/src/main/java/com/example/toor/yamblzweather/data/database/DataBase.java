@@ -95,7 +95,7 @@ public class DataBase {
     public Single<CurrentWeather> getCurrentWeather(Coord coords) {
         WeatherModel weather = getWeatherFromCityIdIfExist(coords);
         Gson gson = new Gson();
-        return Single.fromCallable(() -> gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
+        return Single.fromCallable(() -> weather == null ? null : gson.fromJson(weather.getCurrentWeather(), CurrentWeather.class));
     }
 
     public Single<ExtendedWeather> getExtendedWeather(int cityId) {

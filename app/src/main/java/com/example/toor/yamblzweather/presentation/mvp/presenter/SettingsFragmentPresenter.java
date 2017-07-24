@@ -29,8 +29,14 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
     }
 
     public void showSettings() {
-        if (getClass() != null)
+        if (getClass() != null) {
             unSubcribeOnDetach(interactor.getUserSettings().subscribe((settings, throwable) -> getView().setSettings(settings)));
+            unSubcribeOnDetach(getView().getSelectedCityObservable().subscribe(
+                    (input) -> interactor.getAutocomplete(input.toString()).subscribe(
+                            (places) -> getView().updateCitiesSuggestionList(places)
+                    )
+            ));
+        }
     }
 
     public void saveTemperatureMetric(TemperatureMetric metric) {

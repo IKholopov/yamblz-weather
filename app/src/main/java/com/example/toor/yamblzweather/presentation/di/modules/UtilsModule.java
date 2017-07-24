@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 
 import com.example.toor.yamblzweather.data.network.OWService;
+import com.example.toor.yamblzweather.data.network.PlacesService;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 
 import java.util.Locale;
@@ -13,6 +14,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 
+import static com.example.toor.yamblzweather.data.network.api.ApiKeys.GOOGLE_PLACES_API_KEY;
 import static com.example.toor.yamblzweather.data.network.api.ApiKeys.OPEN_WEATHER_MAP_API_KEY;
 
 @Module
@@ -32,6 +34,12 @@ public class UtilsModule {
     @Singleton
     public OWService provideOwService() {
         return new OWService(OPEN_WEATHER_MAP_API_KEY);
+    }
+
+    @Provides
+    @Singleton
+    public PlacesService providePlacesService() {
+        return new PlacesService(GOOGLE_PLACES_API_KEY);
     }
 
     @Provides
