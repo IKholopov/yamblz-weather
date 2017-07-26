@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.data.network.api;
 
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 
 import io.reactivex.Single;
@@ -16,4 +17,9 @@ public interface GooglePlacesAPI {
                                                           @Query("types")String types,
                                                           @Query("language")String language,
                                                           @Query("key")String key);
+
+    @GET("details/json?")
+    Single<PlaceDetails> getPlaceDetails(@Query("placeid")String placeId,
+                                         @Query("language")String language,
+                                         @Query("key")String key);
 }

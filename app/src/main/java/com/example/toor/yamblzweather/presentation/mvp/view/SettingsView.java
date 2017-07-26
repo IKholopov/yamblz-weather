@@ -13,4 +13,5 @@ public interface SettingsView extends BaseView {
     void setSettings(SettingsModel settingsModel);
     Observable<CharSequence> getSelectedCityObservable();
     void updateCitiesSuggestionList(PlacesAutocompleteModel places);
+    void displayError(String message);
 }

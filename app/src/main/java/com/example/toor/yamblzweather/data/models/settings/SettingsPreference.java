@@ -19,6 +19,7 @@ public class SettingsPreference {
     private static final String CITY_ID = "city_id";
     private static final String CITY_LAT = "city_lat";
     private static final String CITY_LON = "city_lon";
+    private static final String CITY_NAME = "city_name";
     private static final String CACHE_TIME = "cache_time";
 
     private static final long MIN_UPDATE_INTERVAL = 1 * 60 * 60 * 1000; // interval is 1 hour
@@ -60,9 +61,10 @@ public class SettingsPreference {
         TemperatureMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
         int cityId = loadSelectedCityId();
+        String cityName = loadSelectedCityName();
         Coord coords = loadSelectedCityCoords();
         return Single.fromCallable(() -> new SettingsModel.Builder(metric, interval)
-                .cityId(cityId).coords(coords).build());
+                .cityId(cityId).coords(coords).cityName(cityName).build());
     }
 
     public void saveSelectedCityId(int cityId) {
@@ -78,6 +80,12 @@ public class SettingsPreference {
         editor.apply();
     }
 
+    public void saveSelectedCityName(String name) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(CITY_NAME, name);
+        editor.apply();
+    }
+
     public
     @NonNull
     int loadSelectedCityId() {
@@ -87,10 +95,15 @@ public class SettingsPreference {
     public
     @NonNull
     Coord loadSelectedCityCoords() {
-        Coord coords = new Coord();
-        coords.setLat((double) sharedPreferences.getFloat(CITY_LAT, 55.754f));
-        coords.setLon((double) sharedPreferences.getFloat(CITY_LON, 37.615f));
+        Coord coords = new Coord(sharedPreferences.getFloat(CITY_LAT, 55.754f),
+                sharedPreferences.getFloat(CITY_LON, 37.615f));
         return coords;
+    }
+
+    public
+    @NonNull
+    String loadSelectedCityName() {
+        return sharedPreferences.getString(CITY_NAME, "Moscow");
     }
 
     public void saveCacheTime(long time) {

@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.data.repositories.settings;
 
 import android.support.annotation.Nullable;
 
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
@@ -42,8 +43,9 @@ public class SettingsRepositoryImpl implements SettingsRepository {
     }
 
     @Override
-    public void saveSelectedCity(Coord coords) {
-        preference.saveSelectedCityCoords(coords);
+    public void saveSelectedCity(PlaceDetails placeDetails) {
+        preference.saveSelectedCityCoords(placeDetails.getCoords());
+        preference.saveSelectedCityName(placeDetails.getName());
     }
 
     @Override
@@ -55,5 +57,11 @@ public class SettingsRepositoryImpl implements SettingsRepository {
     @Override
     public Single<PlacesAutocompleteModel> loadPlacesAutocomplete(String input) {
         return service.getAutocompleteForInput(input);
+    }
+
+    @Nullable
+    @Override
+    public Single<PlaceDetails> loadPlaceDetails(String placeId) {
+        return service.getPlaceDetails(placeId);
     }
 }

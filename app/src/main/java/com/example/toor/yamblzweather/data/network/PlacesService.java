@@ -3,6 +3,7 @@ package com.example.toor.yamblzweather.data.network;
 
 import android.support.annotation.Nullable;
 
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.data.network.api.GooglePlacesAPI;
 import com.example.toor.yamblzweather.domain.utils.GooglePlacesSupportedLanguages;
@@ -10,6 +11,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.Locale;
 
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -108,6 +110,14 @@ public class PlacesService {
     Single<PlacesAutocompleteModel> getAutocompleteForInput(String input) {
         return api.getPlacesAutocomplete(input, PLACE_TYPES,
                 selectedLanguage.getLanguageLocale(), apiKey)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public
+    @Nullable
+    Single<PlaceDetails> getPlaceDetails(String placeId) {
+        return api.getPlaceDetails(placeId, selectedLanguage.getLanguageLocale(), apiKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

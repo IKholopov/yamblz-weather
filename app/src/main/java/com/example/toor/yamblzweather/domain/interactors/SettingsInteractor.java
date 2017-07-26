@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.domain.interactors;
 
 import android.support.annotation.NonNull;
 
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
@@ -34,11 +35,15 @@ public class SettingsInteractor {
         repository.saveSelectedCity(cityId);
     }
 
-    public void saveSelectedCityCoords(Coord coords) {
-        repository.saveSelectedCity(coords);
+    public void saveSelectedCity(PlaceDetails details) {
+        repository.saveSelectedCity(details);
     }
 
     public Single<PlacesAutocompleteModel> getAutocomplete(String input) {
         return repository.loadPlacesAutocomplete(input);
+    }
+
+    public Single<PlaceDetails> getPlaceDetails(String placeId) {
+        return repository.loadPlaceDetails(placeId);
     }
 }

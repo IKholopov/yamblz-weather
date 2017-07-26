@@ -8,6 +8,7 @@ public class SettingsModel {
     private final TemperatureMetric metric;
     private final long updateWeatherInterval;
     private final int selectedCityId;
+    private final String cityName;
     private final Coord coords;
 
     public static class Builder {
@@ -18,6 +19,7 @@ public class SettingsModel {
         //Optional params
         private int cityId;
         private Coord coords;
+        private String cityName;
 
         public Builder(TemperatureMetric metric, long updateWeatherInterval) {
             this.metric = metric;
@@ -34,6 +36,11 @@ public class SettingsModel {
             return this;
         }
 
+        public Builder cityName(String cityName) {
+            this.cityName = cityName;
+            return this;
+        }
+
         public SettingsModel build() {
             return new SettingsModel(this);
         }
@@ -45,6 +52,7 @@ public class SettingsModel {
         updateWeatherInterval = builder.updateWeatherInterval;
         selectedCityId = builder.cityId;
         coords = builder.coords;
+        cityName = builder.cityName;
     }
 
     public TemperatureMetric getMetric() {
@@ -61,5 +69,9 @@ public class SettingsModel {
 
     public Coord getCityCoords() {
         return this.coords;
+    }
+
+    public String getCityName() {
+        return cityName;
     }
 }

@@ -21,4 +21,8 @@ public class PlaceName {
     public String getName() {
         return description;
     }
+
+    public String getPlaceId() {
+        return placeId;
+    }
 }

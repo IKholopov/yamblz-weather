@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.places.PlaceName;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * Created by igor on 7/25/17.
@@ -19,6 +22,8 @@ import butterknife.ButterKnife;
 public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adapter<CityNameAdapter.CityViewHolder>{
 
     PlacesAutocompleteModel data;
+
+    private final PublishSubject<PlaceName> dataSubject = PublishSubject.create();
 
     public CityNameAdapter(PlacesAutocompleteModel data) {
         this.data = data;
@@ -34,6 +39,7 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
     @Override
     public void onBindViewHolder(CityViewHolder holder, int position) {
         holder.cityName.setText(data.getPredictionAt(position).getName());
+        holder.itemView.setOnClickListener(view -> dataSubject.onNext(data.getPredictionAt(position)));
     }
 
     @Override
@@ -53,5 +59,9 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    public Observable<PlaceName> getSelectedPlace() {
+        return dataSubject;
     }
 }

@@ -1,18 +1,25 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
@@ -26,12 +33,17 @@ import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdap
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
+import org.reactivestreams.Subscription;
+
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.FAHRENHEIT;
@@ -50,8 +62,12 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     RadioButton rbFahrenheit;
     @BindView(R.id.rbUpdateInterval)
     RadioGroup rgUpdateInterval;
+    @BindView(R.id.tvCityLabel)
+    TextView tvCityLabel;
     @BindView(R.id.etSearchCity)
     EditText etSearchCity;
+    @BindView(R.id.bClear)
+    Button bClear;
     @BindView(R.id.rvCityAutocomplete)
     RecyclerView rvCityAutocomplete;
 
@@ -60,6 +76,9 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     private ConstraintSet normalSet;
     private ConstraintSet searchCitySet;
+
+    private CityNameAdapter adapter;
+    private Disposable adapterDisposable;
 
     private static final long INTERVAL_MULTIPLEXOR = 1 * 60 * 1000;
 
@@ -86,7 +105,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-
+        this.setRetainInstance(true);
         presenter.onAttach(this);
     }
 
@@ -104,12 +123,9 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         rgTempMetric.setOnCheckedChangeListener((radioGroup, checkedId) -> saveTemperatureMetric(radioGroup));
         rgUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
         etSearchCity.setOnFocusChangeListener((editText, hasFocus) -> onSearchCityEditTextSelected(hasFocus));
-        //DEBUG
-        etSearchCity.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.clearFocus();
-            }
+        bClear.setVisibility(View.INVISIBLE);
+        bClear.setOnClickListener((button) -> {
+            hideSelectCityMode(false);
         });
 
         setUpConstraintSets();
@@ -117,7 +133,9 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvCityAutocomplete.setLayoutManager(llm);
-        rvCityAutocomplete.setAdapter(new CityNameAdapter(null));
+        adapter = new CityNameAdapter(null);
+        adapterDisposable = null;
+        rvCityAutocomplete.setAdapter(adapter);
     }
 
     private void saveTemperatureMetric(RadioGroup radioGroup) {
@@ -177,6 +195,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     public void setSettings(SettingsModel settingsModel) {
         setTemperatureMetric(settingsModel.getMetric());
         setUpdateInterval(settingsModel.getUpdateWeatherInterval());
+        setCityName(settingsModel.getCityName());
     }
 
     @Override
@@ -186,7 +205,34 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
 
     @Override
     public void updateCitiesSuggestionList(PlacesAutocompleteModel places) {
-        rvCityAutocomplete.swapAdapter(new CityNameAdapter(places), false);
+        adapter = new CityNameAdapter(places);
+        if(adapterDisposable != null) {
+            adapterDisposable.dispose();
+        }
+        adapterDisposable = adapter.getSelectedPlace().subscribe(
+                (placeName -> {
+                    presenter.saveCity(placeName).subscribe(
+                            placeDetails -> etSearchCity.setText(placeDetails.getName()),
+                            error -> {
+                                displayError(error.getMessage());
+                                presenter.showSettings();
+                            }
+                    );
+                    hideSelectCityMode(true);
+                }),
+                error -> displayError(error.getMessage())
+            );
+        rvCityAutocomplete.swapAdapter(adapter, false);
+    }
+
+    @Override
+    public void displayError(String message) {
+        Context context = getContext();
+        if(context == null) {
+            return;
+        }
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void setTemperatureMetric(TemperatureMetric metric) {
@@ -207,16 +253,22 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
             rgUpdateInterval.check(R.id.rbMin180);
     }
 
+    private void setCityName(String name) {
+        etSearchCity.setText(name);
+    }
+
     private void setUpConstraintSets() {
         normalSet = new ConstraintSet();
         normalSet.clone(clSettings);
         searchCitySet = new ConstraintSet();
         searchCitySet.clone(normalSet);
+        searchCitySet.setVisibility(R.id.rvCityAutocomplete, ConstraintSet.VISIBLE);
+        searchCitySet.setVisibility(R.id.bClear, ConstraintSet.VISIBLE);
         searchCitySet.setVisibility(R.id.rgTempMetric, ConstraintSet.INVISIBLE);
         searchCitySet.setVisibility(R.id.rbUpdateInterval, ConstraintSet.INVISIBLE);
         searchCitySet.setVisibility(R.id.tvTemperature, ConstraintSet.INVISIBLE);
         searchCitySet.setVisibility(R.id.tvUpdateInterval, ConstraintSet.INVISIBLE);
-        searchCitySet.connect(R.id.etSearchCity, ConstraintSet.TOP, R.id.clSettings, ConstraintSet.TOP);
+        searchCitySet.connect(R.id.tvCityLabel, ConstraintSet.TOP, R.id.clSettings, ConstraintSet.TOP);
         searchCitySet.setVerticalBias(R.id.etSearchCity, 0.0f);
     }
 
@@ -232,5 +284,25 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
             set = normalSet;
         }
         set.applyTo(clSettings);
+    }
+
+    private void hideKeyboard() {
+        Activity activity = getActivity();
+        if(activity == null) {
+            return;
+        }
+        InputMethodManager inputManager = (InputMethodManager)
+                activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private void hideSelectCityMode(boolean cityChanged) {
+        hideKeyboard();
+        etSearchCity.clearFocus();
+        if(!cityChanged) {
+            presenter.showSettings();
+        }
     }
 }

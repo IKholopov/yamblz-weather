@@ -1,5 +1,9 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
+import android.util.Log;
+
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+import com.example.toor.yamblzweather.data.models.places.PlaceName;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
@@ -7,9 +11,20 @@ import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+
 public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsView> {
+
+    private static final String TAG  = "SettingsPresenter";
+
+    private static final int AUTOCOMPLETE_CALLDOWN  = 800;
+    private static final int NETWORK_TIMEOUT  = 5000;
 
     private SettingsInteractor interactor;
 
@@ -23,20 +38,35 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         App.getInstance().getAppComponent().inject(this);
     }
 
-    @Override
-    public void onAttach(SettingsView view) {
-        super.onAttach(view);
-    }
-
     public void showSettings() {
         if (getClass() != null) {
             unSubcribeOnDetach(interactor.getUserSettings().subscribe((settings, throwable) -> getView().setSettings(settings)));
-            unSubcribeOnDetach(getView().getSelectedCityObservable().subscribe(
-                    (input) -> interactor.getAutocomplete(input.toString()).subscribe(
-                            (places) -> getView().updateCitiesSuggestionList(places)
+            unSubcribeOnDetach(getView().getSelectedCityObservable().throttleLast(AUTOCOMPLETE_CALLDOWN, TimeUnit.MILLISECONDS).subscribe(
+                    input -> interactor.getAutocomplete(input.toString()).subscribe(
+                            places -> {
+                                SettingsView view = getView();
+                                if(view != null) {
+                                    view.updateCitiesSuggestionList(places);
+                                }
+                            },
+                            error -> {
+                                Log.e(TAG, "Failed to fetch place suggestions");
+                            }
                     )
             ));
         }
+    }
+
+    public Single<PlaceDetails> saveCity(PlaceName placeName) {
+        Single<PlaceDetails> request = interactor.getPlaceDetails(placeName.getPlaceId());
+        request.subscribe(
+                placeDetails -> {
+                    interactor.saveSelectedCity(placeDetails);
+                },
+                error -> Log.e(TAG, error.getMessage())
+        );
+        return request.timeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public void saveTemperatureMetric(TemperatureMetric metric) {

@@ -87,14 +87,15 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
         unbinder = ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        //int moscowCityId = 524901;
-        //presenter.saveSelectedCity(moscowCityId);
         presenter.getWeather();
     }
 
     @Override
     public void showCurrentWeather(FullWeatherModel fullWeatherModel) {
         String temperatureStr = getCurrentTemperatureString(fullWeatherModel);
+        if(tvTemp == null) {
+            return;
+        }
         tvTemp.setText(temperatureStr);
         tvCity.setText(fullWeatherModel.getCurrentWeather().getName());
         tvDescription.setText(fullWeatherModel.getCurrentWeather().getWeather().get(0).getDescription());
