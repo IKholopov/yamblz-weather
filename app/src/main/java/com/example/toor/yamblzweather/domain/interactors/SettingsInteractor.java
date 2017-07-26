@@ -39,6 +39,10 @@ public class SettingsInteractor {
         repository.saveSelectedCity(details);
     }
 
+    public String getSelectedCityName() {
+        return repository.getSelectedCityName();
+    }
+
     public Single<PlacesAutocompleteModel> getAutocomplete(String input) {
         return repository.loadPlacesAutocomplete(input);
     }

@@ -51,8 +51,8 @@ public class WeatherScheduleJob extends Job {
         if (BuildConfig.DEBUG)
             settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
                     new JobRequest.Builder(TAG)
-                            .setPeriodic(TimeUnit.MILLISECONDS.toMillis(300000)//61000)
-                                    , TimeUnit.MILLISECONDS.toMillis(300000))//35000))
+                            .setPeriodic(TimeUnit.MILLISECONDS.toMillis(61000)
+                                    , TimeUnit.MILLISECONDS.toMillis(35000))
                             .setUpdateCurrent(true)
                             .setPersisted(true)
                             .build()

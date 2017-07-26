@@ -31,7 +31,7 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name, null, false);
         CityViewHolder viewHolder = new CityViewHolder(view);
         return viewHolder;
     }

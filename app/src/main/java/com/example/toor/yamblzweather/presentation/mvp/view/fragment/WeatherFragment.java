@@ -91,13 +91,13 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     }
 
     @Override
-    public void showCurrentWeather(FullWeatherModel fullWeatherModel) {
+    public void showCurrentWeather(FullWeatherModel fullWeatherModel, String placeName) {
         String temperatureStr = getCurrentTemperatureString(fullWeatherModel);
         if(tvTemp == null) {
             return;
         }
         tvTemp.setText(temperatureStr);
-        tvCity.setText(fullWeatherModel.getCurrentWeather().getName());
+        tvCity.setText(placeName);
         tvDescription.setText(fullWeatherModel.getCurrentWeather().getWeather().get(0).getDescription());
         setImageFromName(fullWeatherModel.getCurrentWeather().getWeather().get(0).getIcon());
     }

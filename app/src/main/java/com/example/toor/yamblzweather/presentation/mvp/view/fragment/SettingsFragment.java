@@ -8,11 +8,9 @@ import android.support.constraint.ConstraintSet;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,10 +30,6 @@ import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.Draw
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 import com.jakewharton.rxbinding2.widget.RxTextView;
-
-import org.reactivestreams.Subscription;
-
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -68,6 +62,8 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     EditText etSearchCity;
     @BindView(R.id.bClear)
     Button bClear;
+    @BindView(R.id.bCancel)
+    Button bCancel;
     @BindView(R.id.rvCityAutocomplete)
     RecyclerView rvCityAutocomplete;
 
@@ -123,9 +119,13 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         rgTempMetric.setOnCheckedChangeListener((radioGroup, checkedId) -> saveTemperatureMetric(radioGroup));
         rgUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
         etSearchCity.setOnFocusChangeListener((editText, hasFocus) -> onSearchCityEditTextSelected(hasFocus));
+        bCancel.setVisibility(View.INVISIBLE);
+        bCancel.setOnClickListener((button) -> {
+            hideSelectCityMode(false);
+        });
         bClear.setVisibility(View.INVISIBLE);
         bClear.setOnClickListener((button) -> {
-            hideSelectCityMode(false);
+            etSearchCity.setText("");
         });
 
         setUpConstraintSets();
@@ -263,6 +263,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         searchCitySet = new ConstraintSet();
         searchCitySet.clone(normalSet);
         searchCitySet.setVisibility(R.id.rvCityAutocomplete, ConstraintSet.VISIBLE);
+        searchCitySet.setVisibility(R.id.bCancel, ConstraintSet.VISIBLE);
         searchCitySet.setVisibility(R.id.bClear, ConstraintSet.VISIBLE);
         searchCitySet.setVisibility(R.id.rgTempMetric, ConstraintSet.INVISIBLE);
         searchCitySet.setVisibility(R.id.rbUpdateInterval, ConstraintSet.INVISIBLE);
@@ -276,14 +277,12 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         if(clSettings == null) {
             return;
         }
-        TransitionManager.beginDelayedTransition(clSettings);
-        ConstraintSet set;
         if(hasFocus) {
-            set = searchCitySet;
+            TransitionManager.beginDelayedTransition(clSettings);
+            searchCitySet.applyTo(clSettings);
         } else {
-            set = normalSet;
+            hideKeyboard();
         }
-        set.applyTo(clSettings);
     }
 
     private void hideKeyboard() {
@@ -294,13 +293,17 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         InputMethodManager inputManager = (InputMethodManager)
                 activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+        inputManager.hideSoftInputFromWindow(etSearchCity.getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
+        etSearchCity.clearFocus();
     }
 
     private void hideSelectCityMode(boolean cityChanged) {
         hideKeyboard();
         etSearchCity.clearFocus();
+        TransitionManager.beginDelayedTransition(clSettings);
+        normalSet.applyTo(clSettings);
+        rvCityAutocomplete.swapAdapter(new CityNameAdapter(null), false);
         if(!cityChanged) {
             presenter.showSettings();
         }

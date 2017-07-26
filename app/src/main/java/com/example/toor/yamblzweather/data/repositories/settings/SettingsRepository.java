@@ -25,6 +25,8 @@ public interface SettingsRepository {
 
     void saveCacheTime(long time);
 
+    String getSelectedCityName();
+
     @Nullable
     Single<PlacesAutocompleteModel> loadPlacesAutocomplete(String input);
 

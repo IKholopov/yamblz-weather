@@ -33,7 +33,7 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
                 getView().showErrorFragment();
                 return;
             }
-            getView().showCurrentWeather(fullWeatherModel);
+            getView().showCurrentWeather(fullWeatherModel, settingsInteractor.getSelectedCityName());
         })));
     }
 
@@ -47,7 +47,7 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
                 getView().showErrorFragment();
                 return;
             }
-            getView().showCurrentWeather(fullWeatherModel);
+            getView().showCurrentWeather(fullWeatherModel, settingsInteractor.getSelectedCityName());
         })));
 
     }
