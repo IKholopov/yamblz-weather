@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.places.PlaceName;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,11 +24,11 @@ import io.reactivex.subjects.PublishSubject;
 
 public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adapter<CityNameAdapter.CityViewHolder>{
 
-    PlacesAutocompleteModel data;
+    ArrayList<PlaceModel> data;
 
-    private final PublishSubject<PlaceName> dataSubject = PublishSubject.create();
+    private final PublishSubject<PlaceModel> dataSubject = PublishSubject.create();
 
-    public CityNameAdapter(PlacesAutocompleteModel data) {
+    public CityNameAdapter(ArrayList<PlaceModel> data) {
         this.data = data;
     }
 
@@ -38,8 +41,8 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(CityViewHolder holder, int position) {
-        holder.cityName.setText(data.getPredictionAt(position).getName());
-        holder.itemView.setOnClickListener(view -> dataSubject.onNext(data.getPredictionAt(position)));
+        holder.cityName.setText(data.get(position).getName());
+        holder.itemView.setOnClickListener(view -> dataSubject.onNext(data.get(position)));
     }
 
     @Override
@@ -47,11 +50,10 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
         if(data == null) {
             return 0;
         }
-        return data.getSize();
+        return data.size();
     }
 
     public static class CityViewHolder extends RecyclerView.ViewHolder {
-
         @BindView(R.id.cityName)
         TextView cityName;
 
@@ -61,7 +63,7 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
         }
     }
 
-    public Observable<PlaceName> getSelectedPlace() {
+    public Observable<PlaceModel> getSelectedPlace() {
         return dataSubject;
     }
 }

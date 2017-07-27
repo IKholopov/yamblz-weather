@@ -8,6 +8,7 @@ import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
 
@@ -57,8 +58,8 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         }
     }
 
-    public Single<PlaceDetails> saveCity(PlaceName placeName) {
-        Single<PlaceDetails> request = interactor.getPlaceDetails(placeName.getPlaceId());
+    public Single<PlaceModel> fetchAndSaveCityDetails(PlaceModel placeModel) {
+        Single<PlaceModel> request = interactor.getPlaceDetails(placeModel.getPlaceId());
         request.subscribe(
                 placeDetails -> {
                     interactor.saveSelectedCity(placeDetails);

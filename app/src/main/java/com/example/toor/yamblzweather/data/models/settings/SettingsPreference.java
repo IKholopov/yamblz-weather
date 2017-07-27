@@ -73,10 +73,10 @@ public class SettingsPreference {
         editor.apply();
     }
 
-    public void saveSelectedCityCoords(Coord coords) {
+    public void saveSelectedCityCoords(double lat, double lon) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(CITY_LAT, coords.getLat().floatValue());
-        editor.putFloat(CITY_LON, coords.getLon().floatValue());
+        editor.putFloat(CITY_LAT, Double.valueOf(lat).floatValue());
+        editor.putFloat(CITY_LON, Double.valueOf(lon).floatValue());
         editor.apply();
     }
 

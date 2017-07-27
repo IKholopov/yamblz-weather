@@ -23,6 +23,7 @@ import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
@@ -30,6 +31,8 @@ import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.Draw
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -204,14 +207,14 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
-    public void updateCitiesSuggestionList(PlacesAutocompleteModel places) {
+    public void updateCitiesSuggestionList(ArrayList<PlaceModel> places) {
         adapter = new CityNameAdapter(places);
         if(adapterDisposable != null) {
             adapterDisposable.dispose();
         }
         adapterDisposable = adapter.getSelectedPlace().subscribe(
                 (placeName -> {
-                    presenter.saveCity(placeName).subscribe(
+                    presenter.fetchAndSaveCityDetails(placeName).subscribe(
                             placeDetails -> etSearchCity.setText(placeDetails.getName()),
                             error -> {
                                 displayError(error.getMessage());

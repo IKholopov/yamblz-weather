@@ -8,6 +8,7 @@ import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.network.PlacesService;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 
 import io.reactivex.Single;
@@ -43,9 +44,9 @@ public class SettingsRepositoryImpl implements SettingsRepository {
     }
 
     @Override
-    public void saveSelectedCity(PlaceDetails placeDetails) {
-        preference.saveSelectedCityCoords(placeDetails.getCoords());
-        preference.saveSelectedCityName(placeDetails.getName());
+    public void saveSelectedCity(PlaceModel model) {
+        preference.saveSelectedCityCoords(model.getLat(), model.getLon());
+        preference.saveSelectedCityName(model.getName());
     }
 
     @Override

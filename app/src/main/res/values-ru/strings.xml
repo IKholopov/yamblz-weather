@@ -18,5 +18,6 @@
     <string name="min_30">30 минут</string>
     <string name="min_60">1 час</string>
     <string name="min_180">3 часа</string>
+    <string name="city_location">Город</string>
 
 </resources>
