@@ -14,7 +14,6 @@ import io.reactivex.Observable;
 public interface SettingsView extends BaseView {
 
     void setSettings(SettingsModel settingsModel);
-    Observable<CharSequence> getSelectedCityObservable();
     void updateCitiesSuggestionList(ArrayList<PlaceModel> places);
     void displayError(String message);
 }

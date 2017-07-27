@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -42,19 +43,6 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
     public void showSettings() {
         if (getClass() != null) {
             unSubcribeOnDetach(interactor.getUserSettings().subscribe((settings, throwable) -> getView().setSettings(settings)));
-            unSubcribeOnDetach(getView().getSelectedCityObservable().throttleLast(AUTOCOMPLETE_CALLDOWN, TimeUnit.MILLISECONDS).subscribe(
-                    input -> interactor.getAutocomplete(input.toString()).subscribe(
-                            places -> {
-                                SettingsView view = getView();
-                                if(view != null) {
-                                    view.updateCitiesSuggestionList(places);
-                                }
-                            },
-                            error -> {
-                                Log.e(TAG, "Failed to fetch place suggestions");
-                            }
-                    )
-            ));
         }
     }
 
@@ -78,5 +66,21 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         interactor.saveUpdateInterval(interval);
 
         scheduleJob.startJob();
+    }
+
+    public void subscribeOnCityNameChanges(Observable<CharSequence> observable) {
+        unSubcribeOnDetach(observable.throttleLast(AUTOCOMPLETE_CALLDOWN, TimeUnit.MILLISECONDS).subscribe(
+                input -> interactor.getAutocomplete(input.toString()).subscribe(
+                        places -> {
+                            SettingsView view = getView();
+                            if(view != null) {
+                                view.updateCitiesSuggestionList(places);
+                            }
+                        },
+                        error -> {
+                            Log.e(TAG, "Failed to fetch place suggestions");
+                        }
+                )
+        ));
     }
 }

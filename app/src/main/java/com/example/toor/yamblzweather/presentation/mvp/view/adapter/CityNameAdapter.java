@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,13 +29,13 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
 
     private final PublishSubject<PlaceModel> dataSubject = PublishSubject.create();
 
-    public CityNameAdapter(ArrayList<PlaceModel> data) {
-        this.data = data;
+    public CityNameAdapter() {
+        this.data = null;
     }
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name, null, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name, parent, false);
         CityViewHolder viewHolder = new CityViewHolder(view);
         return viewHolder;
     }
@@ -65,5 +66,10 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
 
     public Observable<PlaceModel> getSelectedPlace() {
         return dataSubject;
+    }
+
+    public void updatePlaces(ArrayList<PlaceModel> data) {
+        this.data = data;
+        notifyDataSetChanged();
     }
 }

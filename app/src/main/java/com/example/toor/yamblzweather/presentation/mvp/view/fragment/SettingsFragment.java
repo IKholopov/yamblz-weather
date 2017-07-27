@@ -118,6 +118,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
         presenter.showSettings();
+        presenter.subscribeOnCityNameChanges(RxTextView.textChanges(etSearchCity));
 
         rgTempMetric.setOnCheckedChangeListener((radioGroup, checkedId) -> saveTemperatureMetric(radioGroup));
         rgUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
@@ -136,7 +137,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvCityAutocomplete.setLayoutManager(llm);
-        adapter = new CityNameAdapter(null);
+        adapter = new CityNameAdapter();
         adapterDisposable = null;
         rvCityAutocomplete.setAdapter(adapter);
     }
@@ -202,13 +203,8 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     @Override
-    public Observable<CharSequence> getSelectedCityObservable() {
-        return RxTextView.textChanges(etSearchCity);
-    }
-
-    @Override
     public void updateCitiesSuggestionList(ArrayList<PlaceModel> places) {
-        adapter = new CityNameAdapter(places);
+        adapter.updatePlaces(places);
         if(adapterDisposable != null) {
             adapterDisposable.dispose();
         }
@@ -225,7 +221,6 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
                 }),
                 error -> displayError(error.getMessage())
             );
-        rvCityAutocomplete.swapAdapter(adapter, false);
     }
 
     @Override
@@ -306,7 +301,6 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         etSearchCity.clearFocus();
         TransitionManager.beginDelayedTransition(clSettings);
         normalSet.applyTo(clSettings);
-        rvCityAutocomplete.swapAdapter(new CityNameAdapter(null), false);
         if(!cityChanged) {
             presenter.showSettings();
         }
