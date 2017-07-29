@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
@@ -39,7 +38,6 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
@@ -77,7 +75,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     private ConstraintSet searchCitySet;
 
     private CityNameAdapter adapter;
-    private Disposable adapterDisposable;
+    private ArrayList<Disposable> disposables;
 
     private static final long INTERVAL_MULTIPLEXOR = 1 * 60 * 1000;
 
@@ -104,7 +102,6 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Override
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-        this.setRetainInstance(true);
         presenter.onAttach(this);
     }
 
@@ -138,7 +135,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         rvCityAutocomplete.setLayoutManager(llm);
         adapter = new CityNameAdapter();
-        adapterDisposable = null;
+        disposables = null;
         rvCityAutocomplete.setAdapter(adapter);
     }
 
@@ -184,7 +181,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
+        onDispose();
         unbinder.unbind();
     }
 
@@ -205,25 +202,25 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     @Override
     public void updateCitiesSuggestionList(ArrayList<PlaceModel> places) {
         adapter.updatePlaces(places);
-        if(adapterDisposable != null) {
-            adapterDisposable.dispose();
+        if(disposables == null) {
+            disposables = new ArrayList<>();
         }
-        adapterDisposable = adapter.getSelectedPlace().subscribe(
+        if(disposables.size() > 0) {
+            onDispose();
+        }
+        disposables.add(adapter.getSelectedPlace().subscribe(
                 (placeName -> {
-                    presenter.fetchAndSaveCityDetails(placeName).subscribe(
+                    disposables.add(presenter.fetchAndSaveCityDetails(placeName).subscribe(
                             placeDetails -> etSearchCity.setText(placeDetails.getName()),
                             error -> {
-                                if(getContext() == null) {
-                                    return;
-                                }
                                 displayError(getContext().getString(R.string.failed_city_details));
                                 presenter.showSettings();
                             }
-                    );
+                    ));
                     hideSelectCityMode(true);
                 }),
                 error -> displayError(error.getMessage())
-            );
+            ));
     }
 
     @Override
@@ -283,6 +280,12 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
             searchCitySet.applyTo(clSettings);
         } else {
             hideKeyboard();
+        }
+    }
+
+    private void onDispose() {
+        for (Disposable disposable : disposables) {
+            disposable.dispose();
         }
     }
 

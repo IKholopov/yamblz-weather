@@ -146,7 +146,8 @@
             app:layout_constraintLeft_toLeftOf="parent" />
         <EditText
             android:id="@+id/etSearchCity"
-            android:inputType="textAutoComplete"
+            android:inputType="text"
+            android:selectAllOnFocus="true"
             android:imeOptions="flagNoExtractUi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
