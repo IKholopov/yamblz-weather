@@ -105,6 +105,7 @@ public class OWService {
 
     public
     @Nullable
+    @Deprecated
     Single<CurrentWeather> getCurrentWeather(int cityId) {
         return mOpenWeatherAPI.getCurrentWeather(
                 cityId,
