@@ -213,7 +213,10 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
                     presenter.fetchAndSaveCityDetails(placeName).subscribe(
                             placeDetails -> etSearchCity.setText(placeDetails.getName()),
                             error -> {
-                                displayError(error.getMessage());
+                                if(getContext() == null) {
+                                    return;
+                                }
+                                displayError(getContext().getString(R.string.failed_city_details));
                                 presenter.showSettings();
                             }
                     );

@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 import android.util.Log;
 
+import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.places.PlaceName;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
@@ -52,7 +53,7 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
                 placeDetails -> {
                     interactor.saveSelectedCity(placeDetails);
                 },
-                error -> Log.e(TAG, error.getMessage())
+                error -> Log.e(TAG, "Failed to fetch city details")
         );
         return request.timeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread());
