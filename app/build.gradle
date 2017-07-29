@@ -73,5 +73,13 @@ dependencies {
     compile "com.android.support:support-v4:$support_version"
 
 
-    testCompile 'junit:junit:4.12'
+    testCompile "junit:junit:$junit_version"
+    testCompile "org.hamcrest:hamcrest-library:$hamcrest_version"
+    testCompile "org.mockito:mockito-core:$mockito_version"
+    testCompile "org.powermock:powermock-api-mockito:$powermock_version"
+    testCompile "org.powermock:powermock-module-junit4:$powermock_version"
+
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 }
