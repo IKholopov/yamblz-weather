@@ -6,7 +6,7 @@ import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
-import com.example.toor.yamblzweather.domain.utils.OWSupportedLanguages;
+import com.example.toor.yamblzweather.domain.utils.APISupportedLanguages;
 
 import java.util.Locale;
 
@@ -23,7 +23,7 @@ public class OWService {
 
     private final OpenWeatherAPI mOpenWeatherAPI;
     private String mToken;
-    private OWSupportedLanguages mSelectedLanguage = OWSupportedLanguages.ENGLISH;
+    private APISupportedLanguages mSelectedLanguage = APISupportedLanguages.ENGLISH;
 
     /**
      * Main Service constructor.
@@ -50,55 +50,55 @@ public class OWService {
     public void setLanguage(Locale language) {
         switch (language.getLanguage()) {
             case "en":
-                mSelectedLanguage = OWSupportedLanguages.ENGLISH;
+                mSelectedLanguage = APISupportedLanguages.ENGLISH;
                 break;
             case "ru":
-                mSelectedLanguage = OWSupportedLanguages.RUSSIAN;
+                mSelectedLanguage = APISupportedLanguages.RUSSIAN;
                 break;
             case "it":
-                mSelectedLanguage = OWSupportedLanguages.ITALIAN;
+                mSelectedLanguage = APISupportedLanguages.ITALIAN;
                 break;
             case "es":
-                mSelectedLanguage = OWSupportedLanguages.SPANISH;
+                mSelectedLanguage = APISupportedLanguages.SPANISH;
                 break;
             case "ro":
-                mSelectedLanguage = OWSupportedLanguages.ROMANIAN;
+                mSelectedLanguage = APISupportedLanguages.ROMANIAN;
                 break;
             case "pl":
-                mSelectedLanguage = OWSupportedLanguages.POLISH;
+                mSelectedLanguage = APISupportedLanguages.POLISH;
                 break;
             case "fi":
-                mSelectedLanguage = OWSupportedLanguages.FINNISH;
+                mSelectedLanguage = APISupportedLanguages.FINNISH;
                 break;
             case "nl":
-                mSelectedLanguage = OWSupportedLanguages.DUTCH;
+                mSelectedLanguage = APISupportedLanguages.DUTCH;
                 break;
             case "fr":
-                mSelectedLanguage = OWSupportedLanguages.FRENCH;
+                mSelectedLanguage = APISupportedLanguages.FRENCH;
                 break;
             case "bg":
-                mSelectedLanguage = OWSupportedLanguages.BULGARIAN;
+                mSelectedLanguage = APISupportedLanguages.BULGARIAN;
                 break;
             case "sv":
-                mSelectedLanguage = OWSupportedLanguages.SWEDISH;
+                mSelectedLanguage = APISupportedLanguages.SWEDISH;
                 break;
             case "zh_tw":
-                mSelectedLanguage = OWSupportedLanguages.CHINESE_T;
+                mSelectedLanguage = APISupportedLanguages.CHINESE_T;
                 break;
             case "zh":
-                mSelectedLanguage = OWSupportedLanguages.CHINESE_S;
+                mSelectedLanguage = APISupportedLanguages.CHINESE_S;
                 break;
             case "tr":
-                mSelectedLanguage = OWSupportedLanguages.TURKISH;
+                mSelectedLanguage = APISupportedLanguages.TURKISH;
                 break;
             case "hr":
-                mSelectedLanguage = OWSupportedLanguages.CROATIAN;
+                mSelectedLanguage = APISupportedLanguages.CROATIAN;
                 break;
             case "co":
-                mSelectedLanguage = OWSupportedLanguages.CATALAN;
+                mSelectedLanguage = APISupportedLanguages.CATALAN;
                 break;
             default:
-                mSelectedLanguage = OWSupportedLanguages.ENGLISH;
+                mSelectedLanguage = APISupportedLanguages.ENGLISH;
                 break;
         }
     }

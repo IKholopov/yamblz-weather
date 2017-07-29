@@ -6,12 +6,11 @@ import android.support.annotation.Nullable;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.data.network.api.GooglePlacesAPI;
-import com.example.toor.yamblzweather.domain.utils.GooglePlacesSupportedLanguages;
+import com.example.toor.yamblzweather.domain.utils.APISupportedLanguages;
 import com.google.gson.GsonBuilder;
 
 import java.util.Locale;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -30,7 +29,7 @@ public class PlacesService {
 
     private final GooglePlacesAPI api;
     private String apiKey;
-    private GooglePlacesSupportedLanguages selectedLanguage = GooglePlacesSupportedLanguages.ENGLISH;
+    private APISupportedLanguages selectedLanguage = APISupportedLanguages.ENGLISH;
 
     public PlacesService(String apiKey) {
         this.apiKey = apiKey;
@@ -52,55 +51,55 @@ public class PlacesService {
     public void setLanguage(Locale language) {
         switch (language.getLanguage()) {
             case "en":
-                selectedLanguage = GooglePlacesSupportedLanguages.ENGLISH;
+                selectedLanguage = APISupportedLanguages.ENGLISH;
                 break;
             case "ru":
-                selectedLanguage = GooglePlacesSupportedLanguages.RUSSIAN;
+                selectedLanguage = APISupportedLanguages.RUSSIAN;
                 break;
             case "it":
-                selectedLanguage = GooglePlacesSupportedLanguages.ITALIAN;
+                selectedLanguage = APISupportedLanguages.ITALIAN;
                 break;
             case "es":
-                selectedLanguage = GooglePlacesSupportedLanguages.SPANISH;
+                selectedLanguage = APISupportedLanguages.SPANISH;
                 break;
             case "ro":
-                selectedLanguage = GooglePlacesSupportedLanguages.ROMANIAN;
+                selectedLanguage = APISupportedLanguages.ROMANIAN;
                 break;
             case "pl":
-                selectedLanguage = GooglePlacesSupportedLanguages.POLISH;
+                selectedLanguage = APISupportedLanguages.POLISH;
                 break;
             case "fi":
-                selectedLanguage = GooglePlacesSupportedLanguages.FINNISH;
+                selectedLanguage = APISupportedLanguages.FINNISH;
                 break;
             case "nl":
-                selectedLanguage = GooglePlacesSupportedLanguages.DUTCH;
+                selectedLanguage = APISupportedLanguages.DUTCH;
                 break;
             case "fr":
-                selectedLanguage = GooglePlacesSupportedLanguages.FRENCH;
+                selectedLanguage = APISupportedLanguages.FRENCH;
                 break;
             case "bg":
-                selectedLanguage = GooglePlacesSupportedLanguages.BULGARIAN;
+                selectedLanguage = APISupportedLanguages.BULGARIAN;
                 break;
             case "sv":
-                selectedLanguage = GooglePlacesSupportedLanguages.SWEDISH;
+                selectedLanguage = APISupportedLanguages.SWEDISH;
                 break;
             case "zh_tw":
-                selectedLanguage = GooglePlacesSupportedLanguages.CHINESE_T;
+                selectedLanguage = APISupportedLanguages.CHINESE_T;
                 break;
             case "zh":
-                selectedLanguage = GooglePlacesSupportedLanguages.CHINESE_S;
+                selectedLanguage = APISupportedLanguages.CHINESE_S;
                 break;
             case "tr":
-                selectedLanguage = GooglePlacesSupportedLanguages.TURKISH;
+                selectedLanguage = APISupportedLanguages.TURKISH;
                 break;
             case "hr":
-                selectedLanguage = GooglePlacesSupportedLanguages.CROATIAN;
+                selectedLanguage = APISupportedLanguages.CROATIAN;
                 break;
             case "co":
-                selectedLanguage = GooglePlacesSupportedLanguages.CATALAN;
+                selectedLanguage = APISupportedLanguages.CATALAN;
                 break;
             default:
-                selectedLanguage = GooglePlacesSupportedLanguages.ENGLISH;
+                selectedLanguage = APISupportedLanguages.ENGLISH;
                 break;
         }
     }
