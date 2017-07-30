@@ -5,7 +5,7 @@ import com.example.toor.yamblzweather.presentation.mvp.view.common.BaseView;
 
 public interface WeatherView extends BaseView {
 
-    void showCurrentWeather(FullWeatherModel fullWeatherModel, String plaveName);
+    void showCurrentWeather(FullWeatherModel fullWeatherModel, String placeName);
 
     void showErrorFragment();
 
