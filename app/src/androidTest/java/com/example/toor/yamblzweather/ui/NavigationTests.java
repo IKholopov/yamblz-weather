@@ -22,6 +22,7 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.hamcrest.core.IsNot.not;
 
 /**
  * Created by igor on 7/30/17.
@@ -68,6 +69,7 @@ public class NavigationTests {
                 .perform(click());
         onView(withId(R.id.tvCity)).check(matches(isDisplayed()));
     }
+
     @Test
     public void navigateToWeatherTest(){
         onView(allOf(withContentDescription(getString(R.string.navigation_drawer_open)),
@@ -75,5 +77,17 @@ public class NavigationTests {
         onView(allOf(withId(R.id.design_menu_item_text), withText(getString(R.string.title_weather)), isDisplayed()))
                 .perform(click());
         onView(withId(R.id.tvCity)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void navigateToCitySelectionTest(){
+        onView(allOf(withContentDescription(getString(R.string.navigation_drawer_open)),
+                withParent(withId(R.id.toolbar)), isDisplayed())).perform(click());
+        onView(allOf(withId(R.id.design_menu_item_text), withText(getString(R.string.title_settings)), isDisplayed()))
+                .perform(click());
+        onView(withId(R.id.etSearchCity)).perform(click());
+        onView(withId(R.id.tvTemperature)).check(matches(not(isDisplayed())));
+        onView(withId(R.id.bCancel)).perform(click());
+        onView(withId(R.id.tvTemperature)).check(matches(isDisplayed()));
     }
 }
