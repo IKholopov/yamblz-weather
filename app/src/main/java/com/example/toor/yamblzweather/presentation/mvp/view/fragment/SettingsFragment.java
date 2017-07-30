@@ -284,8 +284,10 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     }
 
     private void onDispose() {
-        for (Disposable disposable : disposables) {
-            disposable.dispose();
+        if(disposables != null) {
+            for (Disposable disposable : disposables) {
+                disposable.dispose();
+            }
         }
     }
 
