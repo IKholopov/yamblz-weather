@@ -43,7 +43,8 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
 
     public void showSettings() {
         if (getClass() != null) {
-            unSubcribeOnDetach(interactor.getUserSettings().subscribe((settings, throwable) -> getView().setSettings(settings)));
+            unSubcribeOnDetach(interactor.getUserSettings()
+                    .subscribe((settings, throwable) -> getView().setSettings(settings)));
         }
     }
 

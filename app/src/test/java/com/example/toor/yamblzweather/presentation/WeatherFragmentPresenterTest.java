@@ -76,7 +76,7 @@ public class WeatherFragmentPresenterTest {
         TestView testView = new TestView();
         WeatherFragmentPresenter presenter = preparePresenter(testView);
         presenter.updateWeather();
-        verify(weatherInteractor, only()).updateWeather(any());
+        verify(weatherInteractor, times(1)).updateWeather(any());
     }
 
     private static class TestView implements WeatherView {

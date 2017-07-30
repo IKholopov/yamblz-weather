@@ -18,4 +18,10 @@ public class SyncEntity {
             syncObject.notify();
         }
     }
+
+    public void waitTimeout(long millis) throws InterruptedException {
+        synchronized (syncObject) {
+            syncObject.wait(millis);
+        }
+    }
 }

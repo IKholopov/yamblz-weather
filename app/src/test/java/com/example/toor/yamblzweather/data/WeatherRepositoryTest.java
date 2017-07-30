@@ -45,8 +45,9 @@ import static org.powermock.api.mockito.PowerMockito.whenNew;
 @PrepareForTest({ Retrofit.Builder.class, Retrofit.class, OWService.class,
         App.class, WeatherRepositoryImpl.class})
 public class WeatherRepositoryTest {
-    private final static String TEST_CITY = "TestWeatherCity";
-    private final static Coord TEST_COORDS = new Coord(10, 10);
+
+    private static final String TEST_CITY = "TestWeatherCity";
+    private static final Coord TEST_COORDS = new Coord(10, 10);
 
     private AppMock mockedApp;
 

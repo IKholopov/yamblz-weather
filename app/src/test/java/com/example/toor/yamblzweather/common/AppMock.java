@@ -39,12 +39,14 @@ public class AppMock {
         appMock.mockedAppModule = mock(AppModule.class);
         appMock.mockedApp = mock(App.class);
         when(appMock.mockedAppModule.getContext()).thenReturn(appMock.context);
+
         Locale locale = new Locale("en");
         Resources resources = mock(Resources.class);
         Configuration configuration = new Configuration();
         configuration.locale = locale;
         when(resources.getConfiguration()).thenReturn(configuration);
         when(appMock.context.getResources()).thenReturn(resources);
+
         PowerMockito.mockStatic(App.class);
         PowerMockito.mockStatic(Locale.class);
         appMock.component = DaggerAppComponent.builder()
