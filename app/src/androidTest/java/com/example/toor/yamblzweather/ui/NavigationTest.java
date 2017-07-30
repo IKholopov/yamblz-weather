@@ -30,15 +30,10 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class NavigationTests {
+public class NavigationTest {
 
     @Rule
     public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class);
-
-    @After
-    public void tearDown() {
-        testRule.getActivity().getSupportLoaderManager().destroyLoader(0);
-    }
 
     private String getString(int res) {
         return App.getInstance().getString(res);
@@ -85,7 +80,7 @@ public class NavigationTests {
                 withParent(withId(R.id.toolbar)), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.design_menu_item_text), withText(getString(R.string.title_settings)), isDisplayed()))
                 .perform(click());
-        onView(withId(R.id.etSearchCity)).perform(click());
+        onView(withId(R.id.etSearchCity)).perform(scrollTo()).perform(click());
         onView(withId(R.id.tvTemperature)).check(matches(not(isDisplayed())));
         onView(withId(R.id.bCancel)).perform(click());
         onView(withId(R.id.tvTemperature)).check(matches(isDisplayed()));

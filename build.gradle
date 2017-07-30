@@ -40,4 +40,5 @@ ext {
     junit_version = '4.12'
     powermock_version = '1.6.2'
     greendao_version = '3.2.0'
+    espresso_version = '2.2.2'
 }
