@@ -2,8 +2,7 @@ package com.example.toor.yamblzweather.network;
 
 import android.support.test.runner.AndroidJUnit4;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
-import com.example.toor.yamblzweather.data.network.OWService;
+import com.example.toor.yamblzweather.SyncEntity;
 import com.example.toor.yamblzweather.data.network.PlacesService;
 import com.example.toor.yamblzweather.data.network.api.ApiKeys;
 import static org.hamcrest.MatcherAssert.*;

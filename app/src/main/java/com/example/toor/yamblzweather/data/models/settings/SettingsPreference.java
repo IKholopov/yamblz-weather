@@ -14,13 +14,13 @@ import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.from
 
 public class SettingsPreference {
 
-    private static final String TEMPERATURE_KEY = "temperature_key";
-    private static final String INTERVAL_KEY = "interval_key";
-    private static final String CITY_ID = "city_id";
-    private static final String CITY_LAT = "city_lat";
-    private static final String CITY_LON = "city_lon";
-    private static final String CITY_NAME = "city_name";
-    private static final String CACHE_TIME = "cache_time";
+    public static final String TEMPERATURE_KEY = "temperature_key";
+    public static final String INTERVAL_KEY = "interval_key";
+    public static final String CITY_ID = "city_id";
+    public static final String CITY_LAT = "city_lat";
+    public static final String CITY_LON = "city_lon";
+    public static final String CITY_NAME = "city_name";
+    public static final String CACHE_TIME = "cache_time";
 
     private static final long MIN_UPDATE_INTERVAL = 1 * 60 * 60 * 1000; // interval is 1 hour
 

@@ -73,9 +73,13 @@ dependencies {
     compile "com.android.support:support-v4:$support_version"
 
 
-    testCompile "junit:junit:$junit_version"
+    testCompile "junit:junit:$junit_version", {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
     testCompile "org.hamcrest:hamcrest-library:$hamcrest_version"
-    testCompile "org.mockito:mockito-core:$mockito_version"
+    testCompile "org.mockito:mockito-core:$mockito_version", {
+        exclude group: 'org.hamcrest', module: 'hamcrest-core'
+    }
     testCompile "org.powermock:powermock-api-mockito:$powermock_version"
     testCompile "org.powermock:powermock-module-junit4:$powermock_version"
 
