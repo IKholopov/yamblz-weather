@@ -45,11 +45,13 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 /**
+ * Tests for SettingsRepository and PlaceServices
  * Created by igor on 7/30/17.
  */
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Retrofit.Builder.class, Retrofit.class, PlacesService.class})
+
 public class SettingsRepositoryTest {
     private static final String TEST_CITY_NAME = "TestName";
     private static final int TEST_AUTOCOMPLETE_SIZE = 1;

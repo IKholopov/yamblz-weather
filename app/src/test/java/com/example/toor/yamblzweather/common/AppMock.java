@@ -1,16 +1,24 @@
 package com.example.toor.yamblzweather.common;
 
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 
+import com.example.toor.yamblzweather.data.models.places.Location;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
 import com.example.toor.yamblzweather.presentation.di.components.DaggerAppComponent;
 import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
+import com.example.toor.yamblzweather.presentation.di.modules.UtilsModule;
 
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
+import java.util.Locale;
+
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -18,7 +26,7 @@ import static org.mockito.Mockito.when;
  * Created by igor on 7/30/17.
  */
 
-@PrepareForTest(App.class)
+@PrepareForTest({ App.class, Locale.class, UtilsModule.class })
 public class AppMock {
     @Mock Context context;
     @Mock AppModule mockedAppModule;
@@ -31,10 +39,17 @@ public class AppMock {
         appMock.mockedAppModule = mock(AppModule.class);
         appMock.mockedApp = mock(App.class);
         when(appMock.mockedAppModule.getContext()).thenReturn(appMock.context);
+        Locale locale = new Locale("en");
+        Resources resources = mock(Resources.class);
+        Configuration configuration = new Configuration();
+        configuration.locale = locale;
+        when(resources.getConfiguration()).thenReturn(configuration);
+        when(appMock.context.getResources()).thenReturn(resources);
         PowerMockito.mockStatic(App.class);
+        PowerMockito.mockStatic(Locale.class);
         appMock.component = DaggerAppComponent.builder()
-                .appModule(appMock.mockedAppModule).build();
-        when(App.getInstance()).thenReturn(appMock.mockedApp);
+                .appModule(appMock.mockedAppModule).utilsModule(new UtilsModule()).build();
+        PowerMockito.when(App.getInstance()).thenReturn(appMock.mockedApp);
         when(appMock.mockedApp.getAppComponent()).thenReturn(appMock.component);
         return appMock;
     }
@@ -53,5 +68,9 @@ public class AppMock {
 
     public AppComponent getComponent() {
         return component;
+    }
+    public void setComponent(AppComponent component) {
+        this.component = component;
+        when(mockedApp.getAppComponent()).thenReturn(component);
     }
 }

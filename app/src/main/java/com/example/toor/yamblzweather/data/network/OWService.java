@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.data.network;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
@@ -47,7 +48,7 @@ public class OWService {
      *
      * @param language Locale of current language.
      */
-    public void setLanguage(Locale language) {
+    public void setLanguage(@NonNull Locale language) {
         switch (language.getLanguage()) {
             case "en":
                 mSelectedLanguage = APISupportedLanguages.ENGLISH;
