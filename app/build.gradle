@@ -2,14 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias RELEASE_KEY_ALIAS
-            keyPassword RELEASE_KEY_PASSWORD
-            storeFile file(RELEASE_STORE_FILE)
-            storePassword RELEASE_STORE_PASSWORD
-        }
-    }
+
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
@@ -26,7 +19,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.config
         }
     }
     compileOptions {
@@ -68,10 +60,7 @@ dependencies {
 
     compile "com.evernote:android-job:$android_job_version"
 
-    compile 'org.greenrobot:greendao:3.2.0'
-
-    compile "com.android.support:support-v4:$support_version"
-
+    compile "org.greenrobot:greendao:$greendao_version"
 
     testCompile "junit:junit:$junit_version", {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'

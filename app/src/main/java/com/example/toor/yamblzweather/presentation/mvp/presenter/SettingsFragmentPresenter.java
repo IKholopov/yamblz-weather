@@ -2,9 +2,6 @@ package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
 import android.util.Log;
 
-import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
-import com.example.toor.yamblzweather.data.models.places.PlaceName;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
@@ -20,14 +17,13 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 
 public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsView> {
 
-    private static final String TAG  = "SettingsPresenter";
+    private static final String TAG = "SettingsPresenter";
 
-    private static final int AUTOCOMPLETE_CALLDOWN  = 800;
-    private static final int NETWORK_TIMEOUT  = 5000;
+    private static final int AUTOCOMPLETE_CALLDOWN = 800;
+    private static final int NETWORK_TIMEOUT = 5000;
 
     private SettingsInteractor interactor;
 
@@ -75,7 +71,7 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
                 input -> interactor.getAutocomplete(input.toString()).subscribe(
                         places -> {
                             SettingsView view = getView();
-                            if(view != null) {
+                            if (view != null) {
                                 view.updateCitiesSuggestionList(places);
                             }
                         },
