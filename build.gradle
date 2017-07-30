@@ -39,4 +39,5 @@ ext {
     hamcrest_version = '1.3'
     junit_version = '4.12'
     powermock_version = '1.6.2'
+    greendao_version = '3.2.0'
 }
