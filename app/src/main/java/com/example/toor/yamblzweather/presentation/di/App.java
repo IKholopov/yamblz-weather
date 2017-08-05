@@ -29,7 +29,7 @@ public class App extends Application {
         setInstance(this);
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
 
-        startJob();
+        //TODO startJob();
     }
 
     private void startJob() {

@@ -23,4 +23,12 @@ public class Location {
     public double getLat() {
         return lat;
     }
+
+    public void setLon(double lng) {
+        this.lng = lng;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
 }

@@ -21,7 +21,7 @@ public class AppModule {
     public AppModule(@NonNull Context appContext) {
         this.context = appContext;
 
-        initScheduleJob();
+        //TODO initScheduleJob();
     }
 
     private void initScheduleJob() {

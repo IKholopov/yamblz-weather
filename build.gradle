@@ -41,4 +41,8 @@ ext {
     powermock_version = '1.6.2'
     greendao_version = '3.2.0'
     espresso_version = '2.2.2'
+    leakcanary_version = '1.5.1'
+    cupboard_version = '2.2.0'
+    rxcupboard_version = '2.0'
+    robolectric_version = '3.3'
 }

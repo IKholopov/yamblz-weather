@@ -9,9 +9,19 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class PlaceDetails {
+    private long id;
+
     @SerializedName("result")
     @Expose
-    private PlaceDetailsResult result;
+    private PlaceDetailsResult result = new PlaceDetailsResult();
+
+    public static PlaceDetails newInstance(long id, Coord coords, String name) {
+        PlaceDetails place = new PlaceDetails();
+        place.id = id;
+        place.setCoords(coords);
+        place.setName(name);
+        return place;
+    }
 
     public Coord getCoords() {
         Location location = result.getLocation();
@@ -20,6 +30,21 @@ public class PlaceDetails {
 
     public String getName() {
         return result.getName();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setName(String name) {
+        result.setName(name);
+    }
+
+    public void setCoords(Coord coords) {
+        Location location = new Location();
+        location.setLat(coords.getLat());
+        location.setLon(coords.getLon());
+        result.setLocation(location);
     }
 }
 

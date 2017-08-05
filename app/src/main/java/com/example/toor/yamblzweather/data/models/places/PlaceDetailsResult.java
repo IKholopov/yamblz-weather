@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 public class PlaceDetailsResult {
     @SerializedName("geometry")
     @Expose
-    private Geometry geometry;
+    private Geometry geometry = new Geometry();
 
     @SerializedName("name")
     @Expose
@@ -18,5 +18,13 @@ public class PlaceDetailsResult {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLocation(Location location) {
+        geometry.setLocation(location);
     }
 }
