@@ -5,21 +5,26 @@ import android.support.annotation.NonNull;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherPagerFragment;
 
 import javax.inject.Inject;
 import javax.inject.Scope;
 
 import io.reactivex.Single;
 
+@ActivityScope
 public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView> {
 
     private WeatherInteractor weatherInteractor;
     private SettingsInteractor settingsInteractor;
-    private PlaceModel place;
+
+    @Inject
+    WeatherPagerPresenter pagerPresenter;
 
     @Inject
     public WeatherFragmentPresenter(WeatherInteractor weatherInteractor, SettingsInteractor settingsInteractor) {
@@ -27,38 +32,38 @@ public class WeatherFragmentPresenter extends BaseFragmentPresenter<WeatherView>
         this.settingsInteractor = settingsInteractor;
     }
 
-    public void setPlace(@NonNull PlaceModel placeModel) {
-        this.place = placeModel;
+    public Single<PlaceModel> getPlace(int position) {
+        return pagerPresenter.getPlaces().map(list -> {
+            if(position < list.size()) {
+                return list.get(position);
+            }
+            return null;
+        });
     }
 
-    public void getWeather() {
-        if (getView() == null)
+    public void getWeather(PlaceModel place, WeatherView view) {
+        if (view == null)
             return;
         unSubcribeOnDetach(weatherInteractor.getWeatherFromDB(place).subscribe((weather, throwable)
                 -> {
             if (throwable != null) {
-                getView().showErrorFragment();
+                view.showErrorFragment();
                 return;
             }
-            getView().showCurrentWeather(weather, place.getName());
+            view.showCurrentWeather(weather, place.getName());
         }));
     }
 
-    public void onAttach(WeatherView view, PlaceModel place) {
-        this.place = place;
-        super.onAttach(view);
-    }
-
-    public void updateWeather() {
-        if (getView() == null)
+    public void updateWeather(PlaceModel place,  WeatherView view) {
+        if ( view == null)
             return;
         unSubcribeOnDetach(weatherInteractor.updateWeather(place).subscribe((weather, throwable)
                 -> {
             if (throwable != null) {
-                getView().showErrorFragment();
+                view.showErrorFragment();
                 return;
             }
-            getView().showCurrentWeather(weather, place.getName());
+            view.showCurrentWeather(weather, place.getName());
         }));
     }
 

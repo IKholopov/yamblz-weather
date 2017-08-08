@@ -28,7 +28,7 @@ import butterknife.Unbinder;
 public class WeatherPagerFragment extends BaseFragment implements WeatherPagerView{
 
     private Unbinder unbinder;
-    private PagerAdapter pagerAdapter;
+    private WeatherPlacesAdapter pagerAdapter;
 
     @Inject
     WeatherPagerPresenter presenter;
@@ -69,11 +69,17 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherPagerVi
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_pager, container, false);
         unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        presenter.updatePlacesList();
         presenter.getPlaces().subscribe(list -> {
             pagerAdapter = new WeatherPlacesAdapter(list, getChildFragmentManager());
+            weatherPager.setAdapter(null);
             weatherPager.setAdapter(pagerAdapter);
         });
-        return view;
     }
 
     @Override

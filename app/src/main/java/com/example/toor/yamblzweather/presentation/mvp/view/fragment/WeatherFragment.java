@@ -16,7 +16,6 @@ import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetricConverter;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
@@ -48,18 +47,20 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     private Unbinder unbinder;
 
     private PlaceModel placeModel;
+    private int position;
 
     private static final String IMAGE_RESOURCES_SUFFIX = "icon_";
     private static final String IMAGE_RESOURCES_FOLDER = "drawable";
-    private static final String PLACE_KEY = "place_key";
+    private static final String POSITION_KEY = "position_key";
 
     @Inject
     WeatherFragmentPresenter presenter;
 
-    public static WeatherFragment newInstance(PlaceModel place)
+    public static WeatherFragment newInstance(PlaceModel place, int position)
     {
         WeatherFragment fragment = new WeatherFragment();
         fragment.placeModel = place;
+        fragment.position = position;
         return fragment;
     }
 
@@ -97,16 +98,21 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
         unbinder = ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(this);
         if(savedInstanceState != null) {
-            placeModel = new PlaceModel.Builder(savedInstanceState.getParcelable(PLACE_KEY)).build();
+            position = savedInstanceState.getInt(POSITION_KEY);
         }
-        presenter.setPlace(placeModel);
-        presenter.getWeather();
+        presenter.getPlace(position).subscribe(place -> {
+            if(place == null) {
+                return;
+            }
+            placeModel = place;
+            presenter.getWeather(place, this);
+        });
     }
 
     @Override
     public void onSaveInstanceState(Bundle outBundle) {
         super.onSaveInstanceState(outBundle);
-        outBundle.putParcelable(PLACE_KEY, placeModel);
+        outBundle.putInt(POSITION_KEY, position);
     }
 
     @Override
@@ -180,8 +186,11 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
 
     @Override
     public void onRefresh() {
+        if(placeModel == null) {
+            return;
+        }
         swipeRefreshLayout.setRefreshing(true);
-        presenter.updateWeather();
+        presenter.updateWeather(placeModel, this);
         swipeRefreshLayout.setRefreshing(false);
 
     }

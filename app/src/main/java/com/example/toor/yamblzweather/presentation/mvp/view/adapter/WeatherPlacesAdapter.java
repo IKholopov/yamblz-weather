@@ -17,7 +17,7 @@ import java.util.List;
  * Created by igor on 8/6/17.
  */
 
-public class WeatherPlacesAdapter extends FragmentStatePagerAdapter {
+public class WeatherPlacesAdapter extends FragmentPagerAdapter {
 
     private List<PlaceModel> places;
 
@@ -31,8 +31,17 @@ public class WeatherPlacesAdapter extends FragmentStatePagerAdapter {
         return places.size();
     }
 
+    /*@Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }*/
+
     @Override
     public Fragment getItem(int position) {
-        return WeatherFragment.newInstance(places.get(position));
+        return WeatherFragment.newInstance(places.get(position), position);
+    }
+
+    public void setPlaces(@NonNull List<PlaceModel> places) {
+        this.places = places;
     }
 }
