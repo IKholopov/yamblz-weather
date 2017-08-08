@@ -140,7 +140,7 @@ public class OWService {
     }
 
     public
-    @Nullable
+    @NonNull
     Single<ExtendedWeather> getExtendedWeather(Coord coords) {
         return mOpenWeatherAPI.getFiveDayExtendedWeather(
                 coords.getLat(),

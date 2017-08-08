@@ -11,9 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetricConverter;
 import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
@@ -25,6 +27,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 
@@ -43,14 +47,20 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
 
     private Unbinder unbinder;
 
+    private PlaceModel placeModel;
+
     private static final String IMAGE_RESOURCES_SUFFIX = "icon_";
     private static final String IMAGE_RESOURCES_FOLDER = "drawable";
+    private static final String PLACE_KEY = "place_key";
 
     @Inject
     WeatherFragmentPresenter presenter;
 
-    public static WeatherFragment newInstance() {
-        return new WeatherFragment();
+    public static WeatherFragment newInstance(PlaceModel place)
+    {
+        WeatherFragment fragment = new WeatherFragment();
+        fragment.placeModel = place;
+        return fragment;
     }
 
     @Override
@@ -86,29 +96,46 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(this);
-
+        if(savedInstanceState != null) {
+            placeModel = new PlaceModel.Builder(savedInstanceState.getParcelable(PLACE_KEY)).build();
+        }
+        presenter.setPlace(placeModel);
         presenter.getWeather();
     }
 
     @Override
-    public void showCurrentWeather(FullWeatherModel fullWeatherModel, String placeName) {
-        String temperatureStr = getCurrentTemperatureString(fullWeatherModel);
-        if(tvTemp == null) {
-            return;
-        }
-        tvTemp.setText(temperatureStr);
-        tvCity.setText(placeName);
-        tvDescription.setText(fullWeatherModel.getCurrentWeather().getWeather().get(0).getDescription());
-        setImageFromName(fullWeatherModel.getCurrentWeather().getWeather().get(0).getIcon());
+    public void onSaveInstanceState(Bundle outBundle) {
+        super.onSaveInstanceState(outBundle);
+        outBundle.putParcelable(PLACE_KEY, placeModel);
     }
 
-    private String getCurrentTemperatureString(FullWeatherModel fullWeatherModel) {
-        TemperatureMetric metric = fullWeatherModel.getTemperatureMetric();
-        double temperature = fullWeatherModel.getCurrentWeather().getMain().getTemp();
-        String metricStr = convertMetricToString(metric);
-        int temperatureRound = TemperatureMetricConverter.getSupportedTemperature(temperature, metric);
-        String temperatureStr = String.valueOf(temperatureRound);
-        return temperatureStr + " " + metricStr;
+    @Override
+    public void showCurrentWeather(ExtendedWeather weather, String placeName) {
+        getCurrentTemperatureString(weather).observeOn(AndroidSchedulers.mainThread())
+                .subscribe( temperatureStr -> {
+                    if (tvTemp == null) {
+                        return;
+                    }
+                    tvTemp.setText(temperatureStr);
+                    tvCity.setText(placeName);
+                    if(weather.getList().size() > 0) {
+                        tvDescription.setText(weather.getList().get(0).getWeather().get(0).getDescription());
+                        setImageFromName(weather.getList().get(0).getWeather().get(0).getIcon());
+                    }
+                });
+    }
+
+    private Single<String> getCurrentTemperatureString(ExtendedWeather weather) {
+        return presenter.getMetric().map(metric -> {
+            if(weather.getList().size() == 0) {
+                return "No weather downloaded";
+            }
+            double temperature = weather.getList().get(0).getMain().getTemp();
+            String metricStr = convertMetricToString(metric);
+            int temperatureRound = TemperatureMetricConverter.getSupportedTemperature(temperature, metric);
+            String temperatureStr = String.valueOf(temperatureRound);
+            return temperatureStr + " " + metricStr;
+        });
     }
 
     @Override

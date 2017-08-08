@@ -21,8 +21,6 @@ import io.reactivex.Single;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.calls;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -46,15 +44,13 @@ public class WeatherFragmentPresenterTest {
 
     @Before
     public void prepare() {
-        when(weatherInteractor.getFullWeatherFromDB(any())).thenReturn(
+        when(weatherInteractor.getWeatherFromDB(any())).thenReturn(
                 Single.fromCallable(
-                        () -> new FullWeatherModel(new CurrentWeather(), new ExtendedWeather(), TemperatureMetric.CELSIUS )
-                )
+                        ExtendedWeather::new)
         );
         when(weatherInteractor.updateWeather(any())).thenReturn(
                 Single.fromCallable(
-                        () -> new FullWeatherModel(new CurrentWeather(), new ExtendedWeather(), TemperatureMetric.CELSIUS )
-                )
+                        ExtendedWeather::new)
         );
         when(settingsInteractor.getUserSettings()).thenReturn(
                 Single.fromCallable(
@@ -84,7 +80,7 @@ public class WeatherFragmentPresenterTest {
         private boolean displayedError = false;
 
         @Override
-        public void showCurrentWeather(FullWeatherModel fullWeatherModel, String placeName) {
+        public void showCurrentWeather(ExtendedWeather weather, String placeName) {
             displayedWeather = true;
         }
 

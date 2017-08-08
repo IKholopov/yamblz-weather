@@ -4,16 +4,16 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.common.Main;
 import com.example.toor.yamblzweather.data.models.weather.common.Weather;
 import com.example.toor.yamblzweather.data.models.weather.common.Wind;
+import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.domain.utils.TimeUtils;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import java.lang.reflect.Field;
 import java.security.InvalidParameterException;
@@ -37,7 +37,7 @@ import nl.qbusict.cupboard.CupboardBuilder;
  * Created by igor on 8/2/17.
  */
 
-public class CupboardDB extends SQLiteOpenHelper {
+public class CupboardDB extends SQLiteOpenHelper implements DataBase{
 
     private static final String DATABASE_NAME = "CupboardWeather.db";
     private static final int DATABASE_VERSION = 7;
@@ -77,37 +77,54 @@ public class CupboardDB extends SQLiteOpenHelper {
         addCompositeUniqueConstraint(sqLiteDatabase, WeatherDBModel.class, getWeatherConstraintNames());
     }
 
+    @NonNull
+    @Override
     public Flowable<PlaceDetails> getPlaces() {
         return getDatabase().query(PlaceDBModel.class).subscribeOn(Schedulers.io())
                 .map(this::modelToPlaceDetails);
     }
 
-    public Flowable<WeatherForecastElement> getWeather(PlaceDetails placeDetails) {
+    @NonNull
+    @Override
+    public Flowable<WeatherForecastElement> getWeather(@NonNull PlaceDetails placeDetails) {
         long id = placeDetails.getId();
         return getDatabase().query(getDatabase().buildQuery(WeatherDBModel.class)
                 .withSelection("placeId = ?", String.valueOf(id)).orderBy("date"))
                 .subscribeOn(Schedulers.io()).map(this::modelToForecastElement);
     }
 
-    public Single<Long> clearAfterDate(Calendar date) {
+    @NonNull
+    @Override
+    public Single<Long> clearBeforeDate(@NonNull Calendar date) {
         long normalizeDate = TimeUtils.normalizeDate(date.getTimeInMillis() / 1000);
         return getDatabase().delete(WeatherDBModel.class, "date < ?", String.valueOf(normalizeDate))
                     .subscribeOn(Schedulers.io());
     }
 
+    @NonNull
+    @Override
     public Single<Long> deletePlace(long placeId) {
         return getDatabase().delete(PlaceDBModel.class, "_id = ?", String.valueOf(placeId))
                 .subscribeOn(Schedulers.io());
     }
 
-    public void addOrUpdateWeather(FullWeatherModel fullWeatherModel, long placeId, Action onComplete) {
-        Observable.fromIterable((fullWeatherModel.getWeatherForecast().getList())).subscribeOn(Schedulers.io())
+    @NonNull
+    @Override
+    public Single<Long> deleteWeatherForPlace(long placeId) {
+        return getDatabase().delete(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId))
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, long placeId, @NonNull Action onComplete) {
+        Observable.fromIterable((weatherModel.getList())).subscribeOn(Schedulers.io())
                 .flatMapSingle(forecast -> getDatabase().put(forecastToDBModel(forecast, placeId)))
                 .doOnComplete(onComplete)
                 .subscribe(getDatabase().put());
     }
 
-    public void addPlace(PlaceDetails place, Action onComplete) {
+    @Override
+    public void addPlace(@NonNull PlaceDetails place, @NonNull Action onComplete) {
         PlaceDBModel model = placeDetailsToModel(place);
         getDatabase().query(PlaceDBModel.class, "latitude = ? AND longitude = ?",
                 String.valueOf(place.getCoords().getLat()),
@@ -119,7 +136,8 @@ public class CupboardDB extends SQLiteOpenHelper {
                 .subscribe(existing -> model._id = existing._id);
     }
 
-    public void addCurrentLocation(PlaceDetails place, Action onComplete) {
+    @Override
+    public void addCurrentLocation(@NonNull PlaceDetails place, @NonNull Action onComplete) {
         PlaceDBModel model = placeDetailsToModel(place,true);
         getDatabase().query(PlaceDBModel.class, "currentLocation = 1").subscribeOn(Schedulers.io())
                 .doOnComplete(() -> Flowable.just(model).subscribeOn(Schedulers.io())
@@ -129,7 +147,7 @@ public class CupboardDB extends SQLiteOpenHelper {
                 .subscribe(existing -> model._id = existing._id);
     }
 
-    private WeatherDBModel forecastToDBModel(WeatherForecastElement forecast, long placeId) {
+    private WeatherDBModel forecastToDBModel(@NonNull WeatherForecastElement forecast, long placeId) {
         Main main = forecast.getMain();
         Weather weather = forecast.getWeather().get(0);
         return new WeatherDBModel(TimeUtils.normalizeDate(forecast.getDt()), placeId,
@@ -178,6 +196,7 @@ public class CupboardDB extends SQLiteOpenHelper {
         List<Weather> listWeather = new ArrayList<>();
         listWeather.add(weather);
         element.setWeather(listWeather);
+        element.setDt(model.date.intValue());
         return element;
     }
 

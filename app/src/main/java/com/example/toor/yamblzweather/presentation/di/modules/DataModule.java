@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.example.toor.yamblzweather.data.database.CupboardDB;
 import com.example.toor.yamblzweather.data.database.DataBase;
 import com.example.toor.yamblzweather.data.models.settings.SettingsPreference;
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.data.network.PlacesService;
 import com.example.toor.yamblzweather.data.repositories.info.InfoRepository;
 import com.example.toor.yamblzweather.data.repositories.info.InfoRepositoryImpl;
+import com.example.toor.yamblzweather.data.repositories.places.PlacesRepository;
+import com.example.toor.yamblzweather.data.repositories.places.PlacesRepositoryImpl;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepositoryImpl;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
@@ -27,6 +30,12 @@ public class DataModule {
     @Singleton
     WeatherRepository provideWeatherRepository(DataBase dataBase, OWService service) {
         return new WeatherRepositoryImpl(dataBase, service);
+    }
+
+    @Provides
+    @Singleton
+    PlacesRepository providePlacesRepository(DataBase dataBase, PlacesService service) {
+        return new PlacesRepositoryImpl(dataBase, service);
     }
 
     @Provides
@@ -56,6 +65,6 @@ public class DataModule {
     @Provides
     @Singleton
     DataBase provideDataBase(Context context) {
-        return new DataBase(context);
+        return new CupboardDB(context);
     }
 }

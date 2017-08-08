@@ -3,8 +3,13 @@ package com.example.toor.yamblzweather.data;
 import com.example.toor.yamblzweather.common.AnswerWithSelf;
 import com.example.toor.yamblzweather.common.AppMock;
 import com.example.toor.yamblzweather.data.database.DataBase;
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+import com.example.toor.yamblzweather.data.models.weather.common.Main;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.data.network.api.ApiKeys;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
@@ -22,6 +27,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.observers.TestObserver;
@@ -48,12 +54,15 @@ public class WeatherRepositoryTest {
 
     private static final String TEST_CITY = "TestWeatherCity";
     private static final Coord TEST_COORDS = new Coord(10, 10);
+    private static final int TEST_DT = 10;
 
     private AppMock mockedApp;
+    private PlaceDetails place;
+    private City city;
 
     @Mock OpenWeatherAPI api;
     @Mock DataBase dataBase;
-    @Mock CurrentWeather weather;
+    @Mock ExtendedWeather weather;
 
     private WeatherRepository prepareWeatherRepository() {
         return new WeatherRepositoryImpl(dataBase, new OWService(ApiKeys.OPEN_WEATHER_MAP_API_KEY));
@@ -74,33 +83,42 @@ public class WeatherRepositoryTest {
         whenNew(Retrofit.Builder.class).withNoArguments().thenReturn(builder);
         doReturn(retrofit).when(builder).build();
 
-        when(weather.getName()).thenReturn(TEST_CITY);
-        when(api.getCurrentWeatherForCoords(eq(TEST_COORDS.getLat()), eq(TEST_COORDS.getLon()),
+        city = new City();
+        city.setName(TEST_CITY);
+        city.setCoord(TEST_COORDS);
+
+        when(weather.getCity()).thenReturn(city);
+        when(api.getFiveDayExtendedWeather(eq(TEST_COORDS.getLat()), eq(TEST_COORDS.getLon()),
                 anyString(), anyString())).thenReturn(Single.fromCallable(() -> weather));
 
-        CurrentWeather testWeather = new CurrentWeather();
-        testWeather.setCoord(TEST_COORDS);
-        testWeather.setName(TEST_CITY);
-        when(dataBase.getCurrentWeather(any())).thenReturn(Single.fromCallable(() -> testWeather));
+        WeatherForecastElement testWeather = new WeatherForecastElement();
+
+        place = new PlaceDetails();
+        place.setCoords(TEST_COORDS);
+        place.setName(TEST_CITY);
+
+        testWeather.setDt(TEST_DT);
+
+        when(dataBase.getWeather(any())).thenReturn(Flowable.fromCallable(() -> testWeather));
     }
 
     @Test
     public void loadCurrentWeatherFromNWTest() {
         WeatherRepository repository = prepareWeatherRepository();
-        TestObserver<CurrentWeather> testObserver = new TestObserver<>();
-        repository.loadCurrentWeatherFromNW(TEST_COORDS).subscribe(testObserver);
+        TestObserver<ExtendedWeather> testObserver = new TestObserver<>();
+        repository.loadExtendedWeatherFromNW(place).subscribe(testObserver);
         testObserver.awaitTerminalEvent();
         testObserver.assertNoErrors();
-        testObserver.assertValue(weather -> weather.getName().equals(TEST_CITY));
+        testObserver.assertValue(weather -> weather.getCity().getName().equals(TEST_CITY));
     }
 
     @Test
     public void loadCurrentWeatherFromDBTest() {
         WeatherRepository repository = prepareWeatherRepository();
-        TestObserver<CurrentWeather> testObserver = new TestObserver<>();
-        repository.getCurrentWeatherFromDB(TEST_COORDS).subscribe(testObserver);
+        TestObserver<ExtendedWeather> testObserver = new TestObserver<>();
+        repository.getExtendedWeatherFromDB(place).subscribe(testObserver);
         testObserver.awaitTerminalEvent();
         testObserver.assertNoErrors();
-        testObserver.assertValue(weather -> weather.getName().equals(TEST_CITY));
+        testObserver.assertValue(weather -> weather.getList().get(0).getDt().equals(TEST_DT));
     }
 }

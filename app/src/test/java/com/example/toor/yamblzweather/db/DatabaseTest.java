@@ -12,8 +12,6 @@ import com.example.toor.yamblzweather.data.models.weather.common.Weather;
 import com.example.toor.yamblzweather.data.models.weather.common.Wind;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
-import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import org.junit.After;
 import org.junit.Before;
@@ -42,13 +40,13 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @Config(constants = BuildConfig.class, sdk = {LOLLIPOP})
 public class DatabaseTest {
 
-    private FullWeatherModel testModel;
+    private ExtendedWeather testModel;
     private PlaceDetails placeDetails;
     private CupboardDB cupboardDb;
 
     @Before
     public void prepare() {
-        ExtendedWeather weather = new ExtendedWeather();
+        testModel = new ExtendedWeather();
         List<WeatherForecastElement> elements = new ArrayList<>();
         WeatherForecastElement element = new WeatherForecastElement();
         element.setDt(1501772400);
@@ -73,8 +71,7 @@ public class DatabaseTest {
         element2.setMain(main);
         elements.add(element);
         elements.add(element2);
-        weather.setList(elements);
-        testModel = new FullWeatherModel(null, weather, TemperatureMetric.CELSIUS);
+        testModel.setList(elements);
 
         placeDetails = new PlaceDetails();
         placeDetails.setName("TestName");
@@ -93,7 +90,8 @@ public class DatabaseTest {
                     .subscribe(before -> {
                         try {
                             assertThat(before, equalTo(0L));
-                            cupboardDb.addOrUpdateWeather(testModel, placeId, () -> db.query(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId)).count()
+                            cupboardDb.addOrUpdateWeather(testModel, placeId, () ->
+                                    db.query(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId)).count()
                                     .subscribe(count ->
                                             sync.runAssertion(() -> assertThat(count, equalTo(2L)))
                                     ));
@@ -117,9 +115,9 @@ public class DatabaseTest {
                     .subscribe(before -> {
                         try {
                             assertThat(before, equalTo(0L));
-                            testModel.getWeatherForecast().getList().get(0).setDt(2000000000);
+                            testModel.getList().get(0).setDt(2000000000);
                             cupboardDb.addOrUpdateWeather(testModel, placeId, () -> {
-                                testModel.getWeatherForecast().getList().get(0).setDt(300000000);
+                                testModel.getList().get(0).setDt(300000000);
                                 cupboardDb.addOrUpdateWeather(testModel, placeId, () -> {
                                     db.query(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId)).count()
                                             .subscribe(count ->
@@ -144,10 +142,10 @@ public class DatabaseTest {
         long firstDate = calendar.getTimeInMillis() / 1000;
         calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 1);
         long secondDate = calendar.getTimeInMillis() / 1000;
-        testModel.getWeatherForecast().getList().get(0).setDt((int)firstDate);
-        testModel.getWeatherForecast().getList().get(1).setDt((int)secondDate);
+        testModel.getList().get(0).setDt((int)firstDate);
+        testModel.getList().get(1).setDt((int)secondDate);
         cupboardDb.addOrUpdateWeather(testModel, placeId, () -> {
-            cupboardDb.clearAfterDate(calendar).subscribe(cleared ->
+            cupboardDb.clearBeforeDate(calendar).subscribe(cleared ->
                     sync.runAssertion(() -> assertThat(cleared, equalTo(1L))));
         });
         assertThat(sync.waitFor(), equalTo(true));
@@ -223,6 +221,17 @@ public class DatabaseTest {
                     cupboardDb.getWeather(placeDetails).count()
                             .subscribe(count ->
                                 sync.runAssertion(() -> assertThat(count, equalTo(2L))))));
+        assertThat(sync.waitFor(), equalTo(true));
+    }
+
+    @Test
+    public void testDeleteWeatherForPlace() throws InterruptedException {
+        SyncEntity sync = new SyncEntity();
+        cupboardDb.addOrUpdateWeather(testModel, placeDetails.getId(), () ->
+                cupboardDb.addOrUpdateWeather(testModel, placeDetails.getId() + 1, () ->
+                        cupboardDb.deleteWeatherForPlace(placeDetails.getId())
+                                .subscribe(count ->
+                                        sync.runAssertion(() -> assertThat(count, equalTo(2L))))));
         assertThat(sync.waitFor(), equalTo(true));
     }
 

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.example.toor.yamblzweather.BuildConfig;
+import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.di.App;
@@ -26,6 +27,9 @@ public class WeatherScheduleJob extends Job {
     @Inject
     SettingsInteractor settingsInteractor;
 
+    @Inject
+    PlacesInteractor placesInteractor;
+
     public WeatherScheduleJob() {
         App.getInstance().plusActivityComponent().inject(this);
     }
@@ -40,10 +44,9 @@ public class WeatherScheduleJob extends Job {
     }
 
     private void serializeCurrentWeather() {
-        settingsInteractor.getUserSettings()
-                .subscribe((settingsModel, throwable)
-                        -> weatherInteractor.updateWeather(settingsModel.getSelectedCityId()).subscribe(fullWeatherModel -> {
-                }));
+        placesInteractor.getAllPlaces()
+                .subscribe(place -> weatherInteractor.updateWeather(place)
+                        .subscribe(weather -> {}));
     }
 
     public void startJob() {

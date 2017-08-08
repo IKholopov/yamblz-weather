@@ -1,22 +1,19 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.transition.TransitionManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.toor.yamblzweather.R;
@@ -29,7 +26,6 @@ import com.example.toor.yamblzweather.presentation.mvp.view.SettingsView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.ArrayList;
 
@@ -57,16 +53,8 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     RadioButton rbFahrenheit;
     @BindView(R.id.rbUpdateInterval)
     RadioGroup rgUpdateInterval;
-    @BindView(R.id.tvCityLabel)
-    TextView tvCityLabel;
-    @BindView(R.id.etSearchCity)
-    EditText etSearchCity;
-    @BindView(R.id.bClear)
-    Button bClear;
-    @BindView(R.id.bCancel)
-    Button bCancel;
-    @BindView(R.id.rvCityAutocomplete)
-    RecyclerView rvCityAutocomplete;
+    @BindView(R.id.bPlaces)
+    Button bPlaces;
 
     @Inject
     SettingsFragmentPresenter presenter;
@@ -115,28 +103,19 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
         presenter.showSettings();
-        presenter.subscribeOnCityNameChanges(RxTextView.textChanges(etSearchCity));
+        //presenter.subscribeOnCityNameChanges(RxTextView.textChanges(etSearchCity));
 
         rgTempMetric.setOnCheckedChangeListener((radioGroup, checkedId) -> saveTemperatureMetric(radioGroup));
         rgUpdateInterval.setOnCheckedChangeListener((radioGroup, checkedId) -> saveUpdateInterval(radioGroup));
-        etSearchCity.setOnFocusChangeListener((editText, hasFocus) -> onSearchCityEditTextSelected(hasFocus));
-        bCancel.setVisibility(View.INVISIBLE);
-        bCancel.setOnClickListener((button) -> {
-            hideSelectCityMode(false);
-        });
-        bClear.setVisibility(View.INVISIBLE);
-        bClear.setOnClickListener((button) -> {
-            etSearchCity.setText("");
-        });
 
-        setUpConstraintSets();
+        //setUpConstraintSets();
+
+        bPlaces.setOnClickListener(buttonView -> openPlacesList());
 
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        rvCityAutocomplete.setLayoutManager(llm);
         adapter = new CityNameAdapter();
         disposables = null;
-        rvCityAutocomplete.setAdapter(adapter);
     }
 
     private void saveTemperatureMetric(RadioGroup radioGroup) {
@@ -196,12 +175,12 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
     public void setSettings(SettingsModel settingsModel) {
         setTemperatureMetric(settingsModel.getMetric());
         setUpdateInterval(settingsModel.getUpdateWeatherInterval());
-        setCityName(settingsModel.getCityName());
+        //setCityName(settingsModel.getCityName());
     }
 
     @Override
     public void updateCitiesSuggestionList(ArrayList<PlaceModel> places) {
-        adapter.updatePlaces(places);
+  /*      adapter.updatePlaces(places);
         if(disposables == null) {
             disposables = new ArrayList<>();
         }
@@ -221,6 +200,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
                 }),
                 error -> displayError(error.getMessage())
             ));
+            */
     }
 
     @Override
@@ -251,7 +231,20 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
             rgUpdateInterval.check(R.id.rbMin180);
     }
 
-    private void setCityName(String name) {
+    private void openPlacesList() {
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        String fragmentName = PlacesListFragment.class.getSimpleName();
+        Fragment fragment = manager.findFragmentByTag(fragmentName);
+        if(fragment == null) {
+            fragment = PlacesListFragment.newInstance();
+            manager.beginTransaction().replace(R.id.flContent, fragment, fragmentName)
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .addToBackStack(null)
+                    .commit();
+        }
+    }
+
+    /*private void setCityName(String name) {
         etSearchCity.setText(name);
     }
 
@@ -269,9 +262,9 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         searchCitySet.setVisibility(R.id.tvUpdateInterval, ConstraintSet.INVISIBLE);
         searchCitySet.connect(R.id.tvCityLabel, ConstraintSet.TOP, R.id.clSettings, ConstraintSet.TOP);
         searchCitySet.setVerticalBias(R.id.etSearchCity, 0.0f);
-    }
+    }*/
 
-    private void onSearchCityEditTextSelected(boolean hasFocus) {
+    /*private void onSearchCityEditTextSelected(boolean hasFocus) {
         if(clSettings == null) {
             return;
         }
@@ -281,7 +274,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         } else {
             hideKeyboard();
         }
-    }
+    }*/
 
     private void onDispose() {
         if(disposables != null) {
@@ -291,7 +284,7 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         }
     }
 
-    private void hideKeyboard() {
+    /*private void hideKeyboard() {
         Activity activity = getActivity();
         if(activity == null) {
             return;
@@ -312,5 +305,5 @@ public class SettingsFragment extends BaseFragment implements SettingsView {
         if(!cityChanged) {
             presenter.showSettings();
         }
-    }
+    }*/
 }

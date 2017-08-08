@@ -10,20 +10,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPagerPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.adapter.WeatherPlacesAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherPagerFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.functions.Action;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements DrawerLocker {
+public class MainActivity extends AppCompatActivity implements DrawerLocker, OnBackBehaviour {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.nav_view)
     NavigationView nvDrawer;
@@ -33,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
     Toolbar toolbar;
 
     private ActionBarDrawerToggle toggle;
+    private Action onBackAction;
 
     private Unbinder unbinder;
 
@@ -45,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
         setupDrawerContent(nvDrawer);
 
         if (savedInstanceState == null) {
-            WeatherFragment weatherFragment = WeatherFragment.newInstance();
+            WeatherPagerFragment weatherFragment = WeatherPagerFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.flContent, weatherFragment, WeatherFragment.class.getSimpleName()).commit();
         }
     }
@@ -90,25 +98,21 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
                 fragmentClass = WeatherFragment.class;
         }
 
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentClass.getSimpleName());
-        if (fragment == null) {
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.flContent, fragment, fragmentClass.getSimpleName())
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .addToBackStack(null)
-                        .commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        popFragment(fragmentClass);
 
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     @Override
     public void onBackPressed() {
+        if(onBackAction != null) {
+            try {
+                onBackAction.run();
+                return;
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to run onBackAction!");
+            }
+        }
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
         else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
@@ -131,6 +135,27 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker {
             setDrawerUnlocked();
         else
             setDrawerLocked();
+    }
+
+    @Override
+    public void setOnBackBehaviour(Action action) {
+        onBackAction = action;
+    }
+
+    private void popFragment(Class fragmentClass) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(fragmentClass.getSimpleName());
+        if (fragment == null) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.flContent, fragment, fragmentClass.getSimpleName())
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .addToBackStack(null)
+                        .commit();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setDrawerLocked() {

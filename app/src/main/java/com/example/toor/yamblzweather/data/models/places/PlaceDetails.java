@@ -1,5 +1,7 @@
 package com.example.toor.yamblzweather.data.models.places;
 
+import android.support.annotation.Nullable;
+
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -9,13 +11,13 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class PlaceDetails {
-    private long id;
+    private Long id;
 
     @SerializedName("result")
     @Expose
     private PlaceDetailsResult result = new PlaceDetailsResult();
 
-    public static PlaceDetails newInstance(long id, Coord coords, String name) {
+    public static PlaceDetails newInstance(@Nullable Long id, Coord coords, String name) {
         PlaceDetails place = new PlaceDetails();
         place.id = id;
         place.setCoords(coords);
@@ -32,7 +34,7 @@ public class PlaceDetails {
         return result.getName();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

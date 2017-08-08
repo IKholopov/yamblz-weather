@@ -55,9 +55,9 @@ public class ErrorFragment extends BaseFragment implements ConnectionErrorView {
 
     @Override
     public void showWeatherFragment() {
-        getActivity().getSupportFragmentManager().beginTransaction()
+        /*getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.flContent, WeatherFragment.newInstance(), ErrorFragment.class.getSimpleName())
-                .commit();
+                .commit();*/
     }
 
     @Override
