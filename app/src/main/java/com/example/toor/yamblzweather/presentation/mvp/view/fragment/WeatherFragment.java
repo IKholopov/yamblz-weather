@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.utils.ViewUtils;
 import com.example.toor.yamblzweather.presentation.di.App;
@@ -19,6 +22,7 @@ import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.adapter.ForecastAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
@@ -40,10 +44,13 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     ImageView ivCurrentWeatherImage;
     @BindView(R.id.swiper)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.rvForecast)
+    RecyclerView forecastList;
 
     private Unbinder unbinder;
 
     private PlaceModel placeModel;
+    private ForecastAdapter forecastAdapter;
     private int position;
 
     private static final String IMAGE_RESOURCES_SUFFIX = "icon_";
@@ -94,6 +101,12 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(this);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
+        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        forecastList.setLayoutManager(llm);
+        forecastAdapter = new ForecastAdapter(null,
+                App.getInstance().plusActivityComponent());
+        forecastList.setAdapter(forecastAdapter);
         if(savedInstanceState != null) {
             position = savedInstanceState.getInt(POSITION_KEY);
         }
@@ -113,11 +126,12 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     }
 
     @Override
-    public void showCurrentWeather(ExtendedWeather weather, String placeName) {
+    public void showWeather(DailyWeather weather, String placeName) {
         if(weather.getList().size() == 0) {
             setWeatherString("No downloaded weather :)", placeName, weather);
         }
         else {
+            forecastAdapter.updateForecast(weather.getList());
             presenter.getCurrentTemperatureString(weather.getList().get(0))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(temperatureStr -> {
@@ -132,7 +146,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     }
 
     private void setWeatherString(@NonNull String temperatureStr, String placeName,
-                                      ExtendedWeather weather) {
+                                      DailyWeather weather) {
         if (tvTemp == null) {
             return;
         }

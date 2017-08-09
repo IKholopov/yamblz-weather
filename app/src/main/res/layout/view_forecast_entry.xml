@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="wrap_content"
     android:layout_height="match_parent">
     <ImageView
         android:id="@+id/ivForecastIcon"
@@ -8,6 +8,7 @@
         android:layout_height="@dimen/forecast_small_icon_size" />
     <TextView
         android:id="@+id/tvTemperature"
+        android:textSize="@dimen/info_app_name_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

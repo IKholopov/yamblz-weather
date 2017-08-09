@@ -44,7 +44,7 @@ public class OWServiceNetTest {
         SyncEntity syncEntity = new SyncEntity();
         service.getExtendedWeather(testCoords)
                 .subscribe(weather -> {
-                    assertThat(weather.getList().get(0).getMain().getTemp(),
+                    assertThat((double)weather.getList().get(0).getTemp().getDay(),
                             closeTo(300.0, 80.0));
                     syncEntity.notifyOne();
                 });

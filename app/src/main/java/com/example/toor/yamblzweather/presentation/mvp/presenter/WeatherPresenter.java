@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
@@ -73,9 +74,9 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
         });
     }
 
-    public Single<String> getCurrentTemperatureString(@NonNull WeatherForecastElement weather) {
+    public Single<String> getCurrentTemperatureString(@NonNull DailyForecastElement weather) {
         return getMetric().map(metric -> {
-            double temperature = weather.getMain().getTemp();
+            double temperature = weather.getTemp().getDay();
             String metricStr = convertMetricToString(metric);
             int temperatureRound = TemperatureMetricConverter.getSupportedTemperature(temperature, metric);
             String temperatureStr = String.valueOf(temperatureRound);
@@ -100,20 +101,21 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
                 view.showErrorFragment();
                 return;
             }
-            view.showCurrentWeather(weather, place.getName());
+            view.showWeather(weather, place.getName());
         }));
     }
 
     public void updateWeather(PlaceModel place,  WeatherView view) {
         if ( view == null)
             return;
-        unSubcribeOnDetach(weatherInteractor.updateWeather(place).subscribe((weather, throwable)
+        unSubcribeOnDetach(weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
+                .subscribe((weather, throwable)
                 -> {
             if (throwable != null) {
                 view.showErrorFragment();
                 return;
             }
-            view.showCurrentWeather(weather, place.getName());
+            view.showWeather(weather, place.getName());
         }));
     }
 

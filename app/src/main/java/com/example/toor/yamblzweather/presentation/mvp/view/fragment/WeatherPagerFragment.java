@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
@@ -89,7 +90,7 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView {
     }
 
     @Override
-    public void showCurrentWeather(ExtendedWeather weather, String placeName) {
+    public void showWeather(DailyWeather weather, String placeName) {
         return;
     }
 

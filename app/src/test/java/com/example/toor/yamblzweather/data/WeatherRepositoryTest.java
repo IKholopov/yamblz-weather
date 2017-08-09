@@ -8,6 +8,8 @@ import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.common.Main;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.data.network.OWService;
@@ -35,6 +37,7 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -62,7 +65,7 @@ public class WeatherRepositoryTest {
 
     @Mock OpenWeatherAPI api;
     @Mock DataBase dataBase;
-    @Mock ExtendedWeather weather;
+    @Mock DailyWeather weather;
 
     private WeatherRepository prepareWeatherRepository() {
         return new WeatherRepositoryImpl(dataBase, new OWService(ApiKeys.OPEN_WEATHER_MAP_API_KEY));
@@ -89,9 +92,9 @@ public class WeatherRepositoryTest {
 
         when(weather.getCity()).thenReturn(city);
         when(api.getFiveDayExtendedWeather(eq(TEST_COORDS.getLat()), eq(TEST_COORDS.getLon()),
-                anyString(), anyString())).thenReturn(Single.fromCallable(() -> weather));
+                anyString(), anyString(), anyInt())).thenReturn(Single.fromCallable(() -> weather));
 
-        WeatherForecastElement testWeather = new WeatherForecastElement();
+        DailyForecastElement testWeather = new DailyForecastElement();
 
         place = new PlaceDetails();
         place.setCoords(TEST_COORDS);
@@ -105,7 +108,7 @@ public class WeatherRepositoryTest {
     @Test
     public void loadCurrentWeatherFromNWTest() {
         WeatherRepository repository = prepareWeatherRepository();
-        TestObserver<ExtendedWeather> testObserver = new TestObserver<>();
+        TestObserver<DailyWeather> testObserver = new TestObserver<>();
         repository.loadExtendedWeatherFromNW(place).subscribe(testObserver);
         testObserver.awaitTerminalEvent();
         testObserver.assertNoErrors();
@@ -115,7 +118,7 @@ public class WeatherRepositoryTest {
     @Test
     public void loadCurrentWeatherFromDBTest() {
         WeatherRepository repository = prepareWeatherRepository();
-        TestObserver<ExtendedWeather> testObserver = new TestObserver<>();
+        TestObserver<DailyWeather> testObserver = new TestObserver<>();
         repository.getExtendedWeatherFromDB(place).subscribe(testObserver);
         testObserver.awaitTerminalEvent();
         testObserver.assertNoErrors();

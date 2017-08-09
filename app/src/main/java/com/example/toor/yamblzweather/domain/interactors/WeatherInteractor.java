@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
@@ -30,14 +31,14 @@ public class WeatherInteractor {
 
     private
     @NonNull
-    Single<ExtendedWeather> getExtendedWeather(PlaceDetails placeDetails) {
+    Single<DailyWeather> getExtendedWeather(PlaceDetails placeDetails) {
         return weatherRepository.getExtendedWeatherFromDB(placeDetails)
                 .onErrorResumeNext(throwable -> weatherRepository.loadExtendedWeatherFromNW(placeDetails));
     }
 
     private
     @NonNull
-    Single<ExtendedWeather> updateExtendedWeather(PlaceDetails placeDetails) {
+    Single<DailyWeather> updateExtendedWeather(PlaceDetails placeDetails) {
         return weatherRepository.loadExtendedWeatherFromNW(placeDetails)
                 .onErrorResumeNext(throwable -> weatherRepository.getExtendedWeatherFromDB(placeDetails));
     }
@@ -50,7 +51,7 @@ public class WeatherInteractor {
 
     public
     @NonNull
-    Single<ExtendedWeather> getWeatherFromDB(PlaceModel place) {
+    Single<DailyWeather> getWeatherFromDB(PlaceModel place) {
         PlaceDetails details = detailsFromModel(place);
         return getExtendedWeather(details)
                 .doOnSuccess(weatherModel -> weatherRepository.saveWeather(weatherModel, details));
@@ -58,7 +59,7 @@ public class WeatherInteractor {
 
     public
     @NonNull
-    Single<ExtendedWeather> updateWeather(PlaceModel place) {
+    Single<DailyWeather> updateWeather(PlaceModel place) {
         PlaceDetails details = detailsFromModel(place);
         return updateExtendedWeather(details)
                 .doOnSuccess(weatherModel -> weatherRepository.saveWeather(weatherModel, details));

@@ -3,6 +3,8 @@ package com.example.toor.yamblzweather.data.database;
 import android.support.annotation.NonNull;
 
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 
@@ -18,7 +20,7 @@ public interface DataBase {
     Flowable<PlaceDetails> getPlaces();
 
     @NonNull
-    Flowable<WeatherForecastElement> getWeather(@NonNull PlaceDetails placeDetails);
+    Flowable<DailyForecastElement> getWeather(@NonNull PlaceDetails placeDetails);
 
     @NonNull
     Single<Long> clearBeforeDate(@NonNull Calendar date);
@@ -29,7 +31,7 @@ public interface DataBase {
     @NonNull
     Single<Long> deleteWeatherForPlace(Long placeId);
 
-    void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, Long placeId,
+    void addOrUpdateWeather(@NonNull DailyWeather weatherModel, Long placeId,
                             @NonNull Action onComplete);
 
     void addPlace(@NonNull PlaceDetails place, @NonNull Action onComplete);

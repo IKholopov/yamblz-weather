@@ -8,8 +8,11 @@ import com.example.toor.yamblzweather.data.database.WeatherDBModel;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.common.Main;
+import com.example.toor.yamblzweather.data.models.weather.common.Temp;
 import com.example.toor.yamblzweather.data.models.weather.common.Weather;
 import com.example.toor.yamblzweather.data.models.weather.common.Wind;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 
@@ -41,35 +44,34 @@ import static org.hamcrest.core.IsEqual.equalTo;
 @Config(constants = BuildConfig.class, sdk = {LOLLIPOP})
 public class DatabaseTest {
 
-    private ExtendedWeather testModel;
+    private DailyWeather testModel;
     private PlaceDetails placeDetails;
     private CupboardDB cupboardDb;
 
     @Before
     public void prepare() {
-        testModel = new ExtendedWeather();
-        List<WeatherForecastElement> elements = new ArrayList<>();
-        WeatherForecastElement element = new WeatherForecastElement();
+        testModel = new DailyWeather();
+        List<DailyForecastElement> elements = new ArrayList<>();
+        DailyForecastElement element = new DailyForecastElement();
         element.setDt(1501772400);
         Weather weatherInfo = new Weather();
         List<Weather> weatherList = new ArrayList<>();
         weatherList.add(weatherInfo);
         element.setWeather(weatherList);
-        Main main = new Main();
-        main.setHumidity(0);
-        main.setPressure(0.);
-        main.setTempMax(0.);
-        main.setTempMin(0.);
-        Wind wind = new Wind();
-        wind.setDeg(0.);
-        wind.setSpeed(0.);
-        element.setWind(wind);
-        element.setMain(main);
-        WeatherForecastElement element2 = new WeatherForecastElement();
+        element.setHumidity(0);
+        element.setPressure(0);
+        Temp temp = new Temp();
+        temp.setMax(0);
+        temp.setMin(0);
+        element.setTemp(temp);
+        element.setDeg(0);
+        element.setSpeed(0);
+        DailyForecastElement element2 = new DailyForecastElement();
         element2.setDt(1601772400);
         element2.setWeather(weatherList);
-        element2.setWind(wind);
-        element2.setMain(main);
+        element2.setTemp(temp);
+        element2.setPressure(0);
+        element2.setHumidity(0);
         elements.add(element);
         elements.add(element2);
         testModel.setList(elements);

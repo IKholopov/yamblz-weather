@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
@@ -28,13 +29,13 @@ public interface WeatherRepository {
     Single<CurrentWeather> loadCurrentWeatherFromNW(Coord coord);*/
 
     @NonNull
-    Single<ExtendedWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails);
+    Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails);
 
     /*@Nullable
     Single<ExtendedWeather> getExtendedWeatherFromDB(Coord coords);*/
 
     @NonNull
-    Single<ExtendedWeather> loadExtendedWeatherFromNW(PlaceDetails placeDetails);
+    Single<DailyWeather> loadExtendedWeatherFromNW(PlaceDetails placeDetails);
 
     @NonNull
     Single<Long> clearOldRecords(Calendar date);
@@ -45,5 +46,5 @@ public interface WeatherRepository {
     /*@Nullable
     Single<ExtendedWeather> loadExtendedWeatherFromNW(Coord coords);*/
 
-    void saveWeather(@NonNull ExtendedWeather weather, @NonNull PlaceDetails placeDetails);
+    void saveWeather(@NonNull DailyWeather weather, @NonNull PlaceDetails placeDetails);
 }

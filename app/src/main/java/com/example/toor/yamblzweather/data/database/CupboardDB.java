@@ -9,8 +9,11 @@ import android.support.annotation.NonNull;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.common.Main;
+import com.example.toor.yamblzweather.data.models.weather.common.Temp;
 import com.example.toor.yamblzweather.data.models.weather.common.Weather;
 import com.example.toor.yamblzweather.data.models.weather.common.Wind;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.domain.utils.TimeUtils;
@@ -86,7 +89,7 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
 
     @NonNull
     @Override
-    public Flowable<WeatherForecastElement> getWeather(@NonNull PlaceDetails placeDetails) {
+    public Flowable<DailyForecastElement> getWeather(@NonNull PlaceDetails placeDetails) {
         Long id = placeDetails.getId();
         return getDatabase().query(getDatabase().buildQuery(WeatherDBModel.class)
                 .withSelection("placeId = ?", String.valueOf(id)).orderBy("date"))
@@ -116,7 +119,7 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
     }
 
     @Override
-    public void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, Long placeId, @NonNull Action onComplete) {
+    public void addOrUpdateWeather(@NonNull DailyWeather weatherModel, Long placeId, @NonNull Action onComplete) {
         Observable.fromIterable((weatherModel.getList())).subscribeOn(Schedulers.io())
                 .flatMapSingle(forecast -> getDatabase().put(forecastToDBModel(forecast, placeId)))
                 .doOnComplete(onComplete)
@@ -146,16 +149,16 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
                 .subscribe(existing -> model._id = existing._id);
     }
 
-    private WeatherDBModel forecastToDBModel(@NonNull WeatherForecastElement forecast, Long placeId) {
-        Main main = forecast.getMain();
+    private WeatherDBModel forecastToDBModel(@NonNull DailyForecastElement forecast, Long placeId) {
+        Temp temp = forecast.getTemp();
         Weather weather = forecast.getWeather().get(0);
         return new WeatherDBModel(TimeUtils.normalizeDate(forecast.getDt()), placeId,
-                main.getTempMin().floatValue(),
-                main.getTempMax().floatValue(),
-                main.getHumidity().longValue(),
-                main.getPressure().floatValue(),
-                forecast.getWind().getSpeed().floatValue(),
-                forecast.getWind().getDeg().floatValue(),
+                temp.getMin(),
+                temp.getMax(),
+                (long) forecast.getHumidity(),
+                forecast.getPressure(),
+                forecast.getSpeed(),
+                (float) forecast.getDeg(),
                 weather.getDescription(), weather.getIcon());
     }
 
@@ -174,20 +177,17 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
                 model.name, model.apiId);
     }
 
-    private WeatherForecastElement modelToForecastElement(WeatherDBModel model) {
-        WeatherForecastElement element = new WeatherForecastElement();
-        Main main = new Main();
-        main.setTempMax(model.tempMax.doubleValue());
-        main.setTempMin(model.tempMin.doubleValue());
-        main.setTemp((model.tempMax.doubleValue() + model.tempMin.doubleValue()) / 2);
-        main.setPressure(model.pressure.doubleValue());
-        main.setHumidity(model.humidity.intValue());
-        main.setTempKf(main.getTemp() + 273);
-        element.setMain(main);
-        Wind wind = new Wind();
-        wind.setDeg(model.windDirection.doubleValue());
-        wind.setSpeed(model.windSpeed.doubleValue());
-        element.setWind(wind);
+    private DailyForecastElement modelToForecastElement(WeatherDBModel model) {
+        DailyForecastElement element = new DailyForecastElement();
+        Temp temp = new Temp();
+        temp.setMax(model.tempMax);
+        temp.setMin(model.tempMin);
+        temp.setDay((model.tempMax + model.tempMin) / 2);
+        element.setTemp(temp);
+        element.setPressure(model.pressure);
+        element.setHumidity(model.humidity.intValue());
+        element.setDeg(model.windDirection.intValue());
+        element.setSpeed(model.windSpeed);
         Weather weather = new Weather();
         weather.setDescription(model.weatherDescription);
         weather.setIcon(model.weatherIcon);

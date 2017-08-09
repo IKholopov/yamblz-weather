@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.presentation;
 
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
@@ -54,11 +55,11 @@ public class WeatherFragmentPresenterTest {
 
         when(weatherInteractor.getWeatherFromDB(any())).thenReturn(
                 Single.fromCallable(
-                        ExtendedWeather::new)
+                        DailyWeather::new)
         );
         when(weatherInteractor.updateWeather(any())).thenReturn(
                 Single.fromCallable(
-                        ExtendedWeather::new)
+                        DailyWeather::new)
         );
         when(settingsInteractor.getUserSettings()).thenReturn(
                 Single.fromCallable(
@@ -90,7 +91,7 @@ public class WeatherFragmentPresenterTest {
         private boolean displayedError = false;
 
         @Override
-        public void showCurrentWeather(ExtendedWeather weather, String placeName) {
+        public void showWeather(DailyWeather weather, String placeName) {
             displayedWeather = true;
         }
 

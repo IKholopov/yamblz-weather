@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.example.toor.yamblzweather.data.database.DataBase;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.presentation.di.App;
@@ -37,8 +38,8 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @NonNull
     @Override
-    public Single<ExtendedWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails) {
-        ExtendedWeather weather = new ExtendedWeather();
+    public Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails) {
+        DailyWeather weather = new DailyWeather();
         City city = new City();
         city.setId(placeDetails.getId().intValue());
         city.setCoord(placeDetails.getCoords());
@@ -53,7 +54,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @NonNull
     @Override
-    public Single<ExtendedWeather> loadExtendedWeatherFromNW(PlaceDetails placeDetails) {
+    public Single<DailyWeather> loadExtendedWeatherFromNW(PlaceDetails placeDetails) {
         return service.getExtendedWeather(placeDetails.getCoords());
     }
 
@@ -94,7 +95,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     }*/
 
     @Override
-    public void saveWeather(@NonNull ExtendedWeather weather, @NonNull PlaceDetails placeDetails) {
+    public void saveWeather(@NonNull DailyWeather weather, @NonNull PlaceDetails placeDetails) {
         dataBase.addOrUpdateWeather(weather, placeDetails.getId(), () -> {});
     }
 }

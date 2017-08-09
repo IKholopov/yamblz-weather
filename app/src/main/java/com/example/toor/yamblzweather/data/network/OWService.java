@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
 import com.example.toor.yamblzweather.domain.utils.APISupportedLanguages;
@@ -20,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OWService {
 
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/";
 
     private final OpenWeatherAPI mOpenWeatherAPI;
     private String mToken;
@@ -141,12 +142,12 @@ public class OWService {
 
     public
     @NonNull
-    Single<ExtendedWeather> getExtendedWeather(Coord coords) {
+    Single<DailyWeather> getExtendedWeather(Coord coords) {
         return mOpenWeatherAPI.getFiveDayExtendedWeather(
                 coords.getLat(),
                 coords.getLon(),
                 mToken,
-                mSelectedLanguage.getLanguageLocale())
+                mSelectedLanguage.getLanguageLocale(), 12)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
