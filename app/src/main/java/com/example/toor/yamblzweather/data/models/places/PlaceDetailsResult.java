@@ -12,6 +12,10 @@ public class PlaceDetailsResult {
     @Expose
     private String name;
 
+    @SerializedName("place_id")
+    @Expose
+    private String placeId;
+
     Location getLocation() {
         return geometry.location;
     }
@@ -20,11 +24,19 @@ public class PlaceDetailsResult {
         return name;
     }
 
+    public String getPlaceId() {
+        return placeId;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
 
     public void setLocation(Location location) {
         geometry.setLocation(location);
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 }

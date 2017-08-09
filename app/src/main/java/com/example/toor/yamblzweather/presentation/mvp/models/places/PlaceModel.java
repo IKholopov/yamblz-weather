@@ -112,7 +112,7 @@ public class PlaceModel implements Parcelable{
         return placeId;
     }
 
-    public long getLocalId() {
+    public Long getLocalId() {
         return localId;
     }
 

@@ -14,9 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPagerPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
-import com.example.toor.yamblzweather.presentation.mvp.view.adapter.WeatherPlacesAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherFragment;

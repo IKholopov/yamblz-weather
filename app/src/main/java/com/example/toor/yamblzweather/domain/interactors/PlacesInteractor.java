@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.domain.interactors;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 
 /**
  * Created by igor on 8/6/17.
@@ -40,13 +42,13 @@ public class PlacesInteractor {
         return placesRepository.getAllPlaces().map(this::modelFromDetails);
     }
 
-    public Single<Long> deletePlace(long localPlaceId) {
+    public Single<Long> deletePlace(Long localPlaceId) {
         return placesRepository.deletePlace(localPlaceId).doOnSuccess(deleted ->
             weatherRepository.deleteRecordsForPlace(localPlaceId));
     }
 
-    public void addPlace(PlaceModel placeModel) {
-        placesRepository.addPlace(detailsFromModel(placeModel));
+    public void addPlace(PlaceModel placeModel, @NonNull Action onSuccess) {
+        placesRepository.addPlace(detailsFromModel(placeModel), onSuccess);
     }
 
     private
@@ -70,8 +72,9 @@ public class PlacesInteractor {
         if(details == null) {
             return null;
         }
-        return new PlaceModel.Builder().name(details.getName()).coords(details.getCoords().getLat(),
-                details.getCoords().getLon()).localId(details.getId()).build();
+        return new PlaceModel.Builder().name(details.getName()).placeId(details.getApiId())
+                .coords(details.getCoords().getLat(), details.getCoords().getLon())
+                .localId(details.getId()).build();
     }
 
     private
@@ -81,6 +84,6 @@ public class PlacesInteractor {
             return null;
         }
         return PlaceDetails.newInstance(null, new Coord(placeModel.getLat(), placeModel.getLon()),
-                placeModel.getName());
+                placeModel.getName(), placeModel.getPlaceId());
     }
 }

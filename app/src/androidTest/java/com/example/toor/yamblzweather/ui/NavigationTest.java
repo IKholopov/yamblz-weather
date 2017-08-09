@@ -80,9 +80,9 @@ public class NavigationTest {
                 withParent(withId(R.id.toolbar)), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.design_menu_item_text), withText(getString(R.string.title_settings)), isDisplayed()))
                 .perform(click());
-        onView(withId(R.id.etSearchCity)).perform(scrollTo()).perform(click());
+        //onView(withId(R.id.etSearchCity)).perform(scrollTo()).perform(click());
         onView(withId(R.id.tvTemperature)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.bCancel)).perform(click());
+        //onView(withId(R.id.bCancel)).perform(click());
         onView(withId(R.id.tvTemperature)).check(matches(isDisplayed()));
     }
 }

@@ -75,6 +75,6 @@ public class WeatherInteractor {
     @NonNull
     PlaceDetails detailsFromModel(PlaceModel place) {
         return PlaceDetails.newInstance(place.getLocalId(),
-                new Coord(place.getLat(), place.getLon()), place.getName());
+                new Coord(place.getLat(), place.getLon()), place.getName(), place.getPlaceId());
     }
 }

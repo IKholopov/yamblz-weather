@@ -9,6 +9,7 @@ import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
 import com.example.toor.yamblzweather.presentation.di.modules.DataModule;
 import com.example.toor.yamblzweather.presentation.di.modules.UtilsModule;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.SettingsFragmentPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.adapter.ForecastAdapter;
 
 import javax.inject.Singleton;
 

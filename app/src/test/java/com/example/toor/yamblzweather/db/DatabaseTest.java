@@ -26,6 +26,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import io.reactivex.functions.Action;
 import nl.nl2312.rxcupboard2.RxDatabase;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
@@ -73,16 +74,14 @@ public class DatabaseTest {
         elements.add(element2);
         testModel.setList(elements);
 
-        placeDetails = new PlaceDetails();
-        placeDetails.setName("TestName");
-        placeDetails.setCoords(new Coord(2, 3));
+        placeDetails = PlaceDetails.newInstance(9000L, new Coord(2, 3), "TestName", "TESTID");
 
         cupboardDb = new CupboardDB(RuntimeEnvironment.application.getApplicationContext());
     }
 
     @Test
     public void testSaveWeatherToDatabase() throws InterruptedException {
-        int placeId = 0;
+        Long placeId = 0L;
         SyncEntity sync = new SyncEntity();
         RxDatabase db = cupboardDb.getDatabase();
         db.delete(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId)).subscribe(deleted -> {
@@ -107,7 +106,7 @@ public class DatabaseTest {
 
     @Test
     public void testUpdateWeatherToDatabase() throws InterruptedException {
-        int placeId = 1;
+        Long placeId = 1L;
         SyncEntity sync = new SyncEntity();
         RxDatabase db = cupboardDb.getDatabase();
         db.delete(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId)).subscribe(deleted -> {
@@ -135,7 +134,7 @@ public class DatabaseTest {
 
     @Test
     public void testCleanUp() throws InterruptedException {
-        int placeId = 0;
+        Long placeId = 0L;
         SyncEntity sync = new SyncEntity();
         Calendar calendar = new GregorianCalendar();
         calendar.set(Calendar.DAY_OF_YEAR, 42);
@@ -168,9 +167,10 @@ public class DatabaseTest {
     @Test
     public void testAddDuplicatePlace() throws InterruptedException {
         SyncEntity sync = new SyncEntity();
+        placeDetails.setApiId("original");
         cupboardDb.addPlace(placeDetails, () ->
                 cupboardDb.addPlace(placeDetails, () -> {
-                    placeDetails.setCoords(new Coord(-100, -100));
+                    placeDetails.setApiId("diffetent");
                     cupboardDb.addPlace(placeDetails, () ->
                         cupboardDb.getDatabase().count(PlaceDBModel.class)
                          .subscribe(count ->
@@ -227,11 +227,13 @@ public class DatabaseTest {
     @Test
     public void testDeleteWeatherForPlace() throws InterruptedException {
         SyncEntity sync = new SyncEntity();
-        cupboardDb.addOrUpdateWeather(testModel, placeDetails.getId(), () ->
+        Action a = () ->
                 cupboardDb.addOrUpdateWeather(testModel, placeDetails.getId() + 1, () ->
                         cupboardDb.deleteWeatherForPlace(placeDetails.getId())
                                 .subscribe(count ->
-                                        sync.runAssertion(() -> assertThat(count, equalTo(2L))))));
+                                        sync.runAssertion(() -> assertThat(count, equalTo(2L)))));
+        Long id = placeDetails.getId();
+        cupboardDb.addOrUpdateWeather(testModel, id, a);
         assertThat(sync.waitFor(), equalTo(true));
     }
 

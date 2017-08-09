@@ -2,12 +2,14 @@ package com.example.toor.yamblzweather.presentation;
 
 import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
-import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
 import org.junit.Before;
@@ -17,6 +19,8 @@ import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import io.reactivex.Single;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -35,15 +39,19 @@ public class WeatherFragmentPresenterTest {
 
     @Mock WeatherInteractor weatherInteractor;
     @Mock SettingsInteractor settingsInteractor;
+    @Mock PlacesInteractor placesInteractor;
 
-    private WeatherFragmentPresenter preparePresenter(WeatherView view) {
-        WeatherFragmentPresenter presenter = new WeatherFragmentPresenter(weatherInteractor, settingsInteractor);
+    private WeatherPresenter preparePresenter(WeatherView view) {
+        WeatherPresenter presenter = new WeatherPresenter(placesInteractor, weatherInteractor, settingsInteractor);
         presenter.onAttach(view);
         return presenter;
     }
 
     @Before
     public void prepare() {
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                __ -> Schedulers.trampoline());
+
         when(weatherInteractor.getWeatherFromDB(any())).thenReturn(
                 Single.fromCallable(
                         ExtendedWeather::new)
@@ -57,21 +65,23 @@ public class WeatherFragmentPresenterTest {
                         () -> new SettingsModel.Builder(TemperatureMetric.CELSIUS, 10).build()
                 )
         );
+
+
     }
 
     @Test
     public void getWeatherTest() {
         TestView testView = new TestView();
-        WeatherFragmentPresenter presenter = preparePresenter(testView);
-        presenter.getWeather();
+        WeatherPresenter presenter = preparePresenter(testView);
+        presenter.getWeather(new PlaceModel.Builder().build(), testView);
         assertThat(testView.isWeatherDisplayed(), equalTo(true));
     }
 
     @Test
     public void updateWeatherTest() {
         TestView testView = new TestView();
-        WeatherFragmentPresenter presenter = preparePresenter(testView);
-        presenter.updateWeather();
+        WeatherPresenter presenter = preparePresenter(testView);
+        presenter.updateWeather(new PlaceModel.Builder().build(), testView);
         verify(weatherInteractor, times(1)).updateWeather(any());
     }
 

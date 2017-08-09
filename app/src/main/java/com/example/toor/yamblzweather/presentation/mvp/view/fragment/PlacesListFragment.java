@@ -2,6 +2,9 @@ package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,6 +61,9 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
     private ArrayList<Disposable> disposables;
     private ItemTouchHelper touchHelper;
 
+    private ConstraintSet listViewSet;
+    private ConstraintSet addViewSet;
+
     @Inject
     PlacesListPresenter presenter;
 
@@ -65,7 +71,7 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
     @BindView(R.id.bAddPlace) Button addPlaceButton;
     @BindView(R.id.rvPlaces) RecyclerView placesList;
     @BindView(R.id.rvSuggestions) RecyclerView suggestionsList;
-
+    @BindView(R.id.clPlaces) ConstraintLayout fragmentLayout;
 
 
     public PlacesListFragment() {
@@ -87,6 +93,7 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         unbinder = ButterKnife.bind(this, view);
+        setUpViewSets();
         presenter.onAttach(this);
         switchFragmentState(State.LIST);
         suggestionAdapter = new CityNameAdapter();
@@ -97,9 +104,9 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
         addPlaceButton.setOnClickListener(view1 -> switchFragmentState(State.ADD));
         presenter.subscribeOnPlaceNameChanges(RxTextView.textChanges(searchPlace));
         disposables.add(suggestionAdapter.getSelectedPlace().subscribe(placeModel -> {
-            presenter.fetchAndSaveCityDetails(placeModel).subscribe(place -> {
-                placesAdapter.addPlace(place);
-            });
+            presenter.fetchAndSaveCityDetails(placeModel, () ->
+                    presenter.getPlaces().toList().subscribe(places -> placesAdapter.updatePlaces(places))
+            ).subscribe(place -> {});
             switchFragmentState(State.LIST);
         }));
         disposables.add(presenter.getPlaces().toList().subscribe(this::setUpPlaceList));
@@ -153,16 +160,15 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
             return;
         }
         state = newState;
+        TransitionManager.beginDelayedTransition(fragmentLayout);
         if(state == State.LIST) {
-            searchPlace.setVisibility(View.INVISIBLE);
-            suggestionsList.setVisibility(View.INVISIBLE);
-            addPlaceButton.setVisibility(View.VISIBLE);
-            placesList.setVisibility(View.VISIBLE);
+            listViewSet.applyTo(fragmentLayout);
             FragmentActivity activity = getActivity();
             if(activity != null && activity instanceof OnBackBehaviour) {
                 ((OnBackBehaviour)activity).setOnBackBehaviour(null);
             }
         } else {
+            addViewSet.applyTo(fragmentLayout);
             searchPlace.setVisibility(View.VISIBLE);
             suggestionsList.setVisibility(View.VISIBLE);
             addPlaceButton.setVisibility(View.INVISIBLE);
@@ -173,6 +179,23 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
             }
         }
     }
+
+    private void setUpViewSets() {
+        listViewSet = new ConstraintSet();
+        listViewSet.clone(fragmentLayout);
+        listViewSet.setVisibility(R.id.etSearchPlace, View.INVISIBLE);
+        listViewSet.setVisibility(R.id.rvSuggestions, View.INVISIBLE);
+        listViewSet.setVisibility(R.id.bAddPlace, View.VISIBLE);
+        listViewSet.setVisibility(R.id.rvPlaces, View.VISIBLE);
+
+        addViewSet = new ConstraintSet();
+        addViewSet.clone(fragmentLayout);
+        addViewSet.setVisibility(R.id.etSearchPlace, View.VISIBLE);
+        addViewSet.setVisibility(R.id.rvSuggestions, View.VISIBLE);
+        addViewSet.setVisibility(R.id.bAddPlace, View.INVISIBLE);
+        addViewSet.setVisibility(R.id.rvPlaces, View.INVISIBLE);
+    }
+
 
     private void setUpPlaceList(List<PlaceModel> places) {
         placesAdapter = new PlacesListAdapter(places);

@@ -22,7 +22,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adapter<CityNameAdapter.CityViewHolder>{
 
-    List<PlaceModel> data;
+    private List<PlaceModel> data;
 
     private final PublishSubject<PlaceModel> dataSubject = PublishSubject.create();
 
@@ -32,7 +32,8 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name,
+                parent, false);
         CityViewHolder viewHolder = new CityViewHolder(view);
         return viewHolder;
     }
@@ -51,11 +52,11 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
         return data.size();
     }
 
-    public static class CityViewHolder extends RecyclerView.ViewHolder {
+    static class CityViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.cityName)
         TextView cityName;
 
-        public CityViewHolder(View itemView) {
+        CityViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

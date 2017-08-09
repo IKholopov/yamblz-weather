@@ -24,12 +24,12 @@ public interface DataBase {
     Single<Long> clearBeforeDate(@NonNull Calendar date);
 
     @NonNull
-    Single<Long> deletePlace(long placeId);
+    Single<Long> deletePlace(Long placeId);
 
     @NonNull
-    Single<Long> deleteWeatherForPlace(long placeId);
+    Single<Long> deleteWeatherForPlace(Long placeId);
 
-    void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, long placeId,
+    void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, Long placeId,
                             @NonNull Action onComplete);
 
     void addPlace(@NonNull PlaceDetails place, @NonNull Action onComplete);

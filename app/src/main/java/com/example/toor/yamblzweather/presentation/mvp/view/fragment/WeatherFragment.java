@@ -2,6 +2,7 @@ package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -12,11 +13,10 @@ import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
-import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
-import com.example.toor.yamblzweather.domain.utils.TemperatureMetricConverter;
+import com.example.toor.yamblzweather.domain.utils.ViewUtils;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
-import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
@@ -26,10 +26,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 
 public class WeatherFragment extends BaseFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -54,7 +51,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     private static final String POSITION_KEY = "position_key";
 
     @Inject
-    WeatherFragmentPresenter presenter;
+    WeatherPresenter presenter;
 
     public static WeatherFragment newInstance(PlaceModel place, int position)
     {
@@ -117,36 +114,34 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
 
     @Override
     public void showCurrentWeather(ExtendedWeather weather, String placeName) {
-        getCurrentTemperatureString(weather).observeOn(AndroidSchedulers.mainThread())
-                .subscribe( temperatureStr -> {
-                    if (tvTemp == null) {
-                        return;
-                    }
-                    tvTemp.setText(temperatureStr);
-                    tvCity.setText(placeName);
-                    if(weather.getList().size() > 0) {
-                        tvDescription.setText(weather.getList().get(0).getWeather().get(0).getDescription());
-                        setImageFromName(weather.getList().get(0).getWeather().get(0).getIcon());
-                    }
-                });
-    }
-
-    private Single<String> getCurrentTemperatureString(ExtendedWeather weather) {
-        return presenter.getMetric().map(metric -> {
-            if(weather.getList().size() == 0) {
-                return "No weather downloaded";
-            }
-            double temperature = weather.getList().get(0).getMain().getTemp();
-            String metricStr = convertMetricToString(metric);
-            int temperatureRound = TemperatureMetricConverter.getSupportedTemperature(temperature, metric);
-            String temperatureStr = String.valueOf(temperatureRound);
-            return temperatureStr + " " + metricStr;
-        });
+        if(weather.getList().size() == 0) {
+            setWeatherString("No downloaded weather :)", placeName, weather);
+        }
+        else {
+            presenter.getCurrentTemperatureString(weather.getList().get(0))
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(temperatureStr -> {
+                        setWeatherString(temperatureStr, placeName, weather);
+                    });
+        }
     }
 
     @Override
     public void showErrorFragment() {
         createNetworkErrorFragment();
+    }
+
+    private void setWeatherString(@NonNull String temperatureStr, String placeName,
+                                      ExtendedWeather weather) {
+        if (tvTemp == null) {
+            return;
+        }
+        tvTemp.setText(temperatureStr);
+        tvCity.setText(placeName);
+        if(weather.getList().size() > 0) {
+            tvDescription.setText(weather.getList().get(0).getWeather().get(0).getDescription());
+            setImageFromName(weather.getList().get(0).getWeather().get(0).getIcon());
+        }
     }
 
     private void createNetworkErrorFragment() {
@@ -156,16 +151,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
                 .commit();
     }
 
-    private String convertMetricToString(TemperatureMetric metric) {
-        if (metric == CELSIUS)
-            return getString(R.string.celsius);
-        else
-            return getString(R.string.fahrenheit);
-    }
-
     private void setImageFromName(String name) {
-        String mDrawableName = IMAGE_RESOURCES_SUFFIX + name;
-        int resID = getResources().getIdentifier(mDrawableName, IMAGE_RESOURCES_FOLDER, getContext().getPackageName());
+        int resID = ViewUtils.getIconResourceFromName(name, getContext());
         Drawable drawable = getResources().getDrawable(resID);
         ivCurrentWeatherImage.setImageDrawable(drawable);
     }

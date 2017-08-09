@@ -15,6 +15,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 
 /**
  * Created by igor on 8/7/17.
@@ -55,11 +56,11 @@ public class PlacesListPresenter extends BaseFragmentPresenter<PlacesListView> {
         ));
     }
 
-    public Single<PlaceModel> fetchAndSaveCityDetails(PlaceModel placeModel) {
+    public Single<PlaceModel> fetchAndSaveCityDetails(PlaceModel placeModel, Action onInserted) {
         Single<PlaceModel> request = interactor.getPlaceDetails(placeModel.getPlaceId());
         request.subscribe(
                 place -> {
-                    interactor.addPlace(place);
+                    interactor.addPlace(place, onInserted);
                 },
                 error -> {
                     Log.e(TAG, "Failed to fetch city details: " + error.getLocalizedMessage());
@@ -70,6 +71,10 @@ public class PlacesListPresenter extends BaseFragmentPresenter<PlacesListView> {
     }
 
     public Single<Long> deletePlace(PlaceModel placeModel) {
-        return interactor.deletePlace(placeModel.getLocalId());
+        Long id = placeModel.getLocalId();
+        if(id != null) {
+            return interactor.deletePlace(id);
+        }
+        return Single.just(0L);
     }
 }

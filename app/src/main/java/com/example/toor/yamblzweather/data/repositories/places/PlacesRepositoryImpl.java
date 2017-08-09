@@ -16,6 +16,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 
 /**
  * Created by igor on 8/6/17.
@@ -62,7 +63,7 @@ public class PlacesRepositoryImpl implements PlacesRepository {
     }
 
     @Override
-    public void addPlace(PlaceDetails place) {
-        dataBase.addPlace(place, () -> {});
+    public void addPlace(PlaceDetails place, @NonNull Action onSuccess) {
+        dataBase.addPlace(place, onSuccess);
     }
 }

@@ -17,11 +17,11 @@ import java.util.List;
  * Created by igor on 8/6/17.
  */
 
-public class WeatherPlacesAdapter extends FragmentPagerAdapter {
+public class WeatherPlacesPagerAdapter extends FragmentStatePagerAdapter {
 
     private List<PlaceModel> places;
 
-    public WeatherPlacesAdapter(@NonNull List<PlaceModel> places, FragmentManager manager) {
+    public WeatherPlacesPagerAdapter(@NonNull List<PlaceModel> places, FragmentManager manager) {
         super(manager);
         this.places = places;
     }
@@ -30,11 +30,6 @@ public class WeatherPlacesAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return places.size();
     }
-
-    /*@Override
-    public int getItemPosition(Object object) {
-        return POSITION_NONE;
-    }*/
 
     @Override
     public Fragment getItem(int position) {

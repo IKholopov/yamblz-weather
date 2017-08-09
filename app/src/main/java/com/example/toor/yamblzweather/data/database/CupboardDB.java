@@ -40,7 +40,7 @@ import nl.qbusict.cupboard.CupboardBuilder;
 public class CupboardDB extends SQLiteOpenHelper implements DataBase{
 
     private static final String DATABASE_NAME = "CupboardWeather.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     private static Cupboard cupboard;
 
@@ -87,7 +87,7 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
     @NonNull
     @Override
     public Flowable<WeatherForecastElement> getWeather(@NonNull PlaceDetails placeDetails) {
-        long id = placeDetails.getId();
+        Long id = placeDetails.getId();
         return getDatabase().query(getDatabase().buildQuery(WeatherDBModel.class)
                 .withSelection("placeId = ?", String.valueOf(id)).orderBy("date"))
                 .subscribeOn(Schedulers.io()).map(this::modelToForecastElement);
@@ -96,27 +96,27 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
     @NonNull
     @Override
     public Single<Long> clearBeforeDate(@NonNull Calendar date) {
-        long normalizeDate = TimeUtils.normalizeDate(date.getTimeInMillis() / 1000);
+        Long normalizeDate = TimeUtils.normalizeDate(date.getTimeInMillis() / 1000);
         return getDatabase().delete(WeatherDBModel.class, "date < ?", String.valueOf(normalizeDate))
                     .subscribeOn(Schedulers.io());
     }
 
     @NonNull
     @Override
-    public Single<Long> deletePlace(long placeId) {
+    public Single<Long> deletePlace(Long placeId) {
         return getDatabase().delete(PlaceDBModel.class, "_id = ?", String.valueOf(placeId))
                 .subscribeOn(Schedulers.io());
     }
 
     @NonNull
     @Override
-    public Single<Long> deleteWeatherForPlace(long placeId) {
+    public Single<Long> deleteWeatherForPlace(Long placeId) {
         return getDatabase().delete(WeatherDBModel.class, "placeId = ?", String.valueOf(placeId))
                 .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, long placeId, @NonNull Action onComplete) {
+    public void addOrUpdateWeather(@NonNull ExtendedWeather weatherModel, Long placeId, @NonNull Action onComplete) {
         Observable.fromIterable((weatherModel.getList())).subscribeOn(Schedulers.io())
                 .flatMapSingle(forecast -> getDatabase().put(forecastToDBModel(forecast, placeId)))
                 .doOnComplete(onComplete)
@@ -126,9 +126,8 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
     @Override
     public void addPlace(@NonNull PlaceDetails place, @NonNull Action onComplete) {
         PlaceDBModel model = placeDetailsToModel(place);
-        getDatabase().query(PlaceDBModel.class, "latitude = ? AND longitude = ?",
-                String.valueOf(place.getCoords().getLat()),
-                String.valueOf(place.getCoords().getLon())).subscribeOn(Schedulers.io())
+        getDatabase().query(PlaceDBModel.class, "apiId = ?",
+                String.valueOf(place.getApiId())).subscribeOn(Schedulers.io())
                 .doOnComplete(() -> Flowable.just(model).subscribeOn(Schedulers.io())
                         .flatMapSingle(details -> getDatabase().put(details))
                         .doOnComplete(onComplete)
@@ -147,7 +146,7 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
                 .subscribe(existing -> model._id = existing._id);
     }
 
-    private WeatherDBModel forecastToDBModel(@NonNull WeatherForecastElement forecast, long placeId) {
+    private WeatherDBModel forecastToDBModel(@NonNull WeatherForecastElement forecast, Long placeId) {
         Main main = forecast.getMain();
         Weather weather = forecast.getWeather().get(0);
         return new WeatherDBModel(TimeUtils.normalizeDate(forecast.getDt()), placeId,
@@ -166,12 +165,13 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
 
     private PlaceDBModel placeDetailsToModel(PlaceDetails details, boolean current) {
         return new PlaceDBModel(details.getCoords().getLat().floatValue(),
-                details.getCoords().getLon().floatValue(), details.getName(), current);
+                details.getCoords().getLon().floatValue(), details.getApiId(),
+                details.getName(), current);
     }
 
     private PlaceDetails modelToPlaceDetails(PlaceDBModel model) {
         return PlaceDetails.newInstance(model._id, new Coord(model.latitude, model.longitude),
-                model.name);
+                model.name, model.apiId);
     }
 
     private WeatherForecastElement modelToForecastElement(WeatherDBModel model) {

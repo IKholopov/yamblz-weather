@@ -2,18 +2,18 @@ package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPagerPresenter;
-import com.example.toor.yamblzweather.presentation.mvp.view.WeatherPagerView;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
-import com.example.toor.yamblzweather.presentation.mvp.view.adapter.WeatherPlacesAdapter;
+import com.example.toor.yamblzweather.presentation.mvp.view.adapter.WeatherPlacesPagerAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
 import javax.inject.Inject;
@@ -25,13 +25,13 @@ import butterknife.Unbinder;
 /**
  * Fragment with ViewPager for different weather in different pages
  */
-public class WeatherPagerFragment extends BaseFragment implements WeatherPagerView{
+public class WeatherPagerFragment extends BaseFragment implements WeatherView {
 
     private Unbinder unbinder;
-    private WeatherPlacesAdapter pagerAdapter;
+    private WeatherPlacesPagerAdapter pagerAdapter;
 
     @Inject
-    WeatherPagerPresenter presenter;
+    WeatherPresenter presenter;
 
     @BindView(R.id.weatherPager) ViewPager weatherPager;
 
@@ -76,7 +76,7 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherPagerVi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         presenter.updatePlacesList();
         presenter.getPlaces().subscribe(list -> {
-            pagerAdapter = new WeatherPlacesAdapter(list, getChildFragmentManager());
+            pagerAdapter = new WeatherPlacesPagerAdapter(list, getChildFragmentManager());
             weatherPager.setAdapter(null);
             weatherPager.setAdapter(pagerAdapter);
         });
@@ -86,6 +86,11 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherPagerVi
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void showCurrentWeather(ExtendedWeather weather, String placeName) {
+        return;
     }
 
     @Override

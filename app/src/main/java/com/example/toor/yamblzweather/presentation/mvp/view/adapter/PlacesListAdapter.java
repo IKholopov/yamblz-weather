@@ -45,9 +45,13 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Pl
     public void onBindViewHolder(PlaceViewHolder holder, int position) {
         holder.placeName.setText(places.get(position).getName());
         holder.deleteButton.setOnClickListener(button -> {
-            deletionSubject.onNext(places.get(holder.getAdapterPosition()));
+            final int adapterPosition = holder.getAdapterPosition();
+            if(adapterPosition < 0) {
+                return;
+            }
+            deletionSubject.onNext(places.get(adapterPosition));
             places.remove(holder.getAdapterPosition());
-            this.notifyItemRemoved(holder.getAdapterPosition());
+            this.notifyItemRemoved(adapterPosition);
         });
     }
 
@@ -71,9 +75,9 @@ public class PlacesListAdapter extends RecyclerView.Adapter<PlacesListAdapter.Pl
         return true;
     }
 
-    public void addPlace(PlaceModel placeModel) {
-        places.add(placeModel);
-        notifyItemInserted(places.size() - 1);
+    public void updatePlaces(List<PlaceModel> places) {
+        this.places = places;
+        notifyDataSetChanged();
     }
 
     public Observable<PlaceModel> getDeletionEvent() {

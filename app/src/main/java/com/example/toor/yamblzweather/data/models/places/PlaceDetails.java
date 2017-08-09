@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.data.models.places;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
@@ -17,11 +18,13 @@ public class PlaceDetails {
     @Expose
     private PlaceDetailsResult result = new PlaceDetailsResult();
 
-    public static PlaceDetails newInstance(@Nullable Long id, Coord coords, String name) {
+    public static PlaceDetails newInstance(@Nullable Long id, @NonNull Coord coords,
+                                           @NonNull String name, @NonNull String placeId) {
         PlaceDetails place = new PlaceDetails();
         place.id = id;
         place.setCoords(coords);
         place.setName(name);
+        place.setApiId(placeId);
         return place;
     }
 
@@ -38,6 +41,10 @@ public class PlaceDetails {
         return id;
     }
 
+    public String getApiId() {
+        return result.getPlaceId();
+    }
+
     public void setName(String name) {
         result.setName(name);
     }
@@ -47,6 +54,10 @@ public class PlaceDetails {
         location.setLat(coords.getLat());
         location.setLon(coords.getLon());
         result.setLocation(location);
+    }
+
+    public void setApiId(String apiId) {
+        result.setPlaceId(apiId);
     }
 }
 

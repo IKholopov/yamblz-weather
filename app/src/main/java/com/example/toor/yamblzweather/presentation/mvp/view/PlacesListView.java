@@ -10,6 +10,5 @@ import java.util.List;
  */
 
 public interface PlacesListView extends BaseView {
-
     void updatePlacesSuggestionList(List<PlaceModel> suggestions);
 }
