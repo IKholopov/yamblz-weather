@@ -8,15 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
-import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
+import com.example.toor.yamblzweather.domain.utils.TimeUtils;
 import com.example.toor.yamblzweather.domain.utils.ViewUtils;
-import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.di.components.ActivityComponent;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherDetailsView;
 
 import java.util.List;
 
@@ -32,12 +33,17 @@ import butterknife.ButterKnife;
 public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHolder> {
 
     private List<DailyForecastElement> forecast;
+    private int selectedItem;
+    private WeatherDetailsView detailsView;
+
     @Inject Context context;
     @Inject WeatherPresenter presenter;
 
-    public ForecastAdapter(@Nullable List<DailyForecastElement> forecast,
+    public ForecastAdapter(@Nullable List<DailyForecastElement> forecast, WeatherDetailsView detailsView,
                            @NonNull ActivityComponent component) {
         this.forecast = forecast;
+        this.detailsView = detailsView;
+        selectedItem = 0;
         component.inject(this);
     }
 
@@ -54,8 +60,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         int resId = ViewUtils.getIconResourceFromName(weather.getWeather().get(0).getIcon(),
                 context);
         holder.icon.setImageResource(resId);
-        presenter.getCurrentTemperatureString(weather).subscribe(temperatureStr ->
-                holder.temperature.setText(temperatureStr));
+        presenter.getCurrentTemperatureString(weather.getTemp().getMax()).subscribe(max ->
+                        presenter.getCurrentTemperatureString(weather.getTemp().getMin())
+                                .subscribe(min -> holder.temperature.setText(max + "/" + min)));
+        holder.dayOfWeek.setText(TimeUtils.formatDayShort(weather.getDt()));
+        holder.layout.setBackgroundColor(context.getResources().getColor(selectedItem == position ?
+                        R.color.color_forecast_selected : R.color.color_forecast_notselected));
+        holder.itemView.setOnClickListener(view -> switchSelect(position));
     }
 
     @Override
@@ -71,12 +82,27 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         notifyDataSetChanged();
     }
 
+    public void setSelected(int position) {
+        switchSelect(position);
+    }
+
+    public int getPosition() {
+        return selectedItem;
+    }
+
+    private void switchSelect(int position) {
+        detailsView.showWeatherDetails(forecast.get(position));
+        selectedItem = position;
+        notifyDataSetChanged();
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.ivForecastIcon) ImageView icon;
         @BindView(R.id.tvTemperature) TextView temperature;
+        @BindView(R.id.tvDayOfWeek) TextView dayOfWeek;
+        @BindView(R.id.llForecastLayout) LinearLayout layout;
 
-
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

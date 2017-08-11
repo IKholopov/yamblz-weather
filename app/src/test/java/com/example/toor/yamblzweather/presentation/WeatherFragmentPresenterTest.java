@@ -96,6 +96,16 @@ public class WeatherFragmentPresenterTest {
         }
 
         @Override
+        public void showWeather(DailyWeather weather) {
+
+        }
+
+        @Override
+        public long getPlaceId() {
+            return 0;
+        }
+
+        @Override
         public void showErrorFragment() {
             displayedError = true;
         }

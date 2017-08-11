@@ -44,7 +44,7 @@ public class PlacesInteractor {
 
     public Single<Long> deletePlace(Long localPlaceId) {
         return placesRepository.deletePlace(localPlaceId).doOnSuccess(deleted ->
-            weatherRepository.deleteRecordsForPlace(localPlaceId));
+            weatherRepository.deleteRecordsForPlace(localPlaceId).subscribe());
     }
 
     public void addPlace(PlaceModel placeModel, @NonNull Action onSuccess) {

@@ -17,6 +17,7 @@ import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsM
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
@@ -41,6 +43,7 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
     private PlacesInteractor placesInteractor;
     private WeatherInteractor weatherInteractor;
     private SettingsInteractor settingsInteractor;
+    private List<WeatherView> childViews;
 
     PublishSubject<List<PlaceModel>> places = PublishSubject.create();
 
@@ -50,6 +53,7 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
         this.placesInteractor = placesInteractor;
         this.weatherInteractor = weatherInteractor;
         this.settingsInteractor = settingsInteractor;
+        childViews = new ArrayList<>();
     }
 
     public Single<List<PlaceModel>> getPlaces() {
@@ -74,9 +78,9 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
         });
     }
 
-    public Single<String> getCurrentTemperatureString(@NonNull DailyForecastElement weather) {
+    public Single<String> getCurrentTemperatureString(float temp) {
         return getMetric().map(metric -> {
-            double temperature = weather.getTemp().getDay();
+            double temperature = temp;
             String metricStr = convertMetricToString(metric);
             int temperatureRound = TemperatureMetricConverter.getSupportedTemperature(temperature, metric);
             String temperatureStr = String.valueOf(temperatureRound);
@@ -91,10 +95,10 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
             return context.getString(R.string.fahrenheit);
     }
 
-    public void getWeather(PlaceModel place, WeatherView view) {
+    public Disposable getWeather(PlaceModel place, WeatherView view) {
         if (view == null)
-            return;
-        unSubcribeOnDetach(weatherInteractor.getWeatherFromDB(place)
+            return null;
+        return weatherInteractor.getWeatherFromDB(place)
                 .observeOn(AndroidSchedulers.mainThread()).subscribe((weather, throwable)
                 -> {
             if (throwable != null) {
@@ -102,13 +106,13 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
                 return;
             }
             view.showWeather(weather, place.getName());
-        }));
+        });
     }
 
-    public void updateWeather(PlaceModel place,  WeatherView view) {
+    public Disposable updateWeather(PlaceModel place,  WeatherView view) {
         if ( view == null)
-            return;
-        unSubcribeOnDetach(weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
+            return null;
+        return weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
                 .subscribe((weather, throwable)
                 -> {
             if (throwable != null) {
@@ -116,7 +120,29 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
                 return;
             }
             view.showWeather(weather, place.getName());
-        }));
+        });
+    }
+
+    public void updateAllWeather() {
+        if ( getView() == null)
+            return;
+
+        unSubcribeOnDetach(placesInteractor.getAllPlaces().subscribe(place ->
+                weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
+                .subscribe((weather) -> {
+                    for(WeatherView weatherView: childViews) {
+                        if(place.getLocalId() == weatherView.getPlaceId()) {
+                            weatherView.showWeather(weather);
+                        }
+                    }})));
+    }
+
+    public void onChildAttach(WeatherView view) {
+        childViews.add(view);
+    }
+
+    public void onChildDetach(WeatherView view) {
+        childViews.remove(view);
     }
 
     public

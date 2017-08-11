@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.utils.ViewUtils;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
@@ -32,10 +32,17 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
-public class WeatherFragment extends BaseFragment implements WeatherView, SwipeRefreshLayout.OnRefreshListener {
+public class WeatherFragment extends BaseFragment implements WeatherView, WeatherDetailsView,
+        SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.tvCity)
     TextView tvCity;
+    @BindView(R.id.tvDate)
+    TextView tvDate;
+    @BindView(R.id.tvPressure)
+    TextView tvPressure;
+    @BindView(R.id.tvHumidity)
+    TextView tvHumidity;
     @BindView(R.id.tvTemp)
     TextView tvTemp;
     @BindView(R.id.tvDescription)
@@ -47,15 +54,16 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     @BindView(R.id.rvForecast)
     RecyclerView forecastList;
 
+
     private Unbinder unbinder;
 
     private PlaceModel placeModel;
     private ForecastAdapter forecastAdapter;
     private int position;
+    private int dayPosition;
 
-    private static final String IMAGE_RESOURCES_SUFFIX = "icon_";
-    private static final String IMAGE_RESOURCES_FOLDER = "drawable";
     private static final String POSITION_KEY = "position_key";
+    private static final String DAY_KEY = "day_key";
 
     @Inject
     WeatherPresenter presenter;
@@ -88,7 +96,7 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     public void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
 
-        presenter.onAttach(this);
+        presenter.onChildAttach(this);
     }
 
     @Override
@@ -102,20 +110,23 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
         unbinder = ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(this);
         LinearLayoutManager llm = new LinearLayoutManager(getContext());
-        llm.setOrientation(LinearLayoutManager.HORIZONTAL);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
         forecastList.setLayoutManager(llm);
-        forecastAdapter = new ForecastAdapter(null,
+        forecastAdapter = new ForecastAdapter(null, this,
                 App.getInstance().plusActivityComponent());
         forecastList.setAdapter(forecastAdapter);
         if(savedInstanceState != null) {
             position = savedInstanceState.getInt(POSITION_KEY);
+            dayPosition = savedInstanceState.getInt(DAY_KEY);
+        } else {
+            dayPosition = 0;
         }
         presenter.getPlace(position).subscribe(place -> {
             if(place == null) {
                 return;
             }
             placeModel = place;
-            presenter.getWeather(place, this);
+            unSubcribeOnDetach(presenter.getWeather(place, this));
         });
     }
 
@@ -123,21 +134,36 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     public void onSaveInstanceState(Bundle outBundle) {
         super.onSaveInstanceState(outBundle);
         outBundle.putInt(POSITION_KEY, position);
+        outBundle.putInt(DAY_KEY, forecastAdapter.getPosition());
     }
 
     @Override
     public void showWeather(DailyWeather weather, String placeName) {
         if(weather.getList().size() == 0) {
-            setWeatherString("No downloaded weather :)", placeName, weather);
+            setSelectedWeather("No downloaded weather :)", placeName, null);
         }
         else {
             forecastAdapter.updateForecast(weather.getList());
-            presenter.getCurrentTemperatureString(weather.getList().get(0))
+            if(weather.getList() != null && weather.getList().size() > 0) {
+                forecastAdapter.setSelected(dayPosition);
+            }
+            unSubcribeOnDetach(presenter.getCurrentTemperatureString(weather.getList()
+                    .get(dayPosition).getTemp().getMax())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(temperatureStr -> {
-                        setWeatherString(temperatureStr, placeName, weather);
-                    });
+                        setSelectedWeather(temperatureStr, placeName, weather.getList().get(dayPosition));
+                    }));
         }
+    }
+
+    @Override
+    public void showWeather(DailyWeather weather) {
+        showWeather(weather, placeModel.getName());
+    }
+
+    @Override
+    public long getPlaceId() {
+        return placeModel.getLocalId();
     }
 
     @Override
@@ -145,16 +171,16 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
         createNetworkErrorFragment();
     }
 
-    private void setWeatherString(@NonNull String temperatureStr, String placeName,
-                                      DailyWeather weather) {
+    private void setSelectedWeather(@NonNull String temperatureStr, String placeName,
+                                    DailyForecastElement weather) {
         if (tvTemp == null) {
             return;
         }
         tvTemp.setText(temperatureStr);
         tvCity.setText(placeName);
-        if(weather.getList().size() > 0) {
-            tvDescription.setText(weather.getList().get(0).getWeather().get(0).getDescription());
-            setImageFromName(weather.getList().get(0).getWeather().get(0).getIcon());
+        if(weather != null) {
+            tvDescription.setText(weather.getWeather().get(0).getDescription());
+            setImageFromName(weather.getWeather().get(0).getIcon());
         }
     }
 
@@ -179,10 +205,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        presenter.onDetach();
+    public void onDetach() {
+        super.onDetach();
+        presenter.onChildDetach(this);
     }
 
     @Override
@@ -191,8 +216,17 @@ public class WeatherFragment extends BaseFragment implements WeatherView, SwipeR
             return;
         }
         swipeRefreshLayout.setRefreshing(true);
-        presenter.updateWeather(placeModel, this);
+        dayPosition = forecastAdapter.getPosition();
+        presenter.updateAllWeather();
         swipeRefreshLayout.setRefreshing(false);
+    }
 
+    @Override
+    public void showWeatherDetails(DailyForecastElement element) {
+        unSubcribeOnDetach(presenter.getCurrentTemperatureString(element.getTemp().getMax())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(temperatureStr -> {
+                    setSelectedWeather(temperatureStr, placeModel.getName(), element);
+                }));
     }
 }

@@ -3,6 +3,7 @@ package com.example.toor.yamblzweather.presentation.di.components;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
+import com.example.toor.yamblzweather.presentation.mvp.view.activity.MainActivity;
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.ForecastAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.ErrorFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
@@ -32,4 +33,6 @@ public interface ActivityComponent {
     void inject(ErrorFragment fragment);
 
     void inject(ForecastAdapter adapter);
+
+    void inject(MainActivity activity);
 }

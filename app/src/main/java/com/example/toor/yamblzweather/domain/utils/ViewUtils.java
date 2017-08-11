@@ -13,7 +13,6 @@ public class ViewUtils {
     private static final String ICON_PREFIX = "icon_";
     private static final String ICON_RESOURCES_FOLDER = "drawable";
 
-    @NonNull
     public static int getIconResourceFromName(String name, @NonNull Context context) {
         return context.getResources().getIdentifier(ICON_PREFIX + name, ICON_RESOURCES_FOLDER,
                 context.getPackageName());

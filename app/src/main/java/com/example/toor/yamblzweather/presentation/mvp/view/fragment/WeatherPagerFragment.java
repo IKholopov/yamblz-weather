@@ -12,6 +12,7 @@ import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.NavigateView;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.WeatherPlacesPagerAdapter;
@@ -26,7 +27,7 @@ import butterknife.Unbinder;
 /**
  * Fragment with ViewPager for different weather in different pages
  */
-public class WeatherPagerFragment extends BaseFragment implements WeatherView {
+public class WeatherPagerFragment extends BaseFragment implements WeatherView, NavigateView {
 
     private Unbinder unbinder;
     private WeatherPlacesPagerAdapter pagerAdapter;
@@ -91,11 +92,24 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView {
 
     @Override
     public void showWeather(DailyWeather weather, String placeName) {
-        return;
+    }
+
+    @Override
+    public void showWeather(DailyWeather weather) {
+    }
+
+    @Override
+    public long getPlaceId() {
+        return 0;
     }
 
     @Override
     public void showErrorFragment() {
 
+    }
+
+    @Override
+    public void navigateTo(int position) {
+        weatherPager.setCurrentItem(position);
     }
 }

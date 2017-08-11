@@ -67,7 +67,7 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @NonNull
     @Override
     public Single<Long> deleteRecordsForPlace(long placeId) {
-        return dataBase.deletePlace(placeId);
+        return dataBase.deleteWeatherForPlace(placeId);
     }
 
     /*

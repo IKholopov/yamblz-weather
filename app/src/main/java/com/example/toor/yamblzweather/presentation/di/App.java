@@ -9,6 +9,9 @@ import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
 import com.example.toor.yamblzweather.presentation.di.components.DaggerAppComponent;
 import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 import com.example.toor.yamblzweather.presentation.di.modules.AppModule;
+import com.squareup.leakcanary.LeakCanary;
+
+import javax.inject.Inject;
 
 import timber.log.Timber;
 
@@ -19,21 +22,31 @@ public class App extends Application {
     private AppComponent appComponent;
     private ActivityComponent activityComponent;
 
+    @Inject
+    WeatherScheduleJob scheduleJob;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
 
         if (BuildConfig.DEBUG)
             Timber.plant(new Timber.DebugTree());
 
         setInstance(this);
         this.appComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
+        this.appComponent.inject(this);
 
-        //TODO startJob();
+        startJob();
     }
 
     private void startJob() {
-        WeatherScheduleJob scheduleJob = new WeatherScheduleJob();
         scheduleJob.startJob();
     }
 

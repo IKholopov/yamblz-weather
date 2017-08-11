@@ -13,9 +13,11 @@ import com.example.toor.yamblzweather.presentation.di.App;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import timber.log.Timber;
 
+@Singleton
 public class WeatherScheduleJob extends Job {
 
     static final String TAG = "show_notification_job_tag";
@@ -30,6 +32,7 @@ public class WeatherScheduleJob extends Job {
     @Inject
     PlacesInteractor placesInteractor;
 
+    @Inject
     public WeatherScheduleJob() {
         App.getInstance().plusActivityComponent().inject(this);
     }

@@ -42,7 +42,7 @@ public class PlacesListPresenter extends BaseFragmentPresenter<PlacesListView> {
 
     public void subscribeOnPlaceNameChanges(Observable<CharSequence> placeNameSource) {
         unSubcribeOnDetach(placeNameSource.throttleLast(AUTOCOMPLETE_CALLDOWN, TimeUnit.MILLISECONDS).subscribe(
-                input -> interactor.getAutocomplete(input.toString()).subscribe(
+                input -> unSubcribeOnDetach(interactor.getAutocomplete(input.toString()).subscribe(
                         places -> {
                             PlacesListView view = getView();
                             if (view != null) {
@@ -53,19 +53,19 @@ public class PlacesListPresenter extends BaseFragmentPresenter<PlacesListView> {
                             Log.e(TAG, "Failed to fetch place suggestions");
                         }
                 )
-        ));
+        )));
     }
 
     public Single<PlaceModel> fetchAndSaveCityDetails(PlaceModel placeModel, Action onInserted) {
         Single<PlaceModel> request = interactor.getPlaceDetails(placeModel.getPlaceId());
-        request.subscribe(
+        unSubcribeOnDetach(request.subscribe(
                 place -> {
                     interactor.addPlace(place, onInserted);
                 },
                 error -> {
                     Log.e(TAG, "Failed to fetch city details: " + error.getLocalizedMessage());
                 }
-        );
+        ));
         return request.timeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread());
     }
