@@ -10,6 +10,7 @@ import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
+import com.example.toor.yamblzweather.domain.utils.TimeUtils;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
@@ -32,7 +33,7 @@ public class WeatherInteractor {
     private
     @NonNull
     Single<DailyWeather> getExtendedWeather(PlaceDetails placeDetails) {
-        return weatherRepository.getExtendedWeatherFromDB(placeDetails)
+        return weatherRepository.getExtendedWeatherFromDB(placeDetails, TimeUtils.getCurrentNormalizedDate())
                 .onErrorResumeNext(throwable -> weatherRepository.loadExtendedWeatherFromNW(placeDetails));
     }
 
@@ -40,7 +41,9 @@ public class WeatherInteractor {
     @NonNull
     Single<DailyWeather> updateExtendedWeather(PlaceDetails placeDetails) {
         return weatherRepository.loadExtendedWeatherFromNW(placeDetails)
-                .onErrorResumeNext(throwable -> weatherRepository.getExtendedWeatherFromDB(placeDetails));
+                .onErrorResumeNext(throwable ->
+                        weatherRepository.getExtendedWeatherFromDB(placeDetails,
+                                TimeUtils.getCurrentNormalizedDate()));
     }
 
     private
@@ -54,7 +57,10 @@ public class WeatherInteractor {
     Single<DailyWeather> getWeatherFromDB(PlaceModel place) {
         PlaceDetails details = detailsFromModel(place);
         return getExtendedWeather(details)
-                .doOnSuccess(weatherModel -> weatherRepository.saveWeather(weatherModel, details));
+                .doOnSuccess(weatherModel -> {
+                    weatherRepository.saveWeather(weatherModel, details);
+                    clearOldRecords();
+                });
     }
 
     public
@@ -62,10 +68,13 @@ public class WeatherInteractor {
     Single<DailyWeather> updateWeather(PlaceModel place) {
         PlaceDetails details = detailsFromModel(place);
         return updateExtendedWeather(details)
-                .doOnSuccess(weatherModel -> weatherRepository.saveWeather(weatherModel, details));
+                .doOnSuccess(weatherModel -> {
+                    weatherRepository.saveWeather(weatherModel, details);
+                    clearOldRecords();
+                });
     }
 
-    public
+    private
     @NonNull
     Single<Long> clearOldRecords() {
         Calendar date = GregorianCalendar.getInstance();

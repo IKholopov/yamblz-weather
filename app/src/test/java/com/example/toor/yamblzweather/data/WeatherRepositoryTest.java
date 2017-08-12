@@ -102,7 +102,7 @@ public class WeatherRepositoryTest {
 
         testWeather.setDt(TEST_DT);
 
-        when(dataBase.getWeather(any())).thenReturn(Flowable.fromCallable(() -> testWeather));
+        when(dataBase.getWeather(any(), any())).thenReturn(Flowable.fromCallable(() -> testWeather));
     }
 
     @Test
@@ -119,7 +119,7 @@ public class WeatherRepositoryTest {
     public void loadCurrentWeatherFromDBTest() {
         WeatherRepository repository = prepareWeatherRepository();
         TestObserver<DailyWeather> testObserver = new TestObserver<>();
-        repository.getExtendedWeatherFromDB(place).subscribe(testObserver);
+        repository.getExtendedWeatherFromDB(place, 0).subscribe(testObserver);
         testObserver.awaitTerminalEvent();
         testObserver.assertNoErrors();
         testObserver.assertValue(weather -> weather.getList().get(0).getDt().equals(TEST_DT));

@@ -2,7 +2,9 @@ package com.example.toor.yamblzweather.presentation.di;
 
 import android.app.Application;
 
+import com.evernote.android.job.JobManager;
 import com.example.toor.yamblzweather.BuildConfig;
+import com.example.toor.yamblzweather.domain.scheduler.ScheduleJobCreator;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
 import com.example.toor.yamblzweather.presentation.di.components.ActivityComponent;
 import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
@@ -35,7 +37,7 @@ public class App extends Application {
             return;
         }
         LeakCanary.install(this);
-
+        JobManager.create(getApplicationContext()).addJobCreator(new ScheduleJobCreator());
         if (BuildConfig.DEBUG)
             Timber.plant(new Timber.DebugTree());
 

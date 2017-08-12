@@ -19,6 +19,10 @@ public class TimeUtils {
         return calendar.getTimeInMillis() / 1000;
     }
 
+    public static long getCurrentNormalizedDate() {
+        return TimeUtils.normalizeDate(new GregorianCalendar().getTimeInMillis() / 1000);
+    }
+
     public static String formatDayShort(long time) {
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTimeInMillis(time * 1000);

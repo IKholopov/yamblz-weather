@@ -35,8 +35,4 @@ public class WeatherPlacesPagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         return WeatherFragment.newInstance(places.get(position), position);
     }
-
-    public void setPlaces(@NonNull List<PlaceModel> places) {
-        this.places = places;
-    }
 }

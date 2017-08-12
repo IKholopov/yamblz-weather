@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.example.toor.yamblzweather.domain.utils.TimeUtils;
 import com.example.toor.yamblzweather.domain.utils.ViewUtils;
 import com.example.toor.yamblzweather.presentation.di.components.ActivityComponent;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.decoration.ForecastItemDecoration;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherDetailsView;
 
 import java.util.List;
@@ -25,6 +27,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.graphics.Color.TRANSPARENT;
 
 /**
  * Created by igor on 8/9/17.
@@ -35,16 +39,21 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
     private List<DailyForecastElement> forecast;
     private int selectedItem;
     private WeatherDetailsView detailsView;
+    private ForecastItemDecoration decoration;
 
     @Inject Context context;
     @Inject WeatherPresenter presenter;
 
     public ForecastAdapter(@Nullable List<DailyForecastElement> forecast, WeatherDetailsView detailsView,
                            @NonNull ActivityComponent component) {
+        component.inject(this);
         this.forecast = forecast;
         this.detailsView = detailsView;
         selectedItem = 0;
-        component.inject(this);
+        Resources res = context.getResources();
+        decoration = new ForecastItemDecoration(res.getColor(R.color.color_forecast_background),
+                res.getColor(R.color.color_forecast_list_frame));
+        decoration.setSelectedPosition(selectedItem);
     }
 
     @Override
@@ -64,8 +73,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
                         presenter.getCurrentTemperatureString(weather.getTemp().getMin())
                                 .subscribe(min -> holder.temperature.setText(max + "/" + min)));
         holder.dayOfWeek.setText(TimeUtils.formatDayShort(weather.getDt()));
-        holder.layout.setBackgroundColor(context.getResources().getColor(selectedItem == position ?
-                        R.color.color_forecast_selected : R.color.color_forecast_notselected));
+        Resources res = context.getResources();
+        if(selectedItem == position) {
+            holder.layout.setBackgroundColor(res.getColor(R.color.color_forecast_selected));
+            holder.temperature.setTextColor(res.getColor(R.color.color_forecast_list_selected_text));
+            holder.dayOfWeek.setTextColor(res.getColor(R.color.color_forecast_list_selected_text));
+        } else {
+            holder.layout.setBackgroundColor(res.getColor(R.color.color_forecast_notselected));
+            holder.temperature.setTextColor(res.getColor(R.color.color_forecast_list_text));
+            holder.dayOfWeek.setTextColor(res.getColor(R.color.color_forecast_list_text));
+        }
         holder.itemView.setOnClickListener(view -> switchSelect(position));
     }
 
@@ -90,9 +107,14 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.ViewHo
         return selectedItem;
     }
 
+    public ForecastItemDecoration getDecoration() {
+        return decoration;
+    }
+
     private void switchSelect(int position) {
         detailsView.showWeatherDetails(forecast.get(position));
         selectedItem = position;
+        decoration.setSelectedPosition(position);
         notifyDataSetChanged();
     }
 

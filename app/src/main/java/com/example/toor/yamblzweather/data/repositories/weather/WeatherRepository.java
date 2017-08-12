@@ -29,7 +29,7 @@ public interface WeatherRepository {
     Single<CurrentWeather> loadCurrentWeatherFromNW(Coord coord);*/
 
     @NonNull
-    Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails);
+    Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails, long dateSec);
 
     /*@Nullable
     Single<ExtendedWeather> getExtendedWeatherFromDB(Coord coords);*/

@@ -54,7 +54,7 @@ public class WeatherScheduleJob extends Job {
 
     public void startJob() {
         Timber.v("startJob");
-        if (BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
             settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
                     new JobRequest.Builder(TAG)
                             .setPeriodic(TimeUnit.MILLISECONDS.toMillis(900000)
@@ -63,7 +63,7 @@ public class WeatherScheduleJob extends Job {
                             .setPersisted(true)
                             .build()
                             .schedule());
-        else
+        } else {
             settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
                     new JobRequest.Builder(TAG)
                             .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
@@ -72,6 +72,6 @@ public class WeatherScheduleJob extends Job {
                             .setPersisted(true)
                             .build()
                             .schedule());
-
+        }
     }
 }

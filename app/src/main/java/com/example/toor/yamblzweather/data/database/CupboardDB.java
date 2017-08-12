@@ -89,10 +89,12 @@ public class CupboardDB extends SQLiteOpenHelper implements DataBase{
 
     @NonNull
     @Override
-    public Flowable<DailyForecastElement> getWeather(@NonNull PlaceDetails placeDetails) {
+    public Flowable<DailyForecastElement> getWeather(@NonNull PlaceDetails placeDetails,
+                                                     long dateSec) {
         Long id = placeDetails.getId();
         return getDatabase().query(getDatabase().buildQuery(WeatherDBModel.class)
-                .withSelection("placeId = ?", String.valueOf(id)).orderBy("date"))
+                .withSelection("placeId = ? AND date >= ?", String.valueOf(id), String.valueOf(dateSec))
+                .orderBy("date"))
                 .subscribeOn(Schedulers.io()).map(this::modelToForecastElement);
     }
 

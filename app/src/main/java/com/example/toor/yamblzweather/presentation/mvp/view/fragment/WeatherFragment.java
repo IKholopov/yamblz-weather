@@ -14,8 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
+import com.example.toor.yamblzweather.data.models.weather.common.Temp;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+import com.example.toor.yamblzweather.domain.utils.TimeUtils;
 import com.example.toor.yamblzweather.domain.utils.ViewUtils;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
@@ -43,8 +45,10 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
     TextView tvPressure;
     @BindView(R.id.tvHumidity)
     TextView tvHumidity;
-    @BindView(R.id.tvTemp)
-    TextView tvTemp;
+    @BindView(R.id.tvTempMax)
+    TextView tvTempMax;
+    @BindView(R.id.tvTempMin)
+    TextView tvTempMin;
     @BindView(R.id.tvDescription)
     TextView tvDescription;
     @BindView(R.id.ivCurrent)
@@ -140,18 +144,24 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
     @Override
     public void showWeather(DailyWeather weather, String placeName) {
         if(weather.getList().size() == 0) {
-            setSelectedWeather("No downloaded weather :)", placeName, null);
+            setSelectedWeather("No downloaded weather :)", "", placeName, null);
+            presenter.updateAllWeather();
         }
         else {
             forecastAdapter.updateForecast(weather.getList());
+            forecastList.addItemDecoration(forecastAdapter.getDecoration());
             if(weather.getList() != null && weather.getList().size() > 0) {
                 forecastAdapter.setSelected(dayPosition);
+                forecastList.getLayoutManager().scrollToPosition(dayPosition);
             }
-            unSubcribeOnDetach(presenter.getCurrentTemperatureString(weather.getList()
-                    .get(dayPosition).getTemp().getMax())
+            Temp temp = weather.getList().get(dayPosition).getTemp();
+            unSubcribeOnDetach(presenter.getCurrentTemperatureString(temp.getMax())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(temperatureStr -> {
-                        setSelectedWeather(temperatureStr, placeName, weather.getList().get(dayPosition));
+                    .subscribe(temperatureMaxStr -> {
+                        unSubcribeOnDetach(presenter.getCurrentTemperatureString(temp.getMin())
+                                .subscribe(temperatureMinStr ->
+                                        setSelectedWeather(temperatureMaxStr, temperatureMinStr,
+                                                placeName, weather.getList().get(dayPosition))));
                     }));
         }
     }
@@ -171,14 +181,20 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
         createNetworkErrorFragment();
     }
 
-    private void setSelectedWeather(@NonNull String temperatureStr, String placeName,
+    private void setSelectedWeather(@NonNull String temperatureMaxStr,
+                                    @NonNull String temperatureMinStr,
+                                    String placeName,
                                     DailyForecastElement weather) {
-        if (tvTemp == null) {
+        if (tvTempMax == null) {
             return;
         }
-        tvTemp.setText(temperatureStr);
-        tvCity.setText(placeName);
+        tvTempMax.setText(temperatureMaxStr);
+        tvTempMin.setText(temperatureMinStr);
         if(weather != null) {
+            tvCity.setText(placeName);
+            tvDate.setText(TimeUtils.formatDayShort(weather.getDt()));
+            tvHumidity.setText(String.format(getString(R.string.percents_format), weather.getHumidity()));
+            tvPressure.setText(String.format(getString(R.string.pressure_format), weather.getPressure()));
             tvDescription.setText(weather.getWeather().get(0).getDescription());
             setImageFromName(weather.getWeather().get(0).getIcon());
         }
@@ -223,10 +239,15 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
 
     @Override
     public void showWeatherDetails(DailyForecastElement element) {
-        unSubcribeOnDetach(presenter.getCurrentTemperatureString(element.getTemp().getMax())
+        Temp temp = element.getTemp();
+        unSubcribeOnDetach(presenter.getCurrentTemperatureString(temp.getMax())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(temperatureStr -> {
-                    setSelectedWeather(temperatureStr, placeModel.getName(), element);
+                .subscribe(temperatureMaxStr -> {
+                    unSubcribeOnDetach(presenter.getCurrentTemperatureString(temp.getMin())
+                            .subscribe(temperatureMinStr ->
+                                    setSelectedWeather(temperatureMaxStr, temperatureMinStr,
+                                            placeModel.getName(), element)
+                    ));
                 }));
     }
 }

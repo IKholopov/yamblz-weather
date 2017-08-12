@@ -1,6 +1,8 @@
 package com.example.toor.yamblzweather.presentation.mvp.presenter;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;

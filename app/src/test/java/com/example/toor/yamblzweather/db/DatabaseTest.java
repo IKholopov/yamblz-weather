@@ -220,7 +220,7 @@ public class DatabaseTest {
         SyncEntity sync = new SyncEntity();
         cupboardDb.addOrUpdateWeather(testModel, placeDetails.getId(), () ->
                 cupboardDb.addOrUpdateWeather(testModel, placeDetails.getId() + 1, () ->
-                    cupboardDb.getWeather(placeDetails).count()
+                    cupboardDb.getWeather(placeDetails, 0).count()
                             .subscribe(count ->
                                 sync.runAssertion(() -> assertThat(count, equalTo(2L))))));
         assertThat(sync.waitFor(), equalTo(true));

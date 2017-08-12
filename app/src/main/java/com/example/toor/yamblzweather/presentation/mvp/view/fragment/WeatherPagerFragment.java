@@ -15,6 +15,7 @@ import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresente
 import com.example.toor.yamblzweather.presentation.mvp.view.NavigateView;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
+import com.example.toor.yamblzweather.presentation.mvp.view.adapter.NoPlacesAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.WeatherPlacesPagerAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
 
@@ -31,6 +32,7 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
 
     private Unbinder unbinder;
     private WeatherPlacesPagerAdapter pagerAdapter;
+    private NoPlacesAdapter noPlacesAdapter;
 
     @Inject
     WeatherPresenter presenter;
@@ -38,7 +40,6 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
     @BindView(R.id.weatherPager) ViewPager weatherPager;
 
     public WeatherPagerFragment() {
-        // Required empty public constructor
     }
 
     public static WeatherPagerFragment newInstance() {
@@ -71,6 +72,7 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_pager, container, false);
         unbinder = ButterKnife.bind(this, view);
+        noPlacesAdapter = new NoPlacesAdapter(getChildFragmentManager());
         return view;
     }
 
@@ -78,9 +80,18 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
     public void onViewCreated(View view, Bundle savedInstanceState) {
         presenter.updatePlacesList();
         presenter.getPlaces().subscribe(list -> {
-            pagerAdapter = new WeatherPlacesPagerAdapter(list, getChildFragmentManager());
-            weatherPager.setAdapter(null);
-            weatherPager.setAdapter(pagerAdapter);
+            if(list == null || list.size() == 0) {
+                noPlacesAdapter.setActive(true);
+                weatherPager.setAdapter(noPlacesAdapter);
+                noPlacesAdapter.notifyDataSetChanged();
+            } else {
+                noPlacesAdapter.setActive(false);
+                noPlacesAdapter.notifyDataSetChanged();
+                pagerAdapter = new WeatherPlacesPagerAdapter(list, getChildFragmentManager());
+                weatherPager.setAdapter(null);
+                weatherPager.setAdapter(pagerAdapter);
+                pagerAdapter.notifyDataSetChanged();
+            }
         });
     }
 

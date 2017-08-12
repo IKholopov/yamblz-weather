@@ -38,14 +38,14 @@ public class WeatherRepositoryImpl implements WeatherRepository {
 
     @NonNull
     @Override
-    public Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails) {
+    public Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails, long dateSec) {
         DailyWeather weather = new DailyWeather();
         City city = new City();
         city.setId(placeDetails.getId().intValue());
         city.setCoord(placeDetails.getCoords());
         city.setName(placeDetails.getName());
         weather.setCity(city);
-        return dataBase.getWeather(placeDetails)
+        return dataBase.getWeather(placeDetails, dateSec)
                     .toList().map(list -> {
                 weather.setList(list);
                 return weather;

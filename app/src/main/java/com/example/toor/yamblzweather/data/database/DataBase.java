@@ -20,7 +20,7 @@ public interface DataBase {
     Flowable<PlaceDetails> getPlaces();
 
     @NonNull
-    Flowable<DailyForecastElement> getWeather(@NonNull PlaceDetails placeDetails);
+    Flowable<DailyForecastElement> getWeather(@NonNull PlaceDetails placeDetails, long dateSec);
 
     @NonNull
     Single<Long> clearBeforeDate(@NonNull Calendar date);

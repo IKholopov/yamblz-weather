@@ -191,9 +191,11 @@ public class MainActivity extends AppCompatActivity implements DrawerLocker, OnB
         toggle.setDrawerIndicatorEnabled(true);
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         toggle.onDrawerStateChanged(DrawerLayout.LOCK_MODE_UNLOCKED);
-        disposables.add(presenter.getPlaces().subscribe(places -> {
-            placesAdapter.setPlaces(places);
-        }));
+        if(placesAdapter != null) {
+            disposables.add(presenter.getPlaces().subscribe(places -> {
+                placesAdapter.setPlaces(places);
+            }));
+        }
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
@@ -13,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -155,18 +158,19 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
     }
 
     private void switchFragmentState(State newState){
-        //TODO: Insert check if views still exist
         if(state == newState) {
             return;
         }
         state = newState;
         TransitionManager.beginDelayedTransition(fragmentLayout);
         if(state == State.LIST) {
+            searchPlace.setText("");
             listViewSet.applyTo(fragmentLayout);
             FragmentActivity activity = getActivity();
             if(activity != null && activity instanceof OnBackBehaviour) {
                 ((OnBackBehaviour)activity).setOnBackBehaviour(null);
             }
+            hideKeyboard();
         } else {
             addViewSet.applyTo(fragmentLayout);
             searchPlace.setVisibility(View.VISIBLE);
@@ -196,7 +200,6 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
         addViewSet.setVisibility(R.id.rvPlaces, View.INVISIBLE);
     }
 
-
     private void setUpPlaceList(List<PlaceModel> places) {
         placesAdapter = new PlacesListAdapter(places);
         LinearLayoutManager placesLayoutManager = new LinearLayoutManager(getContext());
@@ -210,6 +213,18 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
         ItemTouchHelper.Callback dragCallback = new DragNDropCallback(placesAdapter);
         touchHelper = new ItemTouchHelper(dragCallback);
         touchHelper.attachToRecyclerView(placesList);
+    }
+
+    private void hideKeyboard() {
+        Activity activity = getActivity();
+        if(activity == null) {
+            return;
+        }
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
 

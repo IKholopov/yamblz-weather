@@ -65,8 +65,8 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
     }
 
     public void updatePlacesList() {
-        placesInteractor.getAllPlaces().toList().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(list -> places.onNext(list));
+        unSubcribeOnDetach(placesInteractor.getAllPlaces().toList().observeOn(AndroidSchedulers.mainThread())
+                .subscribe(list -> places.onNext(list)));
     }
 
     public Single<PlaceModel> getPlace(int position) {
@@ -124,17 +124,17 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
     }
 
     public void updateAllWeather() {
-        if ( getView() == null)
-            return;
-
         unSubcribeOnDetach(placesInteractor.getAllPlaces().subscribe(place ->
-                weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
+                unSubcribeOnDetach(weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
                 .subscribe((weather) -> {
                     for(WeatherView weatherView: childViews) {
+                        if(place == null) {
+                            return;
+                        }
                         if(place.getLocalId() == weatherView.getPlaceId()) {
                             weatherView.showWeather(weather);
                         }
-                    }})));
+                    }}))));
     }
 
     public void onChildAttach(WeatherView view) {
