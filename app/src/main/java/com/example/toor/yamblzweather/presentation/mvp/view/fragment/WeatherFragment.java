@@ -1,5 +1,6 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
+import android.animation.Animator;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -63,6 +64,8 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rvForecast)
     RecyclerView forecastList;
+    @BindView(R.id.tvNoConnection)
+    TextView noConnection;
 
 
     private Unbinder unbinder;
@@ -153,10 +156,14 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
             return;
         }
         if(weather.getList().size() == 0) {
-            setSelectedWeather("No downloaded weather :)", "", placeName, null);
+            noConnection.setVisibility(View.VISIBLE);
             presenter.updateAllWeather();
         }
         else {
+            if(noConnection.getVisibility() == View.VISIBLE) {
+                noConnection.animate().alpha(0f);
+                noConnection.setVisibility(View.INVISIBLE);
+            }
             forecastAdapter.updateForecast(weather.getList());
             forecastList.addItemDecoration(forecastAdapter.getDecoration());
             if(weather.getList() != null && weather.getList().size() > 0) {
@@ -193,15 +200,21 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
         if (tvTempMax == null) {
             return;
         }
+        animateFade(tvTempMax);
         tvTempMax.setText(temperatureMaxStr);
+        animateFade(tvTempMin);
         tvTempMin.setText(temperatureMinStr);
         if(weather != null) {
             tvCity.setText(placeName);
-            tvDate.setText(TimeUtils.formatDayShort(weather.getDt()));
+            animateFade(tvDate);
+            tvDate.setText(TimeUtils.formatDayAndDateShort(weather.getDt()));
             humidityLabel.setText(getString(R.string.humidity));
+            animateFade(tvHumidity);
             tvHumidity.setText(String.format(getString(R.string.percents_format), weather.getHumidity()));
             pressureLabel.setText(getString(R.string.pressure));
+            animateFade(tvPressure);
             tvPressure.setText(String.format(getString(R.string.pressure_format), weather.getPressure()));
+            animateFade(tvDescription);
             tvDescription.setText(weather.getWeather().get(0).getDescription());
             setImageFromName(weather.getWeather().get(0).getIcon());
         }
@@ -209,8 +222,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
 
     private void setImageFromName(String name) {
         int resID = ViewUtils.getIconResourceFromName(name, getContext());
-        Drawable drawable = getResources().getDrawable(resID);
+        Drawable drawable = getResources().getDrawable(resID);;
         ivCurrentWeatherImage.setImageDrawable(drawable);
+        animateFade(ivCurrentWeatherImage);
     }
 
     @Override
@@ -249,5 +263,10 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
                                             placeModel.getName(), element)
                     ));
                 }));
+    }
+
+    private void animateFade(View view) {
+        view.setAlpha(0f);
+        view.animate().alpha(1f).setDuration(400);
     }
 }

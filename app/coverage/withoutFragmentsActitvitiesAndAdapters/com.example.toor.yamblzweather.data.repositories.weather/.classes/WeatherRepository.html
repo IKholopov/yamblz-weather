@@ -1,0 +1,98 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: WeatherRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.repositories.weather</a> ]
+</div>
+
+<h1>Coverage Summary for Class: WeatherRepository (com.example.toor.yamblzweather.data.repositories.weather)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">WeatherRepository$$EnhancerByMockitoWithCGLIB$$22e527ff</td>
+  </tr>
+  <tr>
+    <td class="name">WeatherRepository$$EnhancerByMockitoWithCGLIB$$28cb2772</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.repositories.weather;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.util.Calendar;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import io.reactivex.Single;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;public interface WeatherRepository {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    /*@Nullable
+<i>15</i>&nbsp;    Single&lt;CurrentWeather&gt; getCurrentWeatherFromDB(int cityId);
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @Nullable
+<i>18</i>&nbsp;    Single&lt;CurrentWeather&gt; getCurrentWeatherFromDB(Coord coord);
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    @Nullable
+<i>21</i>&nbsp;    Single&lt;CurrentWeather&gt; loadCurrentWeatherFromNW(int cityId);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    @Nullable
+<i>24</i>&nbsp;    Single&lt;CurrentWeather&gt; loadCurrentWeatherFromNW(Coord coord);*/
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @NonNull
+<i>27</i>&nbsp;    Single&lt;DailyWeather&gt; getExtendedWeatherFromDB(PlaceDetails placeDetails, long dateSec);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    /*@Nullable
+<i>30</i>&nbsp;    Single&lt;ExtendedWeather&gt; getExtendedWeatherFromDB(Coord coords);*/
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    @NonNull
+<i>33</i>&nbsp;    Single&lt;DailyWeather&gt; loadExtendedWeatherFromNW(PlaceDetails placeDetails);
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    @NonNull
+<i>36</i>&nbsp;    Single&lt;Long&gt; clearOldRecords(Calendar date);
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    @NonNull
+<i>39</i>&nbsp;    Single&lt;Long&gt; deleteRecordsForPlace(long placeId);
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    /*@Nullable
+<i>42</i>&nbsp;    Single&lt;ExtendedWeather&gt; loadExtendedWeatherFromNW(Coord coords);*/
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    void saveWeather(@NonNull DailyWeather weather, @NonNull PlaceDetails placeDetails);
+<i>45</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

@@ -55,7 +55,7 @@
 </td>
 </tr>
   <tr>
-    <td class="name">WeatherScheduleJob$$EnhancerByMockitoWithCGLIB$$97829da</td>
+    <td class="name">WeatherScheduleJob$$EnhancerByMockitoWithCGLIB$$d9d56360</td>
   </tr>
 <tr>
   <td class="name"><strong>total</strong></td>
@@ -133,7 +133,7 @@
 <i>49</i>&nbsp;    private void serializeCurrentWeather() {
 <b class="nc"><i>50</i>&nbsp;        placesInteractor.getAllPlaces()</b>
 <b class="nc"><i>51</i>&nbsp;                .subscribe(place -&gt; weatherInteractor.updateWeather(place)</b>
-<b class="nc"><i>52</i>&nbsp;                        .subscribe(weather -&gt; {}));</b>
+<b class="nc"><i>52</i>&nbsp;                        .subscribe((weather, error) -&gt; {}));</b>
 <b class="nc"><i>53</i>&nbsp;    }</b>
 <i>54</i>&nbsp;
 <i>55</i>&nbsp;    public void startJob() {
@@ -153,7 +153,7 @@
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2017-08-13 21:34</div>
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
 </div>
 </body>
 </html>

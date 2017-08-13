@@ -29,7 +29,6 @@ import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.Draw
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.PlacesListAdapter;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
-import com.example.toor.yamblzweather.presentation.mvp.view.recyclerCallback.DragNDropCallback;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import java.util.ArrayList;
@@ -210,9 +209,10 @@ public class PlacesListFragment extends BaseFragment implements PlacesListView{
                         .subscribe(placeModel -> presenter.deletePlace(placeModel)
                                 .subscribe(deleted -> {})));
         placesList.setAdapter(placesAdapter);
-        ItemTouchHelper.Callback dragCallback = new DragNDropCallback(placesAdapter);
+        //TODO: Rearrange places feature
+        /*ItemTouchHelper.Callback dragCallback = new DragNDropCallback(placesAdapter);
         touchHelper = new ItemTouchHelper(dragCallback);
-        touchHelper.attachToRecyclerView(placesList);
+        touchHelper.attachToRecyclerView(placesList);*/
     }
 
     private void hideKeyboard() {

@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SettingsModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.presentation.mvp.models.settings</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SettingsModel (com.example.toor.yamblzweather.presentation.mvp.models.settings)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SettingsModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (4/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (10/ 12)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SettingsModel$Builder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    83.3%
+  </span>
+  <span class="absValue">
+    (10/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    91.7%
+  </span>
+  <span class="absValue">
+    (22/ 24)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.presentation.mvp.models.settings;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+<i>4</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;public class SettingsModel {
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;    private final TemperatureMetric metric;
+<i>9</i>&nbsp;    private final long updateWeatherInterval;
+<i>10</i>&nbsp;    private final int selectedCityId;
+<i>11</i>&nbsp;    private final String cityName;
+<i>12</i>&nbsp;    private final Coord coords;
+<i>13</i>&nbsp;
+<b class="fc"><i>14</i>&nbsp;    public static class Builder {</b>
+<i>15</i>&nbsp;        //Requered params
+<i>16</i>&nbsp;        private final TemperatureMetric metric;
+<i>17</i>&nbsp;        private final long updateWeatherInterval;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;        //Optional params
+<i>20</i>&nbsp;        private int cityId;
+<i>21</i>&nbsp;        private Coord coords;
+<i>22</i>&nbsp;        private String cityName;
+<i>23</i>&nbsp;
+<b class="fc"><i>24</i>&nbsp;        public Builder(TemperatureMetric metric, long updateWeatherInterval) {</b>
+<b class="fc"><i>25</i>&nbsp;            this.metric = metric;</b>
+<b class="fc"><i>26</i>&nbsp;            this.updateWeatherInterval = updateWeatherInterval;</b>
+<b class="fc"><i>27</i>&nbsp;        }</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;        public Builder cityId(int val) {
+<b class="fc"><i>30</i>&nbsp;            cityId = val;</b>
+<b class="fc"><i>31</i>&nbsp;            return this;</b>
+<i>32</i>&nbsp;        }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;        public Builder coords(Coord coords) {
+<b class="fc"><i>35</i>&nbsp;            this.coords = coords;</b>
+<b class="fc"><i>36</i>&nbsp;            return this;</b>
+<i>37</i>&nbsp;        }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;        public Builder cityName(String cityName) {
+<b class="fc"><i>40</i>&nbsp;            this.cityName = cityName;</b>
+<b class="fc"><i>41</i>&nbsp;            return this;</b>
+<i>42</i>&nbsp;        }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;        public SettingsModel build() {
+<b class="fc"><i>45</i>&nbsp;            return new SettingsModel(this);</b>
+<i>46</i>&nbsp;        }
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;
+<b class="fc"><i>50</i>&nbsp;    public SettingsModel(Builder builder) {</b>
+<b class="fc"><i>51</i>&nbsp;        metric = builder.metric;</b>
+<b class="fc"><i>52</i>&nbsp;        updateWeatherInterval = builder.updateWeatherInterval;</b>
+<b class="fc"><i>53</i>&nbsp;        selectedCityId = builder.cityId;</b>
+<b class="fc"><i>54</i>&nbsp;        coords = builder.coords;</b>
+<b class="fc"><i>55</i>&nbsp;        cityName = builder.cityName;</b>
+<b class="fc"><i>56</i>&nbsp;    }</b>
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    public TemperatureMetric getMetric() {
+<b class="fc"><i>59</i>&nbsp;        return this.metric;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    public long getUpdateWeatherInterval() {
+<b class="fc"><i>63</i>&nbsp;        return this.updateWeatherInterval;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    public int getSelectedCityId() {
+<b class="nc"><i>67</i>&nbsp;        return this.selectedCityId;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public Coord getCityCoords() {
+<b class="nc"><i>71</i>&nbsp;        return this.coords;</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    public String getCityName() {
+<b class="fc"><i>75</i>&nbsp;        return cityName;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,156 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlaceDetails</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.models.places</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlaceDetails (com.example.toor.yamblzweather.data.models.places)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlaceDetails</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/ 22)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PlaceDetails$$EnhancerByMockitoWithCGLIB$$6f66c860</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (9/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (22/ 22)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.models.places;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;import android.support.annotation.Nullable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+<i>7</i>&nbsp;import com.google.gson.annotations.Expose;
+<i>8</i>&nbsp;import com.google.gson.annotations.SerializedName;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * Created by igor on 7/26/17.
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;
+<b class="fc"><i>14</i>&nbsp;public class PlaceDetails {</b>
+<i>15</i>&nbsp;    private Long id;
+<i>16</i>&nbsp;
+<b class="fc"><i>17</i>&nbsp;    @SerializedName(&quot;result&quot;)</b>
+<i>18</i>&nbsp;    @Expose
+<i>19</i>&nbsp;    private PlaceDetailsResult result = new PlaceDetailsResult();
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    public static PlaceDetails newInstance(@Nullable Long id, @NonNull Coord coords,
+<i>22</i>&nbsp;                                           @NonNull String name, @NonNull String placeId) {
+<b class="fc"><i>23</i>&nbsp;        PlaceDetails place = new PlaceDetails();</b>
+<b class="fc"><i>24</i>&nbsp;        place.id = id;</b>
+<b class="fc"><i>25</i>&nbsp;        place.setCoords(coords);</b>
+<b class="fc"><i>26</i>&nbsp;        place.setName(name);</b>
+<b class="fc"><i>27</i>&nbsp;        place.setApiId(placeId);</b>
+<b class="fc"><i>28</i>&nbsp;        return place;</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    public Coord getCoords() {
+<b class="fc"><i>32</i>&nbsp;        Location location = result.getLocation();</b>
+<b class="fc"><i>33</i>&nbsp;        return new Coord(location.getLat(), location.getLon());</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    public String getName() {
+<b class="fc"><i>37</i>&nbsp;        return result.getName();</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    public Long getId() {
+<b class="fc"><i>41</i>&nbsp;        return id;</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    public String getApiId() {
+<b class="fc"><i>45</i>&nbsp;        return result.getPlaceId();</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public void setName(String name) {
+<b class="fc"><i>49</i>&nbsp;        result.setName(name);</b>
+<b class="fc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public void setCoords(Coord coords) {
+<b class="fc"><i>53</i>&nbsp;        Location location = new Location();</b>
+<b class="fc"><i>54</i>&nbsp;        location.setLat(coords.getLat());</b>
+<b class="fc"><i>55</i>&nbsp;        location.setLon(coords.getLon());</b>
+<b class="fc"><i>56</i>&nbsp;        result.setLocation(location);</b>
+<b class="fc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    public void setApiId(String apiId) {
+<b class="fc"><i>60</i>&nbsp;        result.setPlaceId(apiId);</b>
+<b class="fc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;}
+<i>63</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

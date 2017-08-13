@@ -28,4 +28,12 @@ public class TimeUtils {
         calendar.setTimeInMillis(time * 1000);
         return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
     }
+
+    public static String formatDayAndDateShort(long time) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTimeInMillis(time * 1000);
+        return String.valueOf(calendar.get(Calendar.DAY_OF_MONTH)) +
+                " " +
+                calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.SHORT, Locale.getDefault());
+    }
 }

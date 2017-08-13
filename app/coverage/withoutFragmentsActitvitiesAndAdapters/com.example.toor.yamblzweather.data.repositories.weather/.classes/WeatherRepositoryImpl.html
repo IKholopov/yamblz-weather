@@ -1,0 +1,183 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: WeatherRepositoryImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.repositories.weather</a> ]
+</div>
+
+<h1>Coverage Summary for Class: WeatherRepositoryImpl (com.example.toor.yamblzweather.data.repositories.weather)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">WeatherRepositoryImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    57.1%
+  </span>
+  <span class="absValue">
+    (4/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81%
+  </span>
+  <span class="absValue">
+    (17/ 21)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.repositories.weather;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.support.annotation.NonNull;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.database.DataBase;
+<i>7</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>8</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.City;
+<i>9</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+<i>10</i>&nbsp;import com.example.toor.yamblzweather.data.network.OWService;
+<i>11</i>&nbsp;import com.example.toor.yamblzweather.presentation.di.App;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.util.Calendar;
+<i>14</i>&nbsp;import java.util.Locale;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import javax.inject.Inject;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;import io.reactivex.Single;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;public class WeatherRepositoryImpl implements WeatherRepository {
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    private DataBase dataBase;
+<i>23</i>&nbsp;    private OWService service;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Inject
+<i>26</i>&nbsp;    Context context;
+<i>27</i>&nbsp;    @Inject
+<i>28</i>&nbsp;    Locale locale;
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;    public WeatherRepositoryImpl(DataBase dataBase, OWService service) {</b>
+<b class="fc"><i>31</i>&nbsp;        this.dataBase = dataBase;</b>
+<b class="fc"><i>32</i>&nbsp;        this.service = service;</b>
+<i>33</i>&nbsp;
+<b class="fc"><i>34</i>&nbsp;        App.getInstance().getAppComponent().inject(this);</b>
+<b class="fc"><i>35</i>&nbsp;        service.setLanguage(locale);</b>
+<b class="fc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    @NonNull
+<i>39</i>&nbsp;    @Override
+<i>40</i>&nbsp;    public Single&lt;DailyWeather&gt; getExtendedWeatherFromDB(PlaceDetails placeDetails, long dateSec) {
+<b class="fc"><i>41</i>&nbsp;        DailyWeather weather = new DailyWeather();</b>
+<b class="fc"><i>42</i>&nbsp;        City city = new City();</b>
+<b class="fc"><i>43</i>&nbsp;        city.setId(placeDetails.getId().intValue());</b>
+<b class="fc"><i>44</i>&nbsp;        city.setCoord(placeDetails.getCoords());</b>
+<b class="fc"><i>45</i>&nbsp;        city.setName(placeDetails.getName());</b>
+<b class="fc"><i>46</i>&nbsp;        weather.setCity(city);</b>
+<b class="fc"><i>47</i>&nbsp;        return dataBase.getWeather(placeDetails, dateSec)</b>
+<b class="fc"><i>48</i>&nbsp;                    .toList().map(list -&gt; {</b>
+<b class="fc"><i>49</i>&nbsp;                weather.setList(list);</b>
+<b class="fc"><i>50</i>&nbsp;                return weather;</b>
+<i>51</i>&nbsp;            });
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    @NonNull
+<i>55</i>&nbsp;    @Override
+<i>56</i>&nbsp;    public Single&lt;DailyWeather&gt; loadExtendedWeatherFromNW(PlaceDetails placeDetails) {
+<b class="fc"><i>57</i>&nbsp;        return service.getExtendedWeather(placeDetails.getCoords());</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    @NonNull
+<i>61</i>&nbsp;    @Override
+<i>62</i>&nbsp;    public Single&lt;Long&gt; clearOldRecords(Calendar date) {
+<b class="nc"><i>63</i>&nbsp;        return dataBase.clearBeforeDate(date);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @NonNull
+<i>67</i>&nbsp;    @Override
+<i>68</i>&nbsp;    public Single&lt;Long&gt; deleteRecordsForPlace(long placeId) {
+<b class="nc"><i>69</i>&nbsp;        return dataBase.deleteWeatherForPlace(placeId);</b>
+<i>70</i>&nbsp;    }
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    /*
+<i>73</i>&nbsp;    @Override
+<i>74</i>&nbsp;    public Single&lt;ExtendedWeather&gt; getExtendedWeatherFromDB(int cityId) {
+<i>75</i>&nbsp;        return dataBase.getExtendedWeather(cityId);
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    @Nullable
+<i>79</i>&nbsp;    @Override
+<i>80</i>&nbsp;    public Single&lt;ExtendedWeather&gt; getExtendedWeatherFromDB(Coord coords) {
+<i>81</i>&nbsp;        return dataBase.getExtendedWeather(coords);
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    @Nullable
+<i>85</i>&nbsp;    @Override
+<i>86</i>&nbsp;    public Single&lt;ExtendedWeather&gt; loadExtendedWeatherFromNW(int cityId) {
+<i>87</i>&nbsp;        return service.getExtendedWeather(cityId);
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    @Nullable
+<i>91</i>&nbsp;    @Override
+<i>92</i>&nbsp;    public Single&lt;ExtendedWeather&gt; loadExtendedWeatherFromNW(Coord coords) {
+<i>93</i>&nbsp;        return service.getExtendedWeather(coords);
+<i>94</i>&nbsp;    }*/
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;    @Override
+<i>97</i>&nbsp;    public void saveWeather(@NonNull DailyWeather weather, @NonNull PlaceDetails placeDetails) {
+<b class="nc"><i>98</i>&nbsp;        dataBase.addOrUpdateWeather(weather, placeDetails.getId(), () -&gt; {});</b>
+<b class="nc"><i>99</i>&nbsp;    }</b>
+<i>100</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

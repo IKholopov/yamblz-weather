@@ -1,0 +1,75 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SettingsRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.repositories.settings</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SettingsRepository (com.example.toor.yamblzweather.data.repositories.settings)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">SettingsRepository</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.repositories.settings;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;import android.support.annotation.Nullable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>7</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
+<i>8</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+<i>9</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+<i>10</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
+<i>11</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import io.reactivex.Single;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public interface SettingsRepository {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @NonNull
+<i>18</i>&nbsp;    Single&lt;SettingsModel&gt; getUserSettings();
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    void saveTemperatureMetric(TemperatureMetric metric);
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    void saveUpdateInterval(long interval);
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    void saveSelectedCity(int cityId);
+<i>25</i>&nbsp;    void saveSelectedCity(PlaceModel model);
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    String getSelectedCityName();
+<i>28</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

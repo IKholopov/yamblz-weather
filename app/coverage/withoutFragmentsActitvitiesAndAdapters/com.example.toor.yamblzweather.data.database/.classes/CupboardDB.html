@@ -1,0 +1,331 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CupboardDB</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.database</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CupboardDB (com.example.toor.yamblzweather.data.database)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CupboardDB</td>
+<td class="coverageStat">
+  <span class="percent">
+    95.5%
+  </span>
+  <span class="absValue">
+    (21/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.4%
+  </span>
+  <span class="absValue">
+    (108/ 112)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CupboardDB$$EnhancerByMockitoWithCGLIB$$479f1200</td>
+  </tr>
+  <tr>
+    <td class="name">CupboardDB$$EnhancerByMockitoWithCGLIB$$e0783b33</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    95.5%
+  </span>
+  <span class="absValue">
+    (21/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.4%
+  </span>
+  <span class="absValue">
+    (108/ 112)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.database;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.database.Cursor;
+<i>5</i>&nbsp;import android.database.sqlite.SQLiteDatabase;
+<i>6</i>&nbsp;import android.database.sqlite.SQLiteOpenHelper;
+<i>7</i>&nbsp;import android.support.annotation.NonNull;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>10</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+<i>11</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Temp;
+<i>12</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Weather;
+<i>13</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+<i>14</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+<i>15</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.TimeUtils;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import java.lang.reflect.Field;
+<i>18</i>&nbsp;import java.security.InvalidParameterException;
+<i>19</i>&nbsp;import java.util.ArrayList;
+<i>20</i>&nbsp;import java.util.Calendar;
+<i>21</i>&nbsp;import java.util.HashSet;
+<i>22</i>&nbsp;import java.util.List;
+<i>23</i>&nbsp;import java.util.Set;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;import io.reactivex.Flowable;
+<i>26</i>&nbsp;import io.reactivex.Observable;
+<i>27</i>&nbsp;import io.reactivex.Single;
+<i>28</i>&nbsp;import io.reactivex.functions.Action;
+<i>29</i>&nbsp;import io.reactivex.schedulers.Schedulers;
+<i>30</i>&nbsp;import nl.nl2312.rxcupboard2.RxCupboard;
+<i>31</i>&nbsp;import nl.nl2312.rxcupboard2.RxDatabase;
+<i>32</i>&nbsp;import nl.qbusict.cupboard.Cupboard;
+<i>33</i>&nbsp;import nl.qbusict.cupboard.CupboardBuilder;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;/**
+<i>36</i>&nbsp; * Created by igor on 8/2/17.
+<i>37</i>&nbsp; */
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;public class CupboardDB extends SQLiteOpenHelper implements DataBase{
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    private static final String DATABASE_NAME = &quot;CupboardWeather.db&quot;;
+<i>42</i>&nbsp;    private static final int DATABASE_VERSION = 8;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    private static Cupboard cupboard;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    private RxDatabase db;
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    public synchronized RxDatabase getDatabase() {
+<b class="fc"><i>49</i>&nbsp;        if(db == null) {</b>
+<b class="fc"><i>50</i>&nbsp;            db = RxCupboard.with(cupboard, getWritableDatabase());</b>
+<i>51</i>&nbsp;        }
+<b class="fc"><i>52</i>&nbsp;        return db;</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    public CupboardDB(Context context) {
+<b class="fc"><i>56</i>&nbsp;        super(context, DATABASE_NAME, null, DATABASE_VERSION);</b>
+<b class="fc"><i>57</i>&nbsp;    }</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    static {
+<b class="fc"><i>60</i>&nbsp;        cupboard = new CupboardBuilder().build();</b>
+<b class="fc"><i>61</i>&nbsp;        cupboard.register(PlaceDBModel.class);</b>
+<b class="fc"><i>62</i>&nbsp;        cupboard.register(WeatherDBModel.class);</b>
+<b class="fc"><i>63</i>&nbsp;    }</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @Override
+<i>67</i>&nbsp;    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+<b class="fc"><i>68</i>&nbsp;        cupboard.withDatabase(sqLiteDatabase).createTables();</b>
+<i>69</i>&nbsp;
+<b class="fc"><i>70</i>&nbsp;        addCompositeUniqueConstraint(sqLiteDatabase, WeatherDBModel.class, getWeatherConstraintNames());</b>
+<b class="fc"><i>71</i>&nbsp;    }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    @Override
+<i>74</i>&nbsp;    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+<b class="nc"><i>75</i>&nbsp;        cupboard.withDatabase(sqLiteDatabase).upgradeTables();</b>
+<b class="nc"><i>76</i>&nbsp;        addCompositeUniqueConstraint(sqLiteDatabase, WeatherDBModel.class, getWeatherConstraintNames());</b>
+<b class="nc"><i>77</i>&nbsp;    }</b>
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    @NonNull
+<i>80</i>&nbsp;    @Override
+<i>81</i>&nbsp;    public Flowable&lt;PlaceDetails&gt; getPlaces() {
+<b class="fc"><i>82</i>&nbsp;        return getDatabase().query(PlaceDBModel.class).subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>83</i>&nbsp;                .map(this::modelToPlaceDetails);</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    @NonNull
+<i>87</i>&nbsp;    @Override
+<i>88</i>&nbsp;    public Flowable&lt;DailyForecastElement&gt; getWeather(@NonNull PlaceDetails placeDetails,
+<i>89</i>&nbsp;                                                     long dateSec) {
+<b class="fc"><i>90</i>&nbsp;        Long id = placeDetails.getId();</b>
+<b class="fc"><i>91</i>&nbsp;        return getDatabase().query(getDatabase().buildQuery(WeatherDBModel.class)</b>
+<b class="fc"><i>92</i>&nbsp;                .withSelection(&quot;placeId = ? AND date &gt;= ?&quot;, String.valueOf(id), String.valueOf(dateSec))</b>
+<b class="fc"><i>93</i>&nbsp;                .orderBy(&quot;date&quot;))</b>
+<b class="fc"><i>94</i>&nbsp;                .subscribeOn(Schedulers.io()).map(this::modelToForecastElement);</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    @NonNull
+<i>98</i>&nbsp;    @Override
+<i>99</i>&nbsp;    public Single&lt;Long&gt; clearBeforeDate(@NonNull Calendar date) {
+<b class="fc"><i>100</i>&nbsp;        Long normalizeDate = TimeUtils.normalizeDate(date.getTimeInMillis() / 1000);</b>
+<b class="fc"><i>101</i>&nbsp;        return getDatabase().delete(WeatherDBModel.class, &quot;date &lt; ?&quot;, String.valueOf(normalizeDate))</b>
+<b class="fc"><i>102</i>&nbsp;                    .subscribeOn(Schedulers.io());</b>
+<i>103</i>&nbsp;    }
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    @NonNull
+<i>106</i>&nbsp;    @Override
+<i>107</i>&nbsp;    public Single&lt;Long&gt; deletePlace(Long placeId) {
+<b class="fc"><i>108</i>&nbsp;        return getDatabase().delete(PlaceDBModel.class, &quot;_id = ?&quot;, String.valueOf(placeId))</b>
+<b class="fc"><i>109</i>&nbsp;                .subscribeOn(Schedulers.io());</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    @NonNull
+<i>113</i>&nbsp;    @Override
+<i>114</i>&nbsp;    public Single&lt;Long&gt; deleteWeatherForPlace(Long placeId) {
+<b class="fc"><i>115</i>&nbsp;        return getDatabase().delete(WeatherDBModel.class, &quot;placeId = ?&quot;, String.valueOf(placeId))</b>
+<b class="fc"><i>116</i>&nbsp;                .subscribeOn(Schedulers.io());</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    @Override
+<i>120</i>&nbsp;    public void addOrUpdateWeather(@NonNull DailyWeather weatherModel, Long placeId, @NonNull Action onComplete) {
+<b class="fc"><i>121</i>&nbsp;        Observable.fromIterable((weatherModel.getList())).subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>122</i>&nbsp;                .flatMapSingle(forecast -&gt; getDatabase().put(forecastToDBModel(forecast, placeId)))</b>
+<b class="fc"><i>123</i>&nbsp;                .doOnComplete(onComplete)</b>
+<b class="fc"><i>124</i>&nbsp;                .subscribe(getDatabase().put());</b>
+<b class="fc"><i>125</i>&nbsp;    }</b>
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    @Override
+<i>128</i>&nbsp;    public void addPlace(@NonNull PlaceDetails place, @NonNull Action onComplete) {
+<b class="fc"><i>129</i>&nbsp;        PlaceDBModel model = placeDetailsToModel(place);</b>
+<b class="fc"><i>130</i>&nbsp;        getDatabase().query(PlaceDBModel.class, &quot;apiId = ?&quot;,</b>
+<b class="fc"><i>131</i>&nbsp;                String.valueOf(place.getApiId())).subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>132</i>&nbsp;                .doOnComplete(() -&gt; Flowable.just(model).subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>133</i>&nbsp;                        .flatMapSingle(details -&gt; getDatabase().put(details))</b>
+<b class="fc"><i>134</i>&nbsp;                        .doOnComplete(onComplete)</b>
+<b class="fc"><i>135</i>&nbsp;                        .subscribe(getDatabase().put()))</b>
+<b class="fc"><i>136</i>&nbsp;                .subscribe(existing -&gt; model._id = existing._id);</b>
+<b class="fc"><i>137</i>&nbsp;    }</b>
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    @Override
+<i>140</i>&nbsp;    public void addCurrentLocation(@NonNull PlaceDetails place, @NonNull Action onComplete) {
+<b class="fc"><i>141</i>&nbsp;        PlaceDBModel model = placeDetailsToModel(place,true);</b>
+<b class="fc"><i>142</i>&nbsp;        getDatabase().query(PlaceDBModel.class, &quot;currentLocation = 1&quot;).subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>143</i>&nbsp;                .doOnComplete(() -&gt; Flowable.just(model).subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>144</i>&nbsp;                        .flatMapSingle(modelToInsert -&gt; getDatabase().put(modelToInsert))</b>
+<b class="fc"><i>145</i>&nbsp;                        .doOnComplete(onComplete)</b>
+<b class="fc"><i>146</i>&nbsp;                        .subscribe(getDatabase().put()))</b>
+<b class="fc"><i>147</i>&nbsp;                .subscribe(existing -&gt; model._id = existing._id);</b>
+<b class="fc"><i>148</i>&nbsp;    }</b>
+<i>149</i>&nbsp;
+<i>150</i>&nbsp;    private WeatherDBModel forecastToDBModel(@NonNull DailyForecastElement forecast, Long placeId) {
+<b class="fc"><i>151</i>&nbsp;        Temp temp = forecast.getTemp();</b>
+<b class="fc"><i>152</i>&nbsp;        Weather weather = forecast.getWeather().get(0);</b>
+<b class="fc"><i>153</i>&nbsp;        return new WeatherDBModel(TimeUtils.normalizeDate(forecast.getDt()), placeId,</b>
+<b class="fc"><i>154</i>&nbsp;                temp.getMin(),</b>
+<b class="fc"><i>155</i>&nbsp;                temp.getMax(),</b>
+<b class="fc"><i>156</i>&nbsp;                (long) forecast.getHumidity(),</b>
+<b class="fc"><i>157</i>&nbsp;                forecast.getPressure(),</b>
+<b class="fc"><i>158</i>&nbsp;                forecast.getSpeed(),</b>
+<b class="fc"><i>159</i>&nbsp;                (float) forecast.getDeg(),</b>
+<b class="fc"><i>160</i>&nbsp;                weather.getDescription(), weather.getIcon());</b>
+<i>161</i>&nbsp;    }
+<i>162</i>&nbsp;
+<i>163</i>&nbsp;    private PlaceDBModel placeDetailsToModel(PlaceDetails details) {
+<b class="fc"><i>164</i>&nbsp;        return placeDetailsToModel(details, false);</b>
+<i>165</i>&nbsp;    }
+<i>166</i>&nbsp;
+<i>167</i>&nbsp;    private PlaceDBModel placeDetailsToModel(PlaceDetails details, boolean current) {
+<b class="fc"><i>168</i>&nbsp;        return new PlaceDBModel(details.getCoords().getLat().floatValue(),</b>
+<b class="fc"><i>169</i>&nbsp;                details.getCoords().getLon().floatValue(), details.getApiId(),</b>
+<b class="fc"><i>170</i>&nbsp;                details.getName(), current);</b>
+<i>171</i>&nbsp;    }
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;    private PlaceDetails modelToPlaceDetails(PlaceDBModel model) {
+<b class="fc"><i>174</i>&nbsp;        return PlaceDetails.newInstance(model._id, new Coord(model.latitude, model.longitude),</b>
+<i>175</i>&nbsp;                model.name, model.apiId);
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    private DailyForecastElement modelToForecastElement(WeatherDBModel model) {
+<b class="fc"><i>179</i>&nbsp;        DailyForecastElement element = new DailyForecastElement();</b>
+<b class="fc"><i>180</i>&nbsp;        Temp temp = new Temp();</b>
+<b class="fc"><i>181</i>&nbsp;        temp.setMax(model.tempMax);</b>
+<b class="fc"><i>182</i>&nbsp;        temp.setMin(model.tempMin);</b>
+<b class="fc"><i>183</i>&nbsp;        temp.setDay((model.tempMax + model.tempMin) / 2);</b>
+<b class="fc"><i>184</i>&nbsp;        element.setTemp(temp);</b>
+<b class="fc"><i>185</i>&nbsp;        element.setPressure(model.pressure);</b>
+<b class="fc"><i>186</i>&nbsp;        element.setHumidity(model.humidity.intValue());</b>
+<b class="fc"><i>187</i>&nbsp;        element.setDeg(model.windDirection.intValue());</b>
+<b class="fc"><i>188</i>&nbsp;        element.setSpeed(model.windSpeed);</b>
+<b class="fc"><i>189</i>&nbsp;        Weather weather = new Weather();</b>
+<b class="fc"><i>190</i>&nbsp;        weather.setDescription(model.weatherDescription);</b>
+<b class="fc"><i>191</i>&nbsp;        weather.setIcon(model.weatherIcon);</b>
+<b class="fc"><i>192</i>&nbsp;        weather.setId(model._id.intValue());</b>
+<b class="fc"><i>193</i>&nbsp;        weather.setMain(model.weatherDescription);</b>
+<b class="fc"><i>194</i>&nbsp;        List&lt;Weather&gt; listWeather = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>195</i>&nbsp;        listWeather.add(weather);</b>
+<b class="fc"><i>196</i>&nbsp;        element.setWeather(listWeather);</b>
+<b class="fc"><i>197</i>&nbsp;        element.setDt(model.date.intValue());</b>
+<b class="fc"><i>198</i>&nbsp;        return element;</b>
+<i>199</i>&nbsp;    }
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;    private List&lt;String&gt; getWeatherConstraintNames() {
+<b class="fc"><i>202</i>&nbsp;        List&lt;String&gt; uniqueComposite = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>203</i>&nbsp;        uniqueComposite.add(&quot;placeId&quot;);</b>
+<b class="fc"><i>204</i>&nbsp;        uniqueComposite.add(&quot;date&quot;);</b>
+<b class="fc"><i>205</i>&nbsp;        return uniqueComposite;</b>
+<i>206</i>&nbsp;    }
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;    private void addCompositeUniqueConstraint(SQLiteDatabase sqLiteDatabase, Class model,
+<i>209</i>&nbsp;                                              List&lt;String&gt; fieldNames) {
+<b class="fc"><i>210</i>&nbsp;        Field[] allFields = (model.getFields());</b>
+<b class="fc"><i>211</i>&nbsp;        Set&lt;String&gt; allNames = new HashSet&lt;&gt;();</b>
+<b class="fc"><i>212</i>&nbsp;        for(Field field: allFields) {</b>
+<b class="fc"><i>213</i>&nbsp;            allNames.add(field.getName());</b>
+<i>214</i>&nbsp;        }
+<b class="fc"><i>215</i>&nbsp;        for(String name: fieldNames) {</b>
+<b class="fc"><i>216</i>&nbsp;            if(!fieldNames.contains(name)) {</b>
+<b class="nc"><i>217</i>&nbsp;                throw new InvalidParameterException(&quot;fieldNames: &quot; + name + &quot; is not a field of &quot; + model.getSimpleName());</b>
+<i>218</i>&nbsp;            }
+<b class="fc"><i>219</i>&nbsp;        }</b>
+<b class="fc"><i>220</i>&nbsp;        String[] columns = { &quot;sql&quot; };</b>
+<b class="fc"><i>221</i>&nbsp;        String[] selectionArgs = { model.getSimpleName() };</b>
+<b class="fc"><i>222</i>&nbsp;        Cursor cursor = sqLiteDatabase.query(&quot;sqlite_master&quot;, columns, &quot;name = ?&quot;, selectionArgs, null, null, null);</b>
+<b class="fc"><i>223</i>&nbsp;        cursor.moveToFirst();</b>
+<b class="fc"><i>224</i>&nbsp;        String string = cursor.getString(0);</b>
+<b class="fc"><i>225</i>&nbsp;        String command = string.substring(0, string.length() - 1) + &quot;, UNIQUE(&#39;&quot;;</b>
+<b class="fc"><i>226</i>&nbsp;        for(int i = 0; i &lt; fieldNames.size() - 1; ++i) {</b>
+<b class="fc"><i>227</i>&nbsp;            command += fieldNames.get(i);</b>
+<b class="fc"><i>228</i>&nbsp;            command += &quot;&#39;, &#39;&quot;;</b>
+<i>229</i>&nbsp;        }
+<b class="fc"><i>230</i>&nbsp;        command += fieldNames.get(fieldNames.size() - 1);</b>
+<b class="fc"><i>231</i>&nbsp;        command += &quot;&#39;) ON CONFLICT REPLACE)&quot;;</b>
+<b class="fc"><i>232</i>&nbsp;        sqLiteDatabase.execSQL(&quot;DROP TABLE IF EXISTS &#39;&quot; + model.getSimpleName() + &quot;&#39;&quot;);</b>
+<b class="fc"><i>233</i>&nbsp;        sqLiteDatabase.execSQL(command);</b>
+<b class="fc"><i>234</i>&nbsp;    }</b>
+<i>235</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

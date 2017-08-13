@@ -1,0 +1,149 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: WeatherScheduleJob_MembersInjector</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.domain.scheduler</a> ]
+</div>
+
+<h1>Coverage Summary for Class: WeatherScheduleJob_MembersInjector (com.example.toor.yamblzweather.domain.scheduler)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">WeatherScheduleJob_MembersInjector</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 17)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.domain.scheduler;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
+<i>4</i>&nbsp;import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
+<i>5</i>&nbsp;import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
+<i>6</i>&nbsp;import dagger.MembersInjector;
+<i>7</i>&nbsp;import javax.annotation.Generated;
+<i>8</i>&nbsp;import javax.inject.Provider;
+<i>9</i>&nbsp;
+<b class="nc"><i>10</i>&nbsp;@Generated(</b>
+<i>11</i>&nbsp;  value = &quot;dagger.internal.codegen.ComponentProcessor&quot;,
+<i>12</i>&nbsp;  comments = &quot;https://google.github.io/dagger&quot;
+<i>13</i>&nbsp;)
+<i>14</i>&nbsp;public final class WeatherScheduleJob_MembersInjector
+<i>15</i>&nbsp;    implements MembersInjector&lt;WeatherScheduleJob&gt; {
+<i>16</i>&nbsp;  private final Provider&lt;WeatherInteractor&gt; weatherInteractorProvider;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;  private final Provider&lt;SettingsInteractor&gt; settingsInteractorProvider;
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;  private final Provider&lt;PlacesInteractor&gt; placesInteractorProvider;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;  public WeatherScheduleJob_MembersInjector(
+<i>23</i>&nbsp;      Provider&lt;WeatherInteractor&gt; weatherInteractorProvider,
+<i>24</i>&nbsp;      Provider&lt;SettingsInteractor&gt; settingsInteractorProvider,
+<b class="nc"><i>25</i>&nbsp;      Provider&lt;PlacesInteractor&gt; placesInteractorProvider) {</b>
+<b class="nc"><i>26</i>&nbsp;    assert weatherInteractorProvider != null;</b>
+<b class="nc"><i>27</i>&nbsp;    this.weatherInteractorProvider = weatherInteractorProvider;</b>
+<b class="nc"><i>28</i>&nbsp;    assert settingsInteractorProvider != null;</b>
+<b class="nc"><i>29</i>&nbsp;    this.settingsInteractorProvider = settingsInteractorProvider;</b>
+<b class="nc"><i>30</i>&nbsp;    assert placesInteractorProvider != null;</b>
+<b class="nc"><i>31</i>&nbsp;    this.placesInteractorProvider = placesInteractorProvider;</b>
+<i>32</i>&nbsp;  }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;  public static MembersInjector&lt;WeatherScheduleJob&gt; create(
+<i>35</i>&nbsp;      Provider&lt;WeatherInteractor&gt; weatherInteractorProvider,
+<i>36</i>&nbsp;      Provider&lt;SettingsInteractor&gt; settingsInteractorProvider,
+<i>37</i>&nbsp;      Provider&lt;PlacesInteractor&gt; placesInteractorProvider) {
+<b class="nc"><i>38</i>&nbsp;    return new WeatherScheduleJob_MembersInjector(</b>
+<i>39</i>&nbsp;        weatherInteractorProvider, settingsInteractorProvider, placesInteractorProvider);
+<i>40</i>&nbsp;  }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;  @Override
+<i>43</i>&nbsp;  public void injectMembers(WeatherScheduleJob instance) {
+<b class="nc"><i>44</i>&nbsp;    if (instance == null) {</b>
+<b class="nc"><i>45</i>&nbsp;      throw new NullPointerException(&quot;Cannot inject members into a null reference&quot;);</b>
+<i>46</i>&nbsp;    }
+<b class="nc"><i>47</i>&nbsp;    instance.weatherInteractor = weatherInteractorProvider.get();</b>
+<b class="nc"><i>48</i>&nbsp;    instance.settingsInteractor = settingsInteractorProvider.get();</b>
+<b class="nc"><i>49</i>&nbsp;    instance.placesInteractor = placesInteractorProvider.get();</b>
+<i>50</i>&nbsp;  }
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;  public static void injectWeatherInteractor(
+<i>53</i>&nbsp;      WeatherScheduleJob instance, Provider&lt;WeatherInteractor&gt; weatherInteractorProvider) {
+<b class="nc"><i>54</i>&nbsp;    instance.weatherInteractor = weatherInteractorProvider.get();</b>
+<i>55</i>&nbsp;  }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;  public static void injectSettingsInteractor(
+<i>58</i>&nbsp;      WeatherScheduleJob instance, Provider&lt;SettingsInteractor&gt; settingsInteractorProvider) {
+<b class="nc"><i>59</i>&nbsp;    instance.settingsInteractor = settingsInteractorProvider.get();</b>
+<i>60</i>&nbsp;  }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;  public static void injectPlacesInteractor(
+<i>63</i>&nbsp;      WeatherScheduleJob instance, Provider&lt;PlacesInteractor&gt; placesInteractorProvider) {
+<b class="nc"><i>64</i>&nbsp;    instance.placesInteractor = placesInteractorProvider.get();</b>
+<i>65</i>&nbsp;  }
+<i>66</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

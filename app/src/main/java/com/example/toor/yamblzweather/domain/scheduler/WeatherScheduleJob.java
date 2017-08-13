@@ -49,7 +49,7 @@ public class WeatherScheduleJob extends Job {
     private void serializeCurrentWeather() {
         placesInteractor.getAllPlaces()
                 .subscribe(place -> weatherInteractor.updateWeather(place)
-                        .subscribe(weather -> {}));
+                        .subscribe((weather, error) -> {}));
     }
 
     public void startJob() {
