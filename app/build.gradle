@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply from: '../jacoco.gradle'
 
 android {
 
@@ -7,7 +8,7 @@ android {
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.example.toor.yamblzweather"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -19,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            testCoverageEnabled true
         }
     }
     compileOptions {
@@ -57,7 +59,8 @@ dependencies {
 
     compile "com.evernote:android-job:$android_job_version"
 
-    compile "org.greenrobot:greendao:$greendao_version"
+    compile "nl.qbusict:cupboard:$cupboard_version"
+    compile "nl.2312:rxcupboard2:$rxcupboard_version"
 
     testCompile "junit:junit:$junit_version", {
         exclude group: 'org.hamcrest', module: 'hamcrest-core'
@@ -68,15 +71,14 @@ dependencies {
     }
     testCompile "org.powermock:powermock-api-mockito:$powermock_version"
     testCompile "org.powermock:powermock-module-junit4:$powermock_version"
+    testCompile "org.powermock:powermock-module-junit4-rule:$powermock_version"
+    testCompile "org.robolectric:robolectric:$robolectric_version"
 
     androidTestCompile("com.android.support.test.espresso:espresso-core:$espresso_version", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$espresso_version", {
-        exclude group: 'com.android.support', module: 'support-annotations'
-        exclude group: 'com.android.support', module: 'support-v4'
-        exclude module: 'recyclerview-v7'
-        exclude group: 'com.android.support', module: 'appcompat-v7'
-        exclude group: 'com.android.support', module: 'design'
-    }
+
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
 }

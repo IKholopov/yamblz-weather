@@ -1,0 +1,66 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OpenWeatherAPI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.network.api</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OpenWeatherAPI (com.example.toor.yamblzweather.data.network.api)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">OpenWeatherAPI$$EnhancerByMockitoWithCGLIB$$9f77fb7c</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.network.api;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import io.reactivex.Single;
+<i>6</i>&nbsp;import retrofit2.http.GET;
+<i>7</i>&nbsp;import retrofit2.http.Query;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;public interface OpenWeatherAPI {
+<i>10</i>&nbsp;    @GET(&quot;daily?&quot;)
+<i>11</i>&nbsp;    Single&lt;DailyWeather&gt; getFiveDayExtendedWeather(@Query(&quot;lat&quot;) double lat,
+<i>12</i>&nbsp;                                                   @Query(&quot;lon&quot;) double lon,
+<i>13</i>&nbsp;                                                   @Query(&quot;appid&quot;) String appId,
+<i>14</i>&nbsp;                                                   @Query(&quot;lang&quot;) String lang,
+<i>15</i>&nbsp;                                                   @Query(&quot;cnt&quot;) int days);
+<i>16</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

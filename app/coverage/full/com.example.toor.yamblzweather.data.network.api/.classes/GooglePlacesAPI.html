@@ -1,0 +1,78 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GooglePlacesAPI</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.network.api</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GooglePlacesAPI (com.example.toor.yamblzweather.data.network.api)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">GooglePlacesAPI$$EnhancerByMockitoWithCGLIB$$1bbe34b7</td>
+  </tr>
+  <tr>
+    <td class="name">GooglePlacesAPI$$EnhancerByMockitoWithCGLIB$$dc3a70a8</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.network.api;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>4</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import io.reactivex.Single;
+<i>7</i>&nbsp;import retrofit2.http.GET;
+<i>8</i>&nbsp;import retrofit2.http.Query;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * Created by igor on 7/24/17.
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;public interface GooglePlacesAPI {
+<i>15</i>&nbsp;    @GET(&quot;autocomplete/json?&quot;)
+<i>16</i>&nbsp;    Single&lt;PlacesAutocompleteModel&gt; getPlacesAutocomplete(@Query(&quot;input&quot;)String input,
+<i>17</i>&nbsp;                                                          @Query(&quot;types&quot;)String types,
+<i>18</i>&nbsp;                                                          @Query(&quot;language&quot;)String language,
+<i>19</i>&nbsp;                                                          @Query(&quot;key&quot;)String key);
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @GET(&quot;details/json?&quot;)
+<i>22</i>&nbsp;    Single&lt;PlaceDetails&gt; getPlaceDetails(@Query(&quot;placeid&quot;)String placeId,
+<i>23</i>&nbsp;                                         @Query(&quot;language&quot;)String language,
+<i>24</i>&nbsp;                                         @Query(&quot;key&quot;)String key);
+<i>25</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <size android:height="@dimen/size_close_button_place_list"
+                android:width="@dimen/size_close_button_place_list"/>
+            <solid android:color="@color/colorPrimaryDark"/>
+        </shape>
+    </item>
+    <item android:drawable="@drawable/ic_close">
+    </item>
+</layer-list>

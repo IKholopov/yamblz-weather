@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.evernote.android.job.Job;
 import com.evernote.android.job.JobRequest;
 import com.example.toor.yamblzweather.BuildConfig;
+import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.presentation.di.App;
@@ -12,9 +13,11 @@ import com.example.toor.yamblzweather.presentation.di.App;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import timber.log.Timber;
 
+@Singleton
 public class WeatherScheduleJob extends Job {
 
     static final String TAG = "show_notification_job_tag";
@@ -26,6 +29,10 @@ public class WeatherScheduleJob extends Job {
     @Inject
     SettingsInteractor settingsInteractor;
 
+    @Inject
+    PlacesInteractor placesInteractor;
+
+    @Inject
     public WeatherScheduleJob() {
         App.getInstance().plusActivityComponent().inject(this);
     }
@@ -40,32 +47,20 @@ public class WeatherScheduleJob extends Job {
     }
 
     private void serializeCurrentWeather() {
-        settingsInteractor.getUserSettings()
-                .subscribe((settingsModel, throwable)
-                        -> weatherInteractor.updateWeather(settingsModel.getSelectedCityId()).subscribe(fullWeatherModel -> {
-                }));
+        placesInteractor.getAllPlaces()
+                .subscribe(place -> weatherInteractor.updateWeather(place)
+                        .subscribe((weather, error) -> {}));
     }
 
     public void startJob() {
         Timber.v("startJob");
-        if (BuildConfig.DEBUG)
-            settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
-                    new JobRequest.Builder(TAG)
-                            .setPeriodic(TimeUnit.MILLISECONDS.toMillis(61000)
-                                    , TimeUnit.MILLISECONDS.toMillis(35000))
-                            .setUpdateCurrent(true)
-                            .setPersisted(true)
-                            .build()
-                            .schedule());
-        else
-            settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
-                    new JobRequest.Builder(TAG)
-                            .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
-                                    , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
-                            .setUpdateCurrent(true)
-                            .setPersisted(true)
-                            .build()
-                            .schedule());
-
+        settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
+                new JobRequest.Builder(TAG)
+                        .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
+                                , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
+                        .setUpdateCurrent(true)
+                        .setPersisted(true)
+                        .build()
+                        .schedule());
     }
 }

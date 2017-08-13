@@ -26,10 +26,6 @@ public abstract class BaseFragmentPresenter<V extends BaseView> {
         disposable.clear();
     }
 
-    public void onDestroy() {
-
-    }
-
     protected
     @Nullable
     V getView() {

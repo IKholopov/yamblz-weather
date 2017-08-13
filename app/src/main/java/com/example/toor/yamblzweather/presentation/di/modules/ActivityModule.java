@@ -1,9 +1,11 @@
 package com.example.toor.yamblzweather.presentation.di.modules;
 
 import com.example.toor.yamblzweather.data.repositories.info.InfoRepository;
+import com.example.toor.yamblzweather.data.repositories.places.PlacesRepository;
 import com.example.toor.yamblzweather.data.repositories.settings.SettingsRepository;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.domain.interactors.InfoInteractor;
+import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
@@ -17,8 +19,8 @@ public class ActivityModule {
 
     @Provides
     @ActivityScope
-    public WeatherInteractor provideWeatherInteractor(WeatherRepository repository, SettingsRepository settingsRepository) {
-        return new WeatherInteractor(repository, settingsRepository);
+    public WeatherInteractor provideWeatherInteractor(WeatherRepository repository) {
+        return new WeatherInteractor(repository);
     }
 
     @Provides
@@ -32,7 +34,14 @@ public class ActivityModule {
     public InfoInteractor provideInfoInteractor(InfoRepository repository) {
         return new InfoInteractor(repository);
     }    
-    
+
+    @Provides
+    @ActivityScope
+    public PlacesInteractor providePlacesInteractor(WeatherRepository weatherRepository,
+                                                    PlacesRepository placesRepository) {
+        return new PlacesInteractor(weatherRepository, placesRepository);
+    }
+
     @Provides
     @ActivityScope
     public WeatherScheduleJob provideWeatherScheduleJob() {

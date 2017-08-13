@@ -1,6 +1,5 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.adapter;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.models.places.PlaceName;
-import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +22,7 @@ import io.reactivex.subjects.PublishSubject;
 
 public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adapter<CityNameAdapter.CityViewHolder>{
 
-    ArrayList<PlaceModel> data;
+    private List<PlaceModel> data;
 
     private final PublishSubject<PlaceModel> dataSubject = PublishSubject.create();
 
@@ -35,7 +32,8 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
 
     @Override
     public CityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_city_name,
+                parent, false);
         CityViewHolder viewHolder = new CityViewHolder(view);
         return viewHolder;
     }
@@ -54,11 +52,11 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
         return data.size();
     }
 
-    public static class CityViewHolder extends RecyclerView.ViewHolder {
+    static class CityViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.cityName)
         TextView cityName;
 
-        public CityViewHolder(View itemView) {
+        CityViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -68,7 +66,7 @@ public class CityNameAdapter extends android.support.v7.widget.RecyclerView.Adap
         return dataSubject;
     }
 
-    public void updatePlaces(ArrayList<PlaceModel> data) {
+    public void updatePlaces(List<PlaceModel> data) {
         this.data = data;
         notifyDataSetChanged();
     }

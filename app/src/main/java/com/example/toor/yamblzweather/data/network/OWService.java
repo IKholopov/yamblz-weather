@@ -1,11 +1,9 @@
 package com.example.toor.yamblzweather.data.network;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
-import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
 import com.example.toor.yamblzweather.domain.utils.APISupportedLanguages;
 
@@ -20,9 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class OWService {
 
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/";
+    private static final String BASE_URL_FORECAST = "http://api.openweathermap.org/data/2.5/forecast/";
 
-    private final OpenWeatherAPI mOpenWeatherAPI;
+    private final OpenWeatherAPI mOpenWeatherAPIForecast;
     private String mToken;
     private APISupportedLanguages mSelectedLanguage = APISupportedLanguages.ENGLISH;
 
@@ -35,12 +33,12 @@ public class OWService {
         mToken = token;
 
         Retrofit mRetrofitOWInstance = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL_FORECAST)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
-        mOpenWeatherAPI = mRetrofitOWInstance.create(OpenWeatherAPI.class);
+        mOpenWeatherAPIForecast = mRetrofitOWInstance.create(OpenWeatherAPI.class);
     }
 
     /**
@@ -104,49 +102,15 @@ public class OWService {
         }
     }
 
-    public
-    @Nullable
-    @Deprecated
-    Single<CurrentWeather> getCurrentWeather(int cityId) {
-        return mOpenWeatherAPI.getCurrentWeather(
-                cityId,
-                mToken,
-                mSelectedLanguage.getLanguageLocale())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
 
     public
-    @Nullable
-    Single<CurrentWeather> getCurrentWeatherForCoords(Coord coords) {
-        return mOpenWeatherAPI.getCurrentWeatherForCoords(
+    @NonNull
+    Single<DailyWeather> getExtendedWeather(Coord coords) {
+        return mOpenWeatherAPIForecast.getFiveDayExtendedWeather(
                 coords.getLat(),
                 coords.getLon(),
                 mToken,
-                mSelectedLanguage.getLanguageLocale())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public
-    @Nullable
-    Single<ExtendedWeather> getExtendedWeather(int cityId) {
-        return mOpenWeatherAPI.getFiveDayExtendedWeather(
-                cityId,
-                mToken,
-                mSelectedLanguage.getLanguageLocale())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public
-    @Nullable
-    Single<ExtendedWeather> getExtendedWeather(Coord coords) {
-        return mOpenWeatherAPI.getFiveDayExtendedWeather(
-                coords.getLat(),
-                coords.getLon(),
-                mToken,
-                mSelectedLanguage.getLanguageLocale())
+                mSelectedLanguage.getLanguageLocale(), 12)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -27,4 +27,14 @@
     <string name="min_180">3 hours</string>
     <string name="city_location">City location</string>
     <string name="failed_city_details">Failed to get city details</string>
+
+    <string name="places">Places</string>
+    <string name="add_place">Add place +</string>
+    <string name="pressure">Pressure</string>
+    <string name="humidity">Humidity</string>
+    <string name="percents_format">%.1f %%</string>
+    <string name="pressure_format">%.1f hPa</string>
+    <string name="no_places_yet">No places yet!</string>
+    <string name="add_places">Add places</string>
+    <string name="no_downloaded">No downloaded weather :) \n Swipe down to refresh</string>
 </resources>

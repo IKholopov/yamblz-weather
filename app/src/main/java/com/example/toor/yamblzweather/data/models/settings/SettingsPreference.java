@@ -57,7 +57,7 @@ public class SettingsPreference {
 
     public
     @NonNull
-    Single<SettingsModel> loadUserSettings() {
+        Single<SettingsModel> loadUserSettings() {
         TemperatureMetric metric = loadTemperatureMetric();
         long interval = loadUpdateWeatherInterval();
         int cityId = loadSelectedCityId();

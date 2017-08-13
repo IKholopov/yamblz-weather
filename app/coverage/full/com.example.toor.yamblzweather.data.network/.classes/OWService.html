@@ -1,0 +1,200 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: OWService</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.network</a> ]
+</div>
+
+<h1>Coverage Summary for Class: OWService (com.example.toor.yamblzweather.data.network)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">OWService</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    39.2%
+  </span>
+  <span class="absValue">
+    (20/ 51)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.network;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+<i>7</i>&nbsp;import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
+<i>8</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.APISupportedLanguages;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import java.util.Locale;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import io.reactivex.Single;
+<i>13</i>&nbsp;import io.reactivex.android.schedulers.AndroidSchedulers;
+<i>14</i>&nbsp;import io.reactivex.schedulers.Schedulers;
+<i>15</i>&nbsp;import retrofit2.Retrofit;
+<i>16</i>&nbsp;import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+<i>17</i>&nbsp;import retrofit2.converter.gson.GsonConverterFactory;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;public class OWService {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private static final String BASE_URL_FORECAST = &quot;http://api.openweathermap.org/data/2.5/forecast/&quot;;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    private final OpenWeatherAPI mOpenWeatherAPIForecast;
+<i>24</i>&nbsp;    private String mToken;
+<b class="fc"><i>25</i>&nbsp;    private APISupportedLanguages mSelectedLanguage = APISupportedLanguages.ENGLISH;</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Main Service constructor.
+<i>29</i>&nbsp;     *
+<i>30</i>&nbsp;     * @param token the Open Weather Token to be used for the API calls.
+<i>31</i>&nbsp;     */
+<b class="fc"><i>32</i>&nbsp;    public OWService(final String token) {</b>
+<b class="fc"><i>33</i>&nbsp;        mToken = token;</b>
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;        Retrofit mRetrofitOWInstance = new Retrofit.Builder()</b>
+<b class="fc"><i>36</i>&nbsp;                .baseUrl(BASE_URL_FORECAST)</b>
+<b class="fc"><i>37</i>&nbsp;                .addConverterFactory(GsonConverterFactory.create())</b>
+<b class="fc"><i>38</i>&nbsp;                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())</b>
+<b class="fc"><i>39</i>&nbsp;                .build();</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;        mOpenWeatherAPIForecast = mRetrofitOWInstance.create(OpenWeatherAPI.class);</b>
+<b class="fc"><i>42</i>&nbsp;    }</b>
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    /**
+<i>45</i>&nbsp;     * Sets the API language based on a Locale.
+<i>46</i>&nbsp;     *
+<i>47</i>&nbsp;     * @param language Locale of current language.
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    public void setLanguage(@NonNull Locale language) {
+<b class="fc"><i>50</i>&nbsp;        switch (language.getLanguage()) {</b>
+<i>51</i>&nbsp;            case &quot;en&quot;:
+<b class="fc"><i>52</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.ENGLISH;</b>
+<b class="fc"><i>53</i>&nbsp;                break;</b>
+<i>54</i>&nbsp;            case &quot;ru&quot;:
+<b class="nc"><i>55</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.RUSSIAN;</b>
+<b class="nc"><i>56</i>&nbsp;                break;</b>
+<i>57</i>&nbsp;            case &quot;it&quot;:
+<b class="nc"><i>58</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.ITALIAN;</b>
+<b class="nc"><i>59</i>&nbsp;                break;</b>
+<i>60</i>&nbsp;            case &quot;es&quot;:
+<b class="nc"><i>61</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.SPANISH;</b>
+<b class="nc"><i>62</i>&nbsp;                break;</b>
+<i>63</i>&nbsp;            case &quot;ro&quot;:
+<b class="nc"><i>64</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.ROMANIAN;</b>
+<b class="nc"><i>65</i>&nbsp;                break;</b>
+<i>66</i>&nbsp;            case &quot;pl&quot;:
+<b class="nc"><i>67</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.POLISH;</b>
+<b class="nc"><i>68</i>&nbsp;                break;</b>
+<i>69</i>&nbsp;            case &quot;fi&quot;:
+<b class="nc"><i>70</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.FINNISH;</b>
+<b class="nc"><i>71</i>&nbsp;                break;</b>
+<i>72</i>&nbsp;            case &quot;nl&quot;:
+<b class="nc"><i>73</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.DUTCH;</b>
+<b class="nc"><i>74</i>&nbsp;                break;</b>
+<i>75</i>&nbsp;            case &quot;fr&quot;:
+<b class="nc"><i>76</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.FRENCH;</b>
+<b class="nc"><i>77</i>&nbsp;                break;</b>
+<i>78</i>&nbsp;            case &quot;bg&quot;:
+<b class="nc"><i>79</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.BULGARIAN;</b>
+<b class="nc"><i>80</i>&nbsp;                break;</b>
+<i>81</i>&nbsp;            case &quot;sv&quot;:
+<b class="nc"><i>82</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.SWEDISH;</b>
+<b class="nc"><i>83</i>&nbsp;                break;</b>
+<i>84</i>&nbsp;            case &quot;zh_tw&quot;:
+<b class="nc"><i>85</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.CHINESE_T;</b>
+<b class="nc"><i>86</i>&nbsp;                break;</b>
+<i>87</i>&nbsp;            case &quot;zh&quot;:
+<b class="nc"><i>88</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.CHINESE_S;</b>
+<b class="nc"><i>89</i>&nbsp;                break;</b>
+<i>90</i>&nbsp;            case &quot;tr&quot;:
+<b class="nc"><i>91</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.TURKISH;</b>
+<b class="nc"><i>92</i>&nbsp;                break;</b>
+<i>93</i>&nbsp;            case &quot;hr&quot;:
+<b class="nc"><i>94</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.CROATIAN;</b>
+<b class="nc"><i>95</i>&nbsp;                break;</b>
+<i>96</i>&nbsp;            case &quot;co&quot;:
+<b class="nc"><i>97</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.CATALAN;</b>
+<b class="nc"><i>98</i>&nbsp;                break;</b>
+<i>99</i>&nbsp;            default:
+<b class="nc"><i>100</i>&nbsp;                mSelectedLanguage = APISupportedLanguages.ENGLISH;</b>
+<i>101</i>&nbsp;                break;
+<i>102</i>&nbsp;        }
+<b class="fc"><i>103</i>&nbsp;    }</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    public
+<i>107</i>&nbsp;    @NonNull
+<i>108</i>&nbsp;    Single&lt;DailyWeather&gt; getExtendedWeather(Coord coords) {
+<b class="fc"><i>109</i>&nbsp;        return mOpenWeatherAPIForecast.getFiveDayExtendedWeather(</b>
+<b class="fc"><i>110</i>&nbsp;                coords.getLat(),</b>
+<b class="fc"><i>111</i>&nbsp;                coords.getLon(),</b>
+<i>112</i>&nbsp;                mToken,
+<b class="fc"><i>113</i>&nbsp;                mSelectedLanguage.getLanguageLocale(), 12)</b>
+<b class="fc"><i>114</i>&nbsp;                .subscribeOn(Schedulers.io())</b>
+<b class="fc"><i>115</i>&nbsp;                .observeOn(AndroidSchedulers.mainThread());</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

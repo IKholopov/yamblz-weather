@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlacesListAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.presentation.mvp.view.adapter</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlacesListAdapter (com.example.toor.yamblzweather.presentation.mvp.view.adapter)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlacesListAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 26)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PlacesListAdapter$PlaceViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PlacesListAdapter$PlaceViewHolder_ViewBinding</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 39)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.presentation.mvp.view.adapter;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.graphics.Color;
+<i>4</i>&nbsp;import android.support.annotation.NonNull;
+<i>5</i>&nbsp;import android.support.v4.view.MotionEventCompat;
+<i>6</i>&nbsp;import android.support.v7.widget.RecyclerView;
+<i>7</i>&nbsp;import android.view.LayoutInflater;
+<i>8</i>&nbsp;import android.view.MotionEvent;
+<i>9</i>&nbsp;import android.view.View;
+<i>10</i>&nbsp;import android.view.ViewGroup;
+<i>11</i>&nbsp;import android.widget.Button;
+<i>12</i>&nbsp;import android.widget.TextView;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;import com.example.toor.yamblzweather.R;
+<i>15</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import java.util.List;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;import butterknife.BindView;
+<b class="nc"><i>20</i>&nbsp;import butterknife.ButterKnife;</b>
+<b class="nc"><i>21</i>&nbsp;import io.reactivex.Observable;</b>
+<i>22</i>&nbsp;import io.reactivex.subjects.PublishSubject;
+<b class="nc"><i>23</i>&nbsp;</b>
+<b class="nc"><i>24</i>&nbsp;public class PlacesListAdapter extends RecyclerView.Adapter&lt;PlacesListAdapter.PlaceViewHolder&gt;</b>
+<i>25</i>&nbsp;        implements ItemTouchAdapter{
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    private List&lt;PlaceModel&gt; places;
+<i>28</i>&nbsp;
+<b class="nc"><i>29</i>&nbsp;    private final PublishSubject&lt;PlaceModel&gt; deletionSubject = PublishSubject.create();</b>
+<b class="nc"><i>30</i>&nbsp;</b>
+<b class="nc"><i>31</i>&nbsp;    public PlacesListAdapter(List&lt;PlaceModel&gt; placeModels) {</b>
+<b class="nc"><i>32</i>&nbsp;        this.places = placeModels;</b>
+<i>33</i>&nbsp;    }
+<b class="nc"><i>34</i>&nbsp;</b>
+<b class="nc"><i>35</i>&nbsp;    @Override</b>
+<i>36</i>&nbsp;    @NonNull
+<i>37</i>&nbsp;    public PlaceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+<b class="nc"><i>38</i>&nbsp;        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_place_entry,</b>
+<i>39</i>&nbsp;                parent, false);
+<b class="nc"><i>40</i>&nbsp;        PlaceViewHolder viewHolder = new PlaceViewHolder(view);</b>
+<b class="nc"><i>41</i>&nbsp;        return viewHolder;</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @Override
+<i>45</i>&nbsp;    public void onBindViewHolder(PlaceViewHolder holder, int position) {
+<b class="nc"><i>46</i>&nbsp;        holder.placeName.setText(places.get(position).getName());</b>
+<b class="nc"><i>47</i>&nbsp;        holder.deleteButton.setOnClickListener(button -&gt; {</b>
+<b class="nc"><i>48</i>&nbsp;            final int adapterPosition = holder.getAdapterPosition();</b>
+<b class="nc"><i>49</i>&nbsp;            if(adapterPosition &lt; 0) {</b>
+<i>50</i>&nbsp;                return;
+<i>51</i>&nbsp;            }
+<b class="nc"><i>52</i>&nbsp;            deletionSubject.onNext(places.get(adapterPosition));</b>
+<b class="nc"><i>53</i>&nbsp;            places.remove(holder.getAdapterPosition());</b>
+<b class="nc"><i>54</i>&nbsp;            this.notifyItemRemoved(adapterPosition);</b>
+<i>55</i>&nbsp;        });
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    @Override
+<i>59</i>&nbsp;    public int getItemCount() {
+<b class="nc"><i>60</i>&nbsp;        if(places != null) {</b>
+<b class="nc"><i>61</i>&nbsp;            return places.size();</b>
+<i>62</i>&nbsp;        }
+<b class="nc"><i>63</i>&nbsp;        return 0;</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @Override
+<i>67</i>&nbsp;    public boolean onMoved(int fromPosition, int toPosition) {
+<b class="nc"><i>68</i>&nbsp;        if(fromPosition == toPosition) {</b>
+<b class="nc"><i>69</i>&nbsp;            return false;</b>
+<i>70</i>&nbsp;        }
+<b class="nc"><i>71</i>&nbsp;        PlaceModel model = places.get(fromPosition);</b>
+<b class="nc"><i>72</i>&nbsp;        places.remove(fromPosition);</b>
+<b class="nc"><i>73</i>&nbsp;        places.add(toPosition &gt; fromPosition ? toPosition - 1 : toPosition, model);</b>
+<b class="nc"><i>74</i>&nbsp;        notifyItemMoved(fromPosition, toPosition);</b>
+<b class="nc"><i>75</i>&nbsp;        return true;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    public void updatePlaces(List&lt;PlaceModel&gt; places) {
+<b class="nc"><i>79</i>&nbsp;        this.places = places;</b>
+<b class="nc"><i>80</i>&nbsp;        notifyDataSetChanged();</b>
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    public Observable&lt;PlaceModel&gt; getDeletionEvent() {
+<b class="nc"><i>84</i>&nbsp;        return deletionSubject;</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    public static class PlaceViewHolder extends RecyclerView.ViewHolder
+<i>88</i>&nbsp;            implements ItemTouchViewHolder{
+<i>89</i>&nbsp;        @BindView(R.id.placeNameId) TextView placeName;
+<i>90</i>&nbsp;        @BindView(R.id.deletePlace) Button deleteButton;
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;        public PlaceViewHolder(View itemView) {
+<b class="nc"><i>93</i>&nbsp;            super(itemView);</b>
+<b class="nc"><i>94</i>&nbsp;            ButterKnife.bind(this, itemView);</b>
+<i>95</i>&nbsp;        }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;        @Override
+<i>98</i>&nbsp;        public void onSelected() {
+<b class="nc"><i>99</i>&nbsp;            itemView.setBackgroundColor(Color.LTGRAY);</b>
+<i>100</i>&nbsp;        }
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;        @Override
+<i>103</i>&nbsp;        public void onClear() {
+<b class="nc"><i>104</i>&nbsp;            itemView.setBackgroundColor(Color.TRANSPARENT);</b>
+<i>105</i>&nbsp;        }
+<i>106</i>&nbsp;    }
+<i>107</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

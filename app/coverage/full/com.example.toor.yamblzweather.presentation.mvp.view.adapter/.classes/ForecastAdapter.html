@@ -1,0 +1,260 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ForecastAdapter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.presentation.mvp.view.adapter</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ForecastAdapter (com.example.toor.yamblzweather.presentation.mvp.view.adapter)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ForecastAdapter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 38)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ForecastAdapter$ViewHolder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ForecastAdapter$ViewHolder_ViewBinding</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 53)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.presentation.mvp.view.adapter;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context;
+<i>4</i>&nbsp;import android.content.res.Resources;
+<i>5</i>&nbsp;import android.support.annotation.NonNull;
+<i>6</i>&nbsp;import android.support.annotation.Nullable;
+<i>7</i>&nbsp;import android.support.v7.widget.RecyclerView;
+<i>8</i>&nbsp;import android.view.LayoutInflater;
+<i>9</i>&nbsp;import android.view.View;
+<i>10</i>&nbsp;import android.view.ViewGroup;
+<i>11</i>&nbsp;import android.widget.ImageView;
+<i>12</i>&nbsp;import android.widget.LinearLayout;
+<i>13</i>&nbsp;import android.widget.TextView;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;import com.example.toor.yamblzweather.R;
+<i>16</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+<i>17</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.TimeUtils;
+<i>18</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.ViewUtils;
+<i>19</i>&nbsp;import com.example.toor.yamblzweather.presentation.di.components.ActivityComponent;
+<b class="nc"><i>20</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;</b>
+<b class="nc"><i>21</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.decoration.ForecastItemDecoration;</b>
+<i>22</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.fragment.WeatherDetailsView;
+<b class="nc"><i>23</i>&nbsp;</b>
+<b class="nc"><i>24</i>&nbsp;import java.util.List;</b>
+<b class="nc"><i>25</i>&nbsp;</b>
+<b class="nc"><i>26</i>&nbsp;import javax.inject.Inject;</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;import butterknife.BindView;
+<i>29</i>&nbsp;import butterknife.ButterKnife;
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;import static android.graphics.Color.TRANSPARENT;
+<b class="nc"><i>32</i>&nbsp;</b>
+<b class="nc"><i>33</i>&nbsp;/**</b>
+<b class="nc"><i>34</i>&nbsp; * Created by igor on 8/9/17.</b>
+<i>35</i>&nbsp; */
+<b class="nc"><i>36</i>&nbsp;</b>
+<b class="nc"><i>37</i>&nbsp;public class ForecastAdapter extends RecyclerView.Adapter&lt;ForecastAdapter.ViewHolder&gt; {</b>
+<b class="nc"><i>38</i>&nbsp;</b>
+<b class="nc"><i>39</i>&nbsp;    private List&lt;DailyForecastElement&gt; forecast;</b>
+<i>40</i>&nbsp;    private int selectedItem;
+<i>41</i>&nbsp;    private WeatherDetailsView detailsView;
+<i>42</i>&nbsp;    private ForecastItemDecoration decoration;
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @Inject Context context;
+<i>45</i>&nbsp;    @Inject WeatherPresenter presenter;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public ForecastAdapter(@Nullable List&lt;DailyForecastElement&gt; forecast, WeatherDetailsView detailsView,
+<b class="nc"><i>48</i>&nbsp;                           @NonNull ActivityComponent component) {</b>
+<b class="nc"><i>49</i>&nbsp;        component.inject(this);</b>
+<b class="nc"><i>50</i>&nbsp;        this.forecast = forecast;</b>
+<b class="nc"><i>51</i>&nbsp;        this.detailsView = detailsView;</b>
+<b class="nc"><i>52</i>&nbsp;        selectedItem = 0;</b>
+<b class="nc"><i>53</i>&nbsp;        Resources res = context.getResources();</b>
+<b class="nc"><i>54</i>&nbsp;        decoration = new ForecastItemDecoration(res.getColor(R.color.color_forecast_background),</b>
+<b class="nc"><i>55</i>&nbsp;                res.getColor(R.color.color_forecast_list_frame));</b>
+<b class="nc"><i>56</i>&nbsp;        decoration.setSelectedPosition(selectedItem);</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+<b class="nc"><i>61</i>&nbsp;        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_forecast_entry,</b>
+<i>62</i>&nbsp;                parent, false);
+<b class="nc"><i>63</i>&nbsp;        return new ViewHolder(view);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @Override
+<i>67</i>&nbsp;    public void onBindViewHolder(ViewHolder holder, int position) {
+<b class="nc"><i>68</i>&nbsp;        DailyForecastElement weather = forecast.get(position);</b>
+<b class="nc"><i>69</i>&nbsp;        int resId = ViewUtils.getIconResourceFromName(weather.getWeather().get(0).getIcon(),</b>
+<i>70</i>&nbsp;                context);
+<b class="nc"><i>71</i>&nbsp;        holder.icon.setImageResource(resId);</b>
+<b class="nc"><i>72</i>&nbsp;        presenter.getCurrentTemperatureString(weather.getTemp().getMax()).subscribe(max -&gt;</b>
+<i>73</i>&nbsp;                        presenter.getCurrentTemperatureString(weather.getTemp().getMin())
+<b class="nc"><i>74</i>&nbsp;                                .subscribe(min -&gt; holder.temperature.setText(max + &quot;/&quot; + min)));</b>
+<b class="nc"><i>75</i>&nbsp;        holder.dayOfWeek.setText(TimeUtils.formatDayShort(weather.getDt()));</b>
+<b class="nc"><i>76</i>&nbsp;        Resources res = context.getResources();</b>
+<b class="nc"><i>77</i>&nbsp;        if(selectedItem == position) {</b>
+<b class="nc"><i>78</i>&nbsp;            holder.layout.setBackgroundColor(res.getColor(R.color.color_forecast_selected));</b>
+<b class="nc"><i>79</i>&nbsp;            holder.temperature.setTextColor(res.getColor(R.color.color_forecast_list_selected_text));</b>
+<b class="nc"><i>80</i>&nbsp;            holder.dayOfWeek.setTextColor(res.getColor(R.color.color_forecast_list_selected_text));</b>
+<i>81</i>&nbsp;        } else {
+<b class="nc"><i>82</i>&nbsp;            holder.layout.setBackgroundColor(res.getColor(R.color.color_forecast_notselected));</b>
+<b class="nc"><i>83</i>&nbsp;            holder.temperature.setTextColor(res.getColor(R.color.color_forecast_list_text));</b>
+<b class="nc"><i>84</i>&nbsp;            holder.dayOfWeek.setTextColor(res.getColor(R.color.color_forecast_list_text));</b>
+<i>85</i>&nbsp;        }
+<b class="nc"><i>86</i>&nbsp;        holder.itemView.setOnClickListener(view -&gt; switchSelect(position));</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    @Override
+<i>90</i>&nbsp;    public int getItemCount() {
+<b class="nc"><i>91</i>&nbsp;        if(forecast == null) {</b>
+<b class="nc"><i>92</i>&nbsp;            return 0;</b>
+<i>93</i>&nbsp;        }
+<b class="nc"><i>94</i>&nbsp;        return forecast.size();</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    public void updateForecast(@Nullable List&lt;DailyForecastElement&gt; forecast) {
+<b class="nc"><i>98</i>&nbsp;        this.forecast = forecast;</b>
+<b class="nc"><i>99</i>&nbsp;        notifyDataSetChanged();</b>
+<i>100</i>&nbsp;    }
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;    public void setSelected(int position) {
+<b class="nc"><i>103</i>&nbsp;        switchSelect(position);</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;
+<i>106</i>&nbsp;    public int getPosition() {
+<b class="nc"><i>107</i>&nbsp;        return selectedItem;</b>
+<i>108</i>&nbsp;    }
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    public ForecastItemDecoration getDecoration() {
+<b class="nc"><i>111</i>&nbsp;        return decoration;</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    private void switchSelect(int position) {
+<b class="nc"><i>115</i>&nbsp;        detailsView.showWeatherDetails(forecast.get(position));</b>
+<b class="nc"><i>116</i>&nbsp;        selectedItem = position;</b>
+<b class="nc"><i>117</i>&nbsp;        decoration.setSelectedPosition(position);</b>
+<b class="nc"><i>118</i>&nbsp;        notifyDataSetChanged();</b>
+<i>119</i>&nbsp;    }
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    static class ViewHolder extends RecyclerView.ViewHolder{
+<i>122</i>&nbsp;        @BindView(R.id.ivForecastIcon) ImageView icon;
+<i>123</i>&nbsp;        @BindView(R.id.tvTemperature) TextView temperature;
+<i>124</i>&nbsp;        @BindView(R.id.tvDayOfWeek) TextView dayOfWeek;
+<i>125</i>&nbsp;        @BindView(R.id.llForecastLayout) LinearLayout layout;
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;        ViewHolder(View itemView) {
+<b class="nc"><i>128</i>&nbsp;            super(itemView);</b>
+<b class="nc"><i>129</i>&nbsp;            ButterKnife.bind(this, itemView);</b>
+<i>130</i>&nbsp;        }
+<i>131</i>&nbsp;    }
+<i>132</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

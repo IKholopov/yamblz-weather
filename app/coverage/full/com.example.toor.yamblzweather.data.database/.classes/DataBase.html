@@ -1,0 +1,85 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DataBase</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.database</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DataBase (com.example.toor.yamblzweather.data.database)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+</tr>
+<tr>
+  <td class="name">DataBase</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.database;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
+<i>7</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import java.util.Calendar;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;import io.reactivex.Flowable;
+<i>12</i>&nbsp;import io.reactivex.Single;
+<i>13</i>&nbsp;import io.reactivex.functions.Action;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public interface DataBase {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    @NonNull
+<i>18</i>&nbsp;    Flowable&lt;PlaceDetails&gt; getPlaces();
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    @NonNull
+<i>21</i>&nbsp;    Flowable&lt;DailyForecastElement&gt; getWeather(@NonNull PlaceDetails placeDetails, long dateSec);
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    @NonNull
+<i>24</i>&nbsp;    Single&lt;Long&gt; clearBeforeDate(@NonNull Calendar date);
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    @NonNull
+<i>27</i>&nbsp;    Single&lt;Long&gt; deletePlace(Long placeId);
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    @NonNull
+<i>30</i>&nbsp;    Single&lt;Long&gt; deleteWeatherForPlace(Long placeId);
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    void addOrUpdateWeather(@NonNull DailyWeather weatherModel, Long placeId,
+<i>33</i>&nbsp;                            @NonNull Action onComplete);
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    void addPlace(@NonNull PlaceDetails place, @NonNull Action onComplete);
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    void addCurrentLocation(@NonNull PlaceDetails place, @NonNull Action onComplete);
+<i>38</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

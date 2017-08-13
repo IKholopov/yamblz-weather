@@ -35,49 +35,4 @@ public class SettingsInteractor {
     public void saveUpdateInterval(long interval) {
         repository.saveUpdateInterval(interval);
     }
-
-    public void saveSelectedCity(int cityId) {
-        repository.saveSelectedCity(cityId);
-    }
-
-    public void saveSelectedCity(PlaceModel city) {
-        repository.saveSelectedCity(city);
-    }
-
-    public String getSelectedCityName() {
-        return repository.getSelectedCityName();
-    }
-
-    public Single<ArrayList<PlaceModel>> getAutocomplete(String input) {
-        return repository.loadPlacesAutocomplete(input).map(this::modelFromAutocomplete);
-    }
-
-    public Single<PlaceModel> getPlaceDetails(String placeId) {
-        return repository.loadPlaceDetails(placeId).map(this::modelFromDetails);
-    }
-
-    private
-    @Nullable
-    ArrayList<PlaceModel> modelFromAutocomplete(PlacesAutocompleteModel model) {
-        if(model == null) {
-            return null;
-        }
-        ArrayList<PlaceModel> transformed = new ArrayList<>();
-        for(int i = 0; i < model.getSize(); ++i) {
-            PlaceName place = model.getPredictionAt(i);
-            transformed.add(new PlaceModel.Builder().name(place.getName())
-                    .placeId(place.getPlaceId()).build());
-        }
-        return transformed;
-    }
-
-    private
-    @Nullable
-    PlaceModel modelFromDetails(PlaceDetails details) {
-        if(details == null) {
-            return null;
-        }
-        return new PlaceModel.Builder().name(details.getName()).coords(details.getCoords().getLat(),
-                details.getCoords().getLon()).build();
-    }
 }

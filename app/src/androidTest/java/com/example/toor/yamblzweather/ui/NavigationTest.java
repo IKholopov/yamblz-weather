@@ -65,14 +65,6 @@ public class NavigationTest {
         onView(withId(R.id.tvCity)).check(matches(isDisplayed()));
     }
 
-    @Test
-    public void navigateToWeatherTest(){
-        onView(allOf(withContentDescription(getString(R.string.navigation_drawer_open)),
-                withParent(withId(R.id.toolbar)), isDisplayed())).perform(click());
-        onView(allOf(withId(R.id.design_menu_item_text), withText(getString(R.string.title_weather)), isDisplayed()))
-                .perform(click());
-        onView(withId(R.id.tvCity)).check(matches(isDisplayed()));
-    }
 
     @Test
     public void navigateToCitySelectionTest(){
@@ -80,9 +72,8 @@ public class NavigationTest {
                 withParent(withId(R.id.toolbar)), isDisplayed())).perform(click());
         onView(allOf(withId(R.id.design_menu_item_text), withText(getString(R.string.title_settings)), isDisplayed()))
                 .perform(click());
-        onView(withId(R.id.etSearchCity)).perform(scrollTo()).perform(click());
-        onView(withId(R.id.tvTemperature)).check(matches(not(isDisplayed())));
-        onView(withId(R.id.bCancel)).perform(click());
-        onView(withId(R.id.tvTemperature)).check(matches(isDisplayed()));
+        onView(withId(R.id.bPlaces)).perform(click());
+        onView(withId(R.id.bAddPlace)).perform(click());
+        onView(withId(R.id.etSearchPlace)).perform(click());
     }
 }

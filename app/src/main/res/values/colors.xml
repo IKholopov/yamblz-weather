@@ -5,9 +5,17 @@
     <color name="colorAccent">@android:color/black</color>
 
     <color name="color_fragments_background">#FF8100</color>
-    <color name="color_left_bar">#FFB300</color>
+    <color name="color_left_bar">#FFDB4D</color>
     <color name="color_text">#1533AD</color>
     <color name="color_app_bar">#4965D6</color>
+
+    <color name="color_forecast_list_text">@android:color/white</color>
+    <color name="color_forecast_list_selected_text">@android:color/black</color>
+    <color name="color_forecast_main_text">@android:color/black</color>
+    <color name="color_forecast_background">#FFDC4E</color>
+    <color name="color_forecast_selected">@android:color/transparent</color>
+    <color name="color_forecast_list_frame">#606060</color>
+    <color name="color_forecast_notselected">@android:color/black</color>
 
     <!--https://colorscheme.ru/#0.31Tw0w0w0w0-->
 </resources>

@@ -1,0 +1,254 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlaceModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.presentation.mvp.models.places</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlaceModel (com.example.toor.yamblzweather.presentation.mvp.models.places)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlaceModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (8/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (14/ 28)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PlaceModel$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (1/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    25%
+  </span>
+  <span class="absValue">
+    (1/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PlaceModel$Builder</td>
+<td class="coverageStat">
+  <span class="percent">
+    87.5%
+  </span>
+  <span class="absValue">
+    (7/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    68.2%
+  </span>
+  <span class="absValue">
+    (15/ 22)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    72.7%
+  </span>
+  <span class="absValue">
+    (16/ 22)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    55.6%
+  </span>
+  <span class="absValue">
+    (30/ 54)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.presentation.mvp.models.places;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.Parcel;
+<i>4</i>&nbsp;import android.os.Parcelable;
+<i>5</i>&nbsp;import android.util.Log;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Created by igor on 7/27/17.
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;
+<b class="fc"><i>11</i>&nbsp;public class PlaceModel implements Parcelable{</b>
+<i>12</i>&nbsp;    private final String name;
+<i>13</i>&nbsp;    private final String placeId;
+<i>14</i>&nbsp;    private final Long localId;
+<i>15</i>&nbsp;    private final double lat;
+<i>16</i>&nbsp;    private final double lon;
+<i>17</i>&nbsp;
+<b class="nc"><i>18</i>&nbsp;    private PlaceModel(Parcel parcel) {</b>
+<b class="nc"><i>19</i>&nbsp;        this.localId = parcel.readLong();</b>
+<b class="nc"><i>20</i>&nbsp;        this.name = parcel.readString();</b>
+<b class="nc"><i>21</i>&nbsp;        this.placeId = parcel.readString();</b>
+<b class="nc"><i>22</i>&nbsp;        this.lat = parcel.readDouble();</b>
+<b class="nc"><i>23</i>&nbsp;        this.lon = parcel.readDouble();</b>
+<b class="nc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<b class="fc"><i>26</i>&nbsp;    public static final Creator&lt;PlaceModel&gt; CREATOR = new Creator&lt;PlaceModel&gt;() {</b>
+<i>27</i>&nbsp;        @Override
+<i>28</i>&nbsp;        public PlaceModel createFromParcel(Parcel in) {
+<b class="nc"><i>29</i>&nbsp;            in.setDataPosition(0);</b>
+<b class="nc"><i>30</i>&nbsp;            return new PlaceModel(in);</b>
+<i>31</i>&nbsp;        }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;        @Override
+<i>34</i>&nbsp;        public PlaceModel[] newArray(int size) {
+<b class="nc"><i>35</i>&nbsp;            return new PlaceModel[size];</b>
+<i>36</i>&nbsp;        }
+<i>37</i>&nbsp;    };
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    @Override
+<i>40</i>&nbsp;    public int describeContents() {
+<b class="nc"><i>41</i>&nbsp;        return 0;</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @Override
+<i>45</i>&nbsp;    public void writeToParcel(Parcel parcel, int i) {
+<b class="nc"><i>46</i>&nbsp;        parcel.writeLong(localId);</b>
+<b class="nc"><i>47</i>&nbsp;        parcel.writeString(name);</b>
+<b class="nc"><i>48</i>&nbsp;        parcel.writeString(placeId);</b>
+<b class="nc"><i>49</i>&nbsp;        parcel.writeDouble(lat);</b>
+<b class="nc"><i>50</i>&nbsp;        parcel.writeDouble(lon);</b>
+<b class="nc"><i>51</i>&nbsp;    }</b>
+<i>52</i>&nbsp;
+<b class="fc"><i>53</i>&nbsp;    public static class Builder {</b>
+<i>54</i>&nbsp;        private String name;
+<i>55</i>&nbsp;        private String placeId;
+<i>56</i>&nbsp;        private Long localId;
+<i>57</i>&nbsp;        private double lat;
+<i>58</i>&nbsp;        private double lon;
+<i>59</i>&nbsp;
+<b class="fc"><i>60</i>&nbsp;        public Builder() {</b>
+<b class="fc"><i>61</i>&nbsp;            lat = 0;</b>
+<b class="fc"><i>62</i>&nbsp;            lon = 0;</b>
+<b class="fc"><i>63</i>&nbsp;        }</b>
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;        public Builder(PlaceModel model) {</b>
+<b class="nc"><i>66</i>&nbsp;            name = model.name;</b>
+<b class="nc"><i>67</i>&nbsp;            placeId = model.placeId;</b>
+<b class="nc"><i>68</i>&nbsp;            localId = model.localId;</b>
+<b class="nc"><i>69</i>&nbsp;            lat = model.lat;</b>
+<b class="nc"><i>70</i>&nbsp;            lon = model.lon;</b>
+<b class="nc"><i>71</i>&nbsp;        }</b>
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;        public Builder name(String name) {
+<b class="fc"><i>74</i>&nbsp;            this.name = name;</b>
+<b class="fc"><i>75</i>&nbsp;            return this;</b>
+<i>76</i>&nbsp;        }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;        public Builder placeId(String id) {
+<b class="fc"><i>79</i>&nbsp;            this.placeId = id;</b>
+<b class="fc"><i>80</i>&nbsp;            return this;</b>
+<i>81</i>&nbsp;        }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;        public Builder localId(Long id) {
+<b class="fc"><i>84</i>&nbsp;            this.localId = id;</b>
+<b class="fc"><i>85</i>&nbsp;            return this;</b>
+<i>86</i>&nbsp;        }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;        public Builder coords(double lat, double lon) {
+<b class="fc"><i>89</i>&nbsp;            this.lat = lat;</b>
+<b class="fc"><i>90</i>&nbsp;            this.lon = lon;</b>
+<b class="fc"><i>91</i>&nbsp;            return this;</b>
+<i>92</i>&nbsp;        }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;        public PlaceModel build() {
+<b class="fc"><i>95</i>&nbsp;            return new PlaceModel(this);</b>
+<i>96</i>&nbsp;        }
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<b class="fc"><i>99</i>&nbsp;    private PlaceModel(Builder builder) {</b>
+<b class="fc"><i>100</i>&nbsp;        this.name = builder.name;</b>
+<b class="fc"><i>101</i>&nbsp;        this.placeId = builder.placeId;</b>
+<b class="fc"><i>102</i>&nbsp;        this.localId = builder.localId;</b>
+<b class="fc"><i>103</i>&nbsp;        this.lat = builder.lat;</b>
+<b class="fc"><i>104</i>&nbsp;        this.lon = builder.lon;</b>
+<b class="fc"><i>105</i>&nbsp;    }</b>
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;    public String getName() {
+<b class="fc"><i>108</i>&nbsp;        return name;</b>
+<i>109</i>&nbsp;    }
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;    public String getPlaceId() {
+<b class="fc"><i>112</i>&nbsp;        return placeId;</b>
+<i>113</i>&nbsp;    }
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    public Long getLocalId() {
+<b class="fc"><i>116</i>&nbsp;        return localId;</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    public double getLat() {
+<b class="fc"><i>120</i>&nbsp;        return lat;</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    public double getLon() {
+<b class="fc"><i>124</i>&nbsp;        return lon;</b>
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

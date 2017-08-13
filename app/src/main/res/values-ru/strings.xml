@@ -20,5 +20,14 @@
     <string name="min_180">3 часа</string>
     <string name="city_location">Город</string>
     <string name="failed_city_details">Не удалось загрузить информацию о городе</string>
+    <string name="add_place">Добавить место</string>
+    <string name="add_places">Добаить места</string>
+    <string name="humidity">Влажность</string>
+    <string name="no_places_yet">Не для чего показывать погоду (пока)</string>
+    <string name="percents_format">%.1f %%</string>
+    <string name="pressure_format">%.1f hPa</string>
+    <string name="pressure">Давление</string>
+    <string name="places">Места</string>
+    <string name="no_downloaded">Погода не загружена :) \n Потяните вниз для обновления</string>
 
 </resources>

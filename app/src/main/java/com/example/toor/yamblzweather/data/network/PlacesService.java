@@ -1,6 +1,7 @@
 package com.example.toor.yamblzweather.data.network;
 
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
@@ -105,7 +106,7 @@ public class PlacesService {
     }
 
     public
-    @Nullable
+    @NonNull
     Single<PlacesAutocompleteModel> getAutocompleteForInput(String input) {
         return api.getPlacesAutocomplete(input, PLACE_TYPES,
                 selectedLanguage.getLanguageLocale(), apiKey)
@@ -114,7 +115,7 @@ public class PlacesService {
     }
 
     public
-    @Nullable
+    @NonNull
     Single<PlaceDetails> getPlaceDetails(String placeId) {
         return api.getPlaceDetails(placeId, selectedLanguage.getLanguageLocale(), apiKey)
                 .subscribeOn(Schedulers.io())

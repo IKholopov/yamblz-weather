@@ -75,7 +75,7 @@ public class SettingsFragmentPresenterTest {
 
         when(interactor.getUserSettings()).thenReturn(Single.fromCallable(()
                 -> new SettingsModel.Builder(TemperatureMetric.CELSIUS, 10).build()));
-        when(interactor.getPlaceDetails(TEST_ID)).thenReturn(Single.fromCallable(()
+        /*when(interactor.getPlaceDetails(TEST_ID)).thenReturn(Single.fromCallable(()
                 -> new PlaceModel.Builder().placeId(TEST_ID).build()));
         when(interactor.getAutocomplete(TEST_SEQUENCE)).thenReturn(Single.fromCallable(()
                 -> {
@@ -83,7 +83,7 @@ public class SettingsFragmentPresenterTest {
                     list.add(new PlaceModel.Builder().name(TEST_SEQUENCE).build());
                     return list;
                 }
-            ));
+            ));*/
     }
 
     @Test
@@ -94,7 +94,7 @@ public class SettingsFragmentPresenterTest {
         assertThat(view.isSettingsSet(), equalTo(true));
     }
 
-    @Test
+    /*@Test
     public void fetchAndSaveCityDetailsTest() {
         TestView view = new TestView();
         SettingsFragmentPresenter presenter = preparePresenter(view);
@@ -120,7 +120,7 @@ public class SettingsFragmentPresenterTest {
         syncEntity.waitTimeout(2000);
         assertThat(view.getPlaces().size(), equalTo(1));
         assertThat(view.getPlaces().get(0).getName(), equalTo(TEST_SEQUENCE));
-    }
+    }*/
 
 
     private static class TestView implements SettingsView {

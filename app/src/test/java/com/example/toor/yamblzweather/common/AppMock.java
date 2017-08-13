@@ -49,6 +49,7 @@ public class AppMock {
 
         PowerMockito.mockStatic(App.class);
         PowerMockito.mockStatic(Locale.class);
+        PowerMockito.mockStatic(AppModule.class);
         appMock.component = DaggerAppComponent.builder()
                 .appModule(appMock.mockedAppModule).utilsModule(new UtilsModule()).build();
         PowerMockito.when(App.getInstance()).thenReturn(appMock.mockedApp);

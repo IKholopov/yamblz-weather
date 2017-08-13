@@ -1,13 +1,14 @@
 package com.example.toor.yamblzweather.presentation;
 
-import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
+import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
-import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherFragmentPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.NavigateView;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
 import org.junit.Before;
@@ -16,13 +17,14 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.android.plugins.RxAndroidPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.calls;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -37,45 +39,59 @@ public class WeatherFragmentPresenterTest {
 
     @Mock WeatherInteractor weatherInteractor;
     @Mock SettingsInteractor settingsInteractor;
+    @Mock PlacesInteractor placesInteractor;
 
-    private WeatherFragmentPresenter preparePresenter(WeatherView view) {
-        WeatherFragmentPresenter presenter = new WeatherFragmentPresenter(weatherInteractor, settingsInteractor);
-        presenter.onAttach(view);
+    private WeatherPresenter preparePresenter(WeatherView view) {
+        WeatherPresenter presenter = new WeatherPresenter(placesInteractor, weatherInteractor, settingsInteractor);
+        presenter.onChildAttach(view);
         return presenter;
     }
 
     @Before
     public void prepare() {
-        when(weatherInteractor.getFullWeatherFromDB(any())).thenReturn(
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(
+                __ -> Schedulers.trampoline());
+
+        when(weatherInteractor.getWeatherFromDB(any())).thenReturn(
                 Single.fromCallable(
-                        () -> new FullWeatherModel(new CurrentWeather(), new ExtendedWeather(), TemperatureMetric.CELSIUS )
-                )
+                        DailyWeather::new)
         );
         when(weatherInteractor.updateWeather(any())).thenReturn(
                 Single.fromCallable(
-                        () -> new FullWeatherModel(new CurrentWeather(), new ExtendedWeather(), TemperatureMetric.CELSIUS )
-                )
+                        DailyWeather::new)
         );
         when(settingsInteractor.getUserSettings()).thenReturn(
                 Single.fromCallable(
                         () -> new SettingsModel.Builder(TemperatureMetric.CELSIUS, 10).build()
                 )
         );
+        when(placesInteractor.getAllPlaces()).thenReturn(
+                Flowable.just(new PlaceModel.Builder().placeId("").name("").localId(0L).build())
+        );
+
     }
 
     @Test
     public void getWeatherTest() {
         TestView testView = new TestView();
-        WeatherFragmentPresenter presenter = preparePresenter(testView);
-        presenter.getWeather();
+        WeatherPresenter presenter = preparePresenter(testView);
+        presenter.getWeather(new PlaceModel.Builder().build(), testView);
         assertThat(testView.isWeatherDisplayed(), equalTo(true));
     }
 
     @Test
     public void updateWeatherTest() {
         TestView testView = new TestView();
-        WeatherFragmentPresenter presenter = preparePresenter(testView);
-        presenter.updateWeather();
+        WeatherPresenter presenter = preparePresenter(testView);
+        presenter.updateWeather(new PlaceModel.Builder().build(), testView);
+        verify(weatherInteractor, times(1)).updateWeather(any());
+    }
+
+    @Test
+    public void updateAllWeatherTest() {
+        TestView testView = new TestView();
+        WeatherPresenter presenter = preparePresenter(testView);
+        presenter.updateAllWeather();
         verify(weatherInteractor, times(1)).updateWeather(any());
     }
 
@@ -84,13 +100,18 @@ public class WeatherFragmentPresenterTest {
         private boolean displayedError = false;
 
         @Override
-        public void showCurrentWeather(FullWeatherModel fullWeatherModel, String placeName) {
+        public void showWeather(DailyWeather weather, String placeName) {
             displayedWeather = true;
         }
 
         @Override
-        public void showErrorFragment() {
-            displayedError = true;
+        public void showWeather(DailyWeather weather) {
+
+        }
+
+        @Override
+        public long getPlaceId() {
+            return 0;
         }
 
         public boolean isWeatherDisplayed() {

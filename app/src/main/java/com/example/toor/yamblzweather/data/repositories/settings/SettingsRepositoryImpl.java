@@ -51,24 +51,7 @@ public class SettingsRepositoryImpl implements SettingsRepository {
     }
 
     @Override
-    public void saveCacheTime(long time) {
-        preference.saveCacheTime(time);
-    }
-
-    @Override
     public String getSelectedCityName() {
         return preference.loadSelectedCityName();
-    }
-
-    @Nullable
-    @Override
-    public Single<PlacesAutocompleteModel> loadPlacesAutocomplete(String input) {
-        return service.getAutocompleteForInput(input);
-    }
-
-    @Nullable
-    @Override
-    public Single<PlaceDetails> loadPlaceDetails(String placeId) {
-        return service.getPlaceDetails(placeId);
     }
 }

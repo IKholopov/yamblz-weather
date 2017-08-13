@@ -19,4 +19,8 @@ public class Geometry {
     @SerializedName("southwest")
     @Expose
     Location southwest;
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 }

@@ -2,16 +2,15 @@ package com.example.toor.yamblzweather.data.repositories.weather;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.database.DataBase;
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
-import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
+import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+import com.example.toor.yamblzweather.data.models.weather.common.City;
+import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -36,28 +35,41 @@ public class WeatherRepositoryImpl implements WeatherRepository {
         service.setLanguage(locale);
     }
 
+    @NonNull
     @Override
-    public Single<CurrentWeather> getCurrentWeatherFromDB(int cityId) {
-        return dataBase.getCurrentWeather(cityId);
+    public Single<DailyWeather> getExtendedWeatherFromDB(PlaceDetails placeDetails, long dateSec) {
+        DailyWeather weather = new DailyWeather();
+        City city = new City();
+        city.setId(placeDetails.getId().intValue());
+        city.setCoord(placeDetails.getCoords());
+        city.setName(placeDetails.getName());
+        weather.setCity(city);
+        return dataBase.getWeather(placeDetails, dateSec)
+                    .toList().map(list -> {
+                weather.setList(list);
+                return weather;
+            });
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public Single<CurrentWeather> getCurrentWeatherFromDB(Coord coords) {
-        return dataBase.getCurrentWeather(coords);
+    public Single<DailyWeather> loadExtendedWeatherFromNW(PlaceDetails placeDetails) {
+        return service.getExtendedWeather(placeDetails.getCoords());
     }
 
-    @Nullable
+    @NonNull
     @Override
-    public Single<CurrentWeather> loadCurrentWeatherFromNW(int cityId) {
-        return service.getCurrentWeather(cityId);
-    }
-    @Nullable
-    @Override
-    public Single<CurrentWeather> loadCurrentWeatherFromNW(Coord coord) {
-        return service.getCurrentWeatherForCoords(coord);
+    public Single<Long> clearOldRecords(Calendar date) {
+        return dataBase.clearBeforeDate(date);
     }
 
+    @NonNull
+    @Override
+    public Single<Long> deleteRecordsForPlace(long placeId) {
+        return dataBase.deleteWeatherForPlace(placeId);
+    }
+
+    /*
     @Override
     public Single<ExtendedWeather> getExtendedWeatherFromDB(int cityId) {
         return dataBase.getExtendedWeather(cityId);
@@ -79,10 +91,10 @@ public class WeatherRepositoryImpl implements WeatherRepository {
     @Override
     public Single<ExtendedWeather> loadExtendedWeatherFromNW(Coord coords) {
         return service.getExtendedWeather(coords);
-    }
+    }*/
 
     @Override
-    public void saveWeather(@NonNull FullWeatherModel weather) {
-        dataBase.saveWeather(weather);
+    public void saveWeather(@NonNull DailyWeather weather, @NonNull PlaceDetails placeDetails) {
+        dataBase.addOrUpdateWeather(weather, placeDetails.getId(), () -> {});
     }
 }

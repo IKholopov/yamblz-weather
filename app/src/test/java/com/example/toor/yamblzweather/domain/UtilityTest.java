@@ -2,10 +2,13 @@ package com.example.toor.yamblzweather.domain;
 
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetricConverter;
+import com.example.toor.yamblzweather.domain.utils.TimeUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.powermock.modules.junit4.PowerMockRunner;
+
+import java.util.GregorianCalendar;
 
 import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,7 +34,19 @@ public class UtilityTest {
     }
 
     @Test
-    public void TemperatureFromString() {
+    public void TemperatureFromStringTest() {
         assertThat(TemperatureMetric.fromString("metric"), equalTo(CELSIUS));
+    }
+
+    @Test
+    public void ShortDayTest() {
+        long time = 1502653271L;
+        assertThat(TimeUtils.formatDayShort(time), equalTo("Sun"));
+    }
+
+    @Test
+    public void ShortDayAndDateTest() {
+        long time = 1502653271L;
+        assertThat(TimeUtils.formatDayAndDateShort(time), equalTo("13 Sun"));
     }
 }

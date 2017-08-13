@@ -1,0 +1,82 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlacesRepository</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.repositories.places</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlacesRepository (com.example.toor.yamblzweather.data.repositories.places)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">PlacesRepository$$EnhancerByMockitoWithCGLIB$$e5143853</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.repositories.places;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.support.annotation.NonNull;
+<i>4</i>&nbsp;import android.support.annotation.Nullable;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
+<i>7</i>&nbsp;import com.example.toor.yamblzweather.data.models.places.PlacesAutocompleteModel;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;import io.reactivex.Flowable;
+<i>10</i>&nbsp;import io.reactivex.Single;
+<i>11</i>&nbsp;import io.reactivex.functions.Action;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; * Created by igor on 8/6/17.
+<i>15</i>&nbsp; */
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;public interface PlacesRepository {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    @NonNull
+<i>20</i>&nbsp;    Flowable&lt;PlaceDetails&gt; getAllPlaces();
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    @NonNull
+<i>23</i>&nbsp;    Single&lt;Long&gt; deletePlace(long placeId);
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    @Nullable
+<i>26</i>&nbsp;    Single&lt;PlacesAutocompleteModel&gt; loadPlacesAutocomplete(String input);
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Nullable
+<i>29</i>&nbsp;    Single&lt;PlaceDetails&gt; loadPlaceDetails(String placeId);
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    void addPlace(PlaceDetails place, @NonNull Action onSuccess);
+<i>32</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 22:53</div>
+</div>
+</body>
+</html>

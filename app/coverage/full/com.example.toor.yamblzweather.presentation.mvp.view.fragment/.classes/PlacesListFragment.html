@@ -1,0 +1,339 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlacesListFragment</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.presentation.mvp.view.fragment</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlacesListFragment (com.example.toor.yamblzweather.presentation.mvp.view.fragment)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlacesListFragment</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 19)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 79)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PlacesListFragment$State</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 81)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import android.app.Activity;
+<i>5</i>&nbsp;import android.content.Context;
+<i>6</i>&nbsp;import android.os.Bundle;
+<i>7</i>&nbsp;import android.support.constraint.ConstraintLayout;
+<i>8</i>&nbsp;import android.support.constraint.ConstraintSet;
+<i>9</i>&nbsp;import android.support.transition.TransitionManager;
+<i>10</i>&nbsp;import android.support.v4.app.Fragment;
+<i>11</i>&nbsp;import android.support.v4.app.FragmentActivity;
+<i>12</i>&nbsp;import android.support.v7.widget.LinearLayoutManager;
+<i>13</i>&nbsp;import android.support.v7.widget.RecyclerView;
+<i>14</i>&nbsp;import android.support.v7.widget.helper.ItemTouchHelper;
+<i>15</i>&nbsp;import android.view.LayoutInflater;
+<i>16</i>&nbsp;import android.view.View;
+<i>17</i>&nbsp;import android.view.ViewGroup;
+<i>18</i>&nbsp;import android.view.inputmethod.InputMethodManager;
+<i>19</i>&nbsp;import android.widget.Button;
+<i>20</i>&nbsp;import android.widget.EditText;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;import com.example.toor.yamblzweather.R;
+<i>23</i>&nbsp;import com.example.toor.yamblzweather.presentation.di.App;
+<i>24</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
+<i>25</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.presenter.PlacesListPresenter;
+<i>26</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.PlacesListView;
+<i>27</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.activity.OnBackBehaviour;
+<i>28</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.activity.drawer.DrawerLocker;
+<i>29</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.adapter.CityNameAdapter;
+<i>30</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.adapter.PlacesListAdapter;
+<i>31</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.view.fragment.common.BaseFragment;
+<i>32</i>&nbsp;import com.jakewharton.rxbinding2.widget.RxTextView;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;import java.util.ArrayList;
+<i>35</i>&nbsp;import java.util.List;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;import javax.inject.Inject;
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;import butterknife.BindView;
+<i>40</i>&nbsp;import butterknife.ButterKnife;
+<i>41</i>&nbsp;import butterknife.Unbinder;
+<i>42</i>&nbsp;import io.reactivex.android.schedulers.AndroidSchedulers;
+<i>43</i>&nbsp;import io.reactivex.disposables.Disposable;
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;/**
+<i>46</i>&nbsp; * A simple {@link Fragment} subclass.
+<i>47</i>&nbsp; * Use the {@link PlacesListFragment#newInstance} factory method to
+<i>48</i>&nbsp; * create an instance of this fragment.
+<i>49</i>&nbsp; */
+<i>50</i>&nbsp;public class PlacesListFragment extends BaseFragment implements PlacesListView{
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    private static final String STATE_KEY = &quot;state_key&quot;;
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    private Unbinder unbinder;
+<i>55</i>&nbsp;
+<b class="nc"><i>56</i>&nbsp;    private enum State {</b>
+<b class="nc"><i>57</i>&nbsp;        LIST, ADD</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    private State state;
+<i>61</i>&nbsp;    private CityNameAdapter suggestionAdapter;
+<i>62</i>&nbsp;    private PlacesListAdapter placesAdapter;
+<i>63</i>&nbsp;    private ArrayList&lt;Disposable&gt; disposables;
+<i>64</i>&nbsp;    private ItemTouchHelper touchHelper;
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    private ConstraintSet listViewSet;
+<i>67</i>&nbsp;    private ConstraintSet addViewSet;
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    @Inject
+<i>70</i>&nbsp;    PlacesListPresenter presenter;
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    @BindView(R.id.etSearchPlace) EditText searchPlace;
+<i>73</i>&nbsp;    @BindView(R.id.bAddPlace) Button addPlaceButton;
+<i>74</i>&nbsp;    @BindView(R.id.rvPlaces) RecyclerView placesList;
+<i>75</i>&nbsp;    @BindView(R.id.rvSuggestions) RecyclerView suggestionsList;
+<i>76</i>&nbsp;    @BindView(R.id.clPlaces) ConstraintLayout fragmentLayout;
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;    public PlacesListFragment() {</b>
+<i>80</i>&nbsp;    }
+<i>81</i>&nbsp;
+<i>82</i>&nbsp;    public static PlacesListFragment newInstance() {
+<b class="nc"><i>83</i>&nbsp;        PlacesListFragment fragment = new PlacesListFragment();</b>
+<b class="nc"><i>84</i>&nbsp;        return fragment;</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    @Override
+<i>88</i>&nbsp;    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+<i>89</i>&nbsp;                             Bundle savedInstanceState) {
+<b class="nc"><i>90</i>&nbsp;        View view = inflater.inflate(R.layout.fragment_places_list, container, false);</b>
+<b class="nc"><i>91</i>&nbsp;        disposables = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>92</i>&nbsp;        return view;</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    @Override
+<i>96</i>&nbsp;    public void onViewCreated(View view, Bundle savedInstanceState) {
+<b class="nc"><i>97</i>&nbsp;        unbinder = ButterKnife.bind(this, view);</b>
+<b class="nc"><i>98</i>&nbsp;        setUpViewSets();</b>
+<b class="nc"><i>99</i>&nbsp;        presenter.onAttach(this);</b>
+<b class="nc"><i>100</i>&nbsp;        switchFragmentState(State.LIST);</b>
+<b class="nc"><i>101</i>&nbsp;        suggestionAdapter = new CityNameAdapter();</b>
+<b class="nc"><i>102</i>&nbsp;        LinearLayoutManager llm = new LinearLayoutManager(getContext());</b>
+<b class="nc"><i>103</i>&nbsp;        llm.setOrientation(LinearLayoutManager.VERTICAL);</b>
+<b class="nc"><i>104</i>&nbsp;        suggestionsList.setLayoutManager(llm);</b>
+<b class="nc"><i>105</i>&nbsp;        suggestionsList.setAdapter(suggestionAdapter);</b>
+<b class="nc"><i>106</i>&nbsp;        addPlaceButton.setOnClickListener(view1 -&gt; switchFragmentState(State.ADD));</b>
+<b class="nc"><i>107</i>&nbsp;        presenter.subscribeOnPlaceNameChanges(RxTextView.textChanges(searchPlace));</b>
+<b class="nc"><i>108</i>&nbsp;        disposables.add(suggestionAdapter.getSelectedPlace().subscribe(placeModel -&gt; {</b>
+<b class="nc"><i>109</i>&nbsp;            presenter.fetchAndSaveCityDetails(placeModel, () -&gt;</b>
+<b class="nc"><i>110</i>&nbsp;                    presenter.getPlaces().toList().subscribe(places -&gt; placesAdapter.updatePlaces(places))</b>
+<i>111</i>&nbsp;            ).subscribe(place -&gt; {});
+<b class="nc"><i>112</i>&nbsp;            switchFragmentState(State.LIST);</b>
+<i>113</i>&nbsp;        }));
+<b class="nc"><i>114</i>&nbsp;        disposables.add(presenter.getPlaces().toList().subscribe(this::setUpPlaceList));</b>
+<i>115</i>&nbsp;    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    @Override
+<i>118</i>&nbsp;    public void onDestroyView() {
+<b class="nc"><i>119</i>&nbsp;        super.onDestroyView();</b>
+<b class="nc"><i>120</i>&nbsp;        for(Disposable d: disposables) {</b>
+<b class="nc"><i>121</i>&nbsp;            d.dispose();</b>
+<b class="nc"><i>122</i>&nbsp;        }</b>
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    @Override
+<i>126</i>&nbsp;    public void onSaveInstanceState(final  Bundle outState) {
+<b class="nc"><i>127</i>&nbsp;        super.onSaveInstanceState(outState);</b>
+<b class="nc"><i>128</i>&nbsp;        outState.putSerializable(STATE_KEY, state);</b>
+<i>129</i>&nbsp;    }
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    @Override
+<i>132</i>&nbsp;    public void onActivityCreated(Bundle savedState) {
+<b class="nc"><i>133</i>&nbsp;        super.onActivityCreated(savedState);</b>
+<b class="nc"><i>134</i>&nbsp;        if(savedState != null) {</b>
+<b class="nc"><i>135</i>&nbsp;            switchFragmentState((State) savedState.get(STATE_KEY));</b>
+<i>136</i>&nbsp;        }
+<i>137</i>&nbsp;    }
+<i>138</i>&nbsp;
+<i>139</i>&nbsp;    @Override
+<i>140</i>&nbsp;    public void updatePlacesSuggestionList(List&lt;PlaceModel&gt; suggestions) {
+<b class="nc"><i>141</i>&nbsp;        suggestionAdapter.updatePlaces(suggestions);</b>
+<i>142</i>&nbsp;    }
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;    @Override
+<i>145</i>&nbsp;    protected void setTitle() {
+<b class="nc"><i>146</i>&nbsp;        getActivity().setTitle(R.string.places);</b>
+<i>147</i>&nbsp;    }
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;    @Override
+<i>150</i>&nbsp;    protected void setDrawableEnabled() {
+<b class="nc"><i>151</i>&nbsp;        ((DrawerLocker) getActivity()).setDrawerEnable(false);</b>
+<i>152</i>&nbsp;    }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;    @Override
+<i>155</i>&nbsp;    protected void inject() {
+<b class="nc"><i>156</i>&nbsp;        App.getInstance().plusActivityComponent().inject(this);</b>
+<i>157</i>&nbsp;    }
+<i>158</i>&nbsp;
+<i>159</i>&nbsp;    private void switchFragmentState(State newState){
+<b class="nc"><i>160</i>&nbsp;        if(state == newState) {</b>
+<i>161</i>&nbsp;            return;
+<i>162</i>&nbsp;        }
+<b class="nc"><i>163</i>&nbsp;        state = newState;</b>
+<b class="nc"><i>164</i>&nbsp;        TransitionManager.beginDelayedTransition(fragmentLayout);</b>
+<b class="nc"><i>165</i>&nbsp;        if(state == State.LIST) {</b>
+<b class="nc"><i>166</i>&nbsp;            searchPlace.setText(&quot;&quot;);</b>
+<b class="nc"><i>167</i>&nbsp;            listViewSet.applyTo(fragmentLayout);</b>
+<b class="nc"><i>168</i>&nbsp;            FragmentActivity activity = getActivity();</b>
+<b class="nc"><i>169</i>&nbsp;            if(activity != null &amp;&amp; activity instanceof OnBackBehaviour) {</b>
+<b class="nc"><i>170</i>&nbsp;                ((OnBackBehaviour)activity).setOnBackBehaviour(null);</b>
+<i>171</i>&nbsp;            }
+<b class="nc"><i>172</i>&nbsp;            hideKeyboard();</b>
+<b class="nc"><i>173</i>&nbsp;        } else {</b>
+<b class="nc"><i>174</i>&nbsp;            addViewSet.applyTo(fragmentLayout);</b>
+<b class="nc"><i>175</i>&nbsp;            searchPlace.setVisibility(View.VISIBLE);</b>
+<b class="nc"><i>176</i>&nbsp;            suggestionsList.setVisibility(View.VISIBLE);</b>
+<b class="nc"><i>177</i>&nbsp;            addPlaceButton.setVisibility(View.INVISIBLE);</b>
+<b class="nc"><i>178</i>&nbsp;            placesList.setVisibility(View.INVISIBLE);</b>
+<b class="nc"><i>179</i>&nbsp;            FragmentActivity activity = getActivity();</b>
+<b class="nc"><i>180</i>&nbsp;            if(activity != null &amp;&amp; activity instanceof OnBackBehaviour) {</b>
+<b class="nc"><i>181</i>&nbsp;                ((OnBackBehaviour)activity).setOnBackBehaviour(() -&gt; switchFragmentState(State.LIST));</b>
+<i>182</i>&nbsp;            }
+<i>183</i>&nbsp;        }
+<i>184</i>&nbsp;    }
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;    private void setUpViewSets() {
+<b class="nc"><i>187</i>&nbsp;        listViewSet = new ConstraintSet();</b>
+<b class="nc"><i>188</i>&nbsp;        listViewSet.clone(fragmentLayout);</b>
+<b class="nc"><i>189</i>&nbsp;        listViewSet.setVisibility(R.id.etSearchPlace, View.INVISIBLE);</b>
+<b class="nc"><i>190</i>&nbsp;        listViewSet.setVisibility(R.id.rvSuggestions, View.INVISIBLE);</b>
+<b class="nc"><i>191</i>&nbsp;        listViewSet.setVisibility(R.id.bAddPlace, View.VISIBLE);</b>
+<b class="nc"><i>192</i>&nbsp;        listViewSet.setVisibility(R.id.rvPlaces, View.VISIBLE);</b>
+<i>193</i>&nbsp;
+<b class="nc"><i>194</i>&nbsp;        addViewSet = new ConstraintSet();</b>
+<b class="nc"><i>195</i>&nbsp;        addViewSet.clone(fragmentLayout);</b>
+<b class="nc"><i>196</i>&nbsp;        addViewSet.setVisibility(R.id.etSearchPlace, View.VISIBLE);</b>
+<b class="nc"><i>197</i>&nbsp;        addViewSet.setVisibility(R.id.rvSuggestions, View.VISIBLE);</b>
+<b class="nc"><i>198</i>&nbsp;        addViewSet.setVisibility(R.id.bAddPlace, View.INVISIBLE);</b>
+<b class="nc"><i>199</i>&nbsp;        addViewSet.setVisibility(R.id.rvPlaces, View.INVISIBLE);</b>
+<i>200</i>&nbsp;    }
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    private void setUpPlaceList(List&lt;PlaceModel&gt; places) {
+<b class="nc"><i>203</i>&nbsp;        placesAdapter = new PlacesListAdapter(places);</b>
+<b class="nc"><i>204</i>&nbsp;        LinearLayoutManager placesLayoutManager = new LinearLayoutManager(getContext());</b>
+<b class="nc"><i>205</i>&nbsp;        placesLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);</b>
+<b class="nc"><i>206</i>&nbsp;        placesList.setLayoutManager(placesLayoutManager);</b>
+<b class="nc"><i>207</i>&nbsp;        disposables.add(</b>
+<b class="nc"><i>208</i>&nbsp;                placesAdapter.getDeletionEvent()</b>
+<i>209</i>&nbsp;                        .subscribe(placeModel -&gt; presenter.deletePlace(placeModel)
+<i>210</i>&nbsp;                                .subscribe(deleted -&gt; {})));
+<b class="nc"><i>211</i>&nbsp;        placesList.setAdapter(placesAdapter);</b>
+<i>212</i>&nbsp;        //TODO: Rearrange places feature
+<i>213</i>&nbsp;        /*ItemTouchHelper.Callback dragCallback = new DragNDropCallback(placesAdapter);
+<i>214</i>&nbsp;        touchHelper = new ItemTouchHelper(dragCallback);
+<i>215</i>&nbsp;        touchHelper.attachToRecyclerView(placesList);*/
+<i>216</i>&nbsp;    }
+<i>217</i>&nbsp;
+<i>218</i>&nbsp;    private void hideKeyboard() {
+<b class="nc"><i>219</i>&nbsp;        Activity activity = getActivity();</b>
+<b class="nc"><i>220</i>&nbsp;        if(activity == null) {</b>
+<i>221</i>&nbsp;            return;
+<i>222</i>&nbsp;        }
+<b class="nc"><i>223</i>&nbsp;        View view = activity.getCurrentFocus();</b>
+<b class="nc"><i>224</i>&nbsp;        if (view != null) {</b>
+<b class="nc"><i>225</i>&nbsp;            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);</b>
+<b class="nc"><i>226</i>&nbsp;            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);</b>
+<i>227</i>&nbsp;        }
+<i>228</i>&nbsp;    }
+<i>229</i>&nbsp;}
+<i>230</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

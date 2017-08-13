@@ -22,9 +22,6 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
 
     private static final String TAG = "SettingsPresenter";
 
-    private static final int AUTOCOMPLETE_CALLDOWN = 800;
-    private static final int NETWORK_TIMEOUT = 5000;
-
     private SettingsInteractor interactor;
 
     @Inject
@@ -44,7 +41,7 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         }
     }
 
-    public Single<PlaceModel> fetchAndSaveCityDetails(PlaceModel placeModel) {
+    /*public Single<PlaceModel> fetchAndSaveCityDetails(PlaceModel placeModel) {
         Single<PlaceModel> request = interactor.getPlaceDetails(placeModel.getPlaceId());
         request.subscribe(
                 placeDetails -> {
@@ -54,7 +51,7 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         );
         return request.timeout(NETWORK_TIMEOUT, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread());
-    }
+    }*/
 
     public void saveTemperatureMetric(TemperatureMetric metric) {
         interactor.saveTemperatureMetric(metric);
@@ -66,7 +63,7 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
         scheduleJob.startJob();
     }
 
-    public void subscribeOnCityNameChanges(Observable<CharSequence> observable) {
+    /*public void subscribeOnCityNameChanges(Observable<CharSequence> observable) {
         unSubcribeOnDetach(observable.throttleLast(AUTOCOMPLETE_CALLDOWN, TimeUnit.MILLISECONDS).subscribe(
                 input -> interactor.getAutocomplete(input.toString()).subscribe(
                         places -> {
@@ -80,5 +77,5 @@ public class SettingsFragmentPresenter extends BaseFragmentPresenter<SettingsVie
                         }
                 )
         ));
-    }
+    }*/
 }

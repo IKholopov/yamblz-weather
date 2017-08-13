@@ -25,4 +25,12 @@ public class PlaceName {
     public String getPlaceId() {
         return placeId;
     }
+
+    public void setName(String name) {
+        this.description = name;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
 }

@@ -35,4 +35,8 @@ public class PlacesAutocompleteModel {
         }
         return predictions.size();
     }
+
+    public void setPredictions(List<PlaceName> predictions) {
+        this.predictions = predictions;
+    }
 }

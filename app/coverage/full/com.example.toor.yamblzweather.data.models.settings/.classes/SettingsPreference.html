@@ -1,0 +1,203 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SettingsPreference</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.models.settings</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SettingsPreference (com.example.toor.yamblzweather.data.models.settings)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SettingsPreference</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    53.3%
+  </span>
+  <span class="absValue">
+    (8/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    40.9%
+  </span>
+  <span class="absValue">
+    (18/ 44)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.models.settings;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.SharedPreferences;
+<i>4</i>&nbsp;import android.support.annotation.NonNull;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import com.example.toor.yamblzweather.data.models.weather.common.Coord;
+<i>7</i>&nbsp;import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
+<i>8</i>&nbsp;import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import io.reactivex.Single;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELSIUS;
+<i>13</i>&nbsp;import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.fromString;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class SettingsPreference {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public static final String TEMPERATURE_KEY = &quot;temperature_key&quot;;
+<i>18</i>&nbsp;    public static final String INTERVAL_KEY = &quot;interval_key&quot;;
+<i>19</i>&nbsp;    public static final String CITY_ID = &quot;city_id&quot;;
+<i>20</i>&nbsp;    public static final String CITY_LAT = &quot;city_lat&quot;;
+<i>21</i>&nbsp;    public static final String CITY_LON = &quot;city_lon&quot;;
+<i>22</i>&nbsp;    public static final String CITY_NAME = &quot;city_name&quot;;
+<i>23</i>&nbsp;    public static final String CACHE_TIME = &quot;cache_time&quot;;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    private static final long MIN_UPDATE_INTERVAL = 1 * 60 * 60 * 1000; // interval is 1 hour
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    private SharedPreferences sharedPreferences;
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    public SettingsPreference(SharedPreferences sharedPreferences) {</b>
+<b class="fc"><i>30</i>&nbsp;        this.sharedPreferences = sharedPreferences;</b>
+<b class="fc"><i>31</i>&nbsp;    }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    public void saveTemperatureMetric(TemperatureMetric metric) {
+<b class="nc"><i>34</i>&nbsp;        SharedPreferences.Editor editor = sharedPreferences.edit();</b>
+<b class="nc"><i>35</i>&nbsp;        editor.putString(TEMPERATURE_KEY, metric.getUnit());</b>
+<b class="nc"><i>36</i>&nbsp;        editor.apply();</b>
+<b class="nc"><i>37</i>&nbsp;    }</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    public
+<i>40</i>&nbsp;    @NonNull
+<i>41</i>&nbsp;    TemperatureMetric loadTemperatureMetric() {
+<b class="fc"><i>42</i>&nbsp;        String metric = sharedPreferences.getString(TEMPERATURE_KEY, CELSIUS.getUnit());</b>
+<b class="fc"><i>43</i>&nbsp;        return fromString(metric);</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public void saveUpdateWeatherInterval(long interval) {
+<b class="nc"><i>47</i>&nbsp;        SharedPreferences.Editor editor = sharedPreferences.edit();</b>
+<b class="nc"><i>48</i>&nbsp;        editor.putLong(INTERVAL_KEY, interval);</b>
+<b class="nc"><i>49</i>&nbsp;        editor.apply();</b>
+<b class="nc"><i>50</i>&nbsp;    }</b>
+<i>51</i>&nbsp;
+<i>52</i>&nbsp;    public
+<i>53</i>&nbsp;    @NonNull
+<i>54</i>&nbsp;    long loadUpdateWeatherInterval() {
+<b class="fc"><i>55</i>&nbsp;        return sharedPreferences.getLong(INTERVAL_KEY, MIN_UPDATE_INTERVAL);</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    public
+<i>59</i>&nbsp;    @NonNull
+<i>60</i>&nbsp;        Single&lt;SettingsModel&gt; loadUserSettings() {
+<b class="fc"><i>61</i>&nbsp;        TemperatureMetric metric = loadTemperatureMetric();</b>
+<b class="fc"><i>62</i>&nbsp;        long interval = loadUpdateWeatherInterval();</b>
+<b class="fc"><i>63</i>&nbsp;        int cityId = loadSelectedCityId();</b>
+<b class="fc"><i>64</i>&nbsp;        String cityName = loadSelectedCityName();</b>
+<b class="fc"><i>65</i>&nbsp;        Coord coords = loadSelectedCityCoords();</b>
+<b class="fc"><i>66</i>&nbsp;        return Single.fromCallable(() -&gt; new SettingsModel.Builder(metric, interval)</b>
+<b class="fc"><i>67</i>&nbsp;                .cityId(cityId).coords(coords).cityName(cityName).build());</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public void saveSelectedCityId(int cityId) {
+<b class="nc"><i>71</i>&nbsp;        SharedPreferences.Editor editor = sharedPreferences.edit();</b>
+<b class="nc"><i>72</i>&nbsp;        editor.putInt(CITY_ID, cityId);</b>
+<b class="nc"><i>73</i>&nbsp;        editor.apply();</b>
+<b class="nc"><i>74</i>&nbsp;    }</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;    public void saveSelectedCityCoords(double lat, double lon) {
+<b class="nc"><i>77</i>&nbsp;        SharedPreferences.Editor editor = sharedPreferences.edit();</b>
+<b class="nc"><i>78</i>&nbsp;        editor.putFloat(CITY_LAT, Double.valueOf(lat).floatValue());</b>
+<b class="nc"><i>79</i>&nbsp;        editor.putFloat(CITY_LON, Double.valueOf(lon).floatValue());</b>
+<b class="nc"><i>80</i>&nbsp;        editor.apply();</b>
+<b class="nc"><i>81</i>&nbsp;    }</b>
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    public void saveSelectedCityName(String name) {
+<b class="nc"><i>84</i>&nbsp;        SharedPreferences.Editor editor = sharedPreferences.edit();</b>
+<b class="nc"><i>85</i>&nbsp;        editor.putString(CITY_NAME, name);</b>
+<b class="nc"><i>86</i>&nbsp;        editor.apply();</b>
+<b class="nc"><i>87</i>&nbsp;    }</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    public
+<i>90</i>&nbsp;    @NonNull
+<i>91</i>&nbsp;    int loadSelectedCityId() {
+<b class="fc"><i>92</i>&nbsp;        return sharedPreferences.getInt(CITY_ID, 524901);</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    public
+<i>96</i>&nbsp;    @NonNull
+<i>97</i>&nbsp;    Coord loadSelectedCityCoords() {
+<b class="fc"><i>98</i>&nbsp;        Coord coords = new Coord(sharedPreferences.getFloat(CITY_LAT, 55.754f),</b>
+<b class="fc"><i>99</i>&nbsp;                sharedPreferences.getFloat(CITY_LON, 37.615f));</b>
+<b class="fc"><i>100</i>&nbsp;        return coords;</b>
+<i>101</i>&nbsp;    }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    public
+<i>104</i>&nbsp;    @NonNull
+<i>105</i>&nbsp;    String loadSelectedCityName() {
+<b class="fc"><i>106</i>&nbsp;        return sharedPreferences.getString(CITY_NAME, &quot;Moscow&quot;);</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    public void saveCacheTime(long time) {
+<b class="nc"><i>110</i>&nbsp;        SharedPreferences.Editor editor = sharedPreferences.edit();</b>
+<b class="nc"><i>111</i>&nbsp;        editor.putLong(CACHE_TIME, time);</b>
+<b class="nc"><i>112</i>&nbsp;        editor.apply();</b>
+<b class="nc"><i>113</i>&nbsp;    }</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    public
+<i>116</i>&nbsp;    @NonNull
+<i>117</i>&nbsp;    int loadCacheTime() {
+<b class="nc"><i>118</i>&nbsp;        return sharedPreferences.getInt(CACHE_TIME, 0);</b>
+<i>119</i>&nbsp;    }
+<i>120</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>

@@ -24,27 +24,13 @@ public class OWServiceNetTest {
     }
 
     @Test
-    public void testOWGetCurrentWeatherFromCoordsResponce() throws InterruptedException {
-        OWService service = prepareOWService();
-        Coord testCoords = new Coord(55.895159, 37.557798);
-        SyncEntity syncEntity = new SyncEntity();
-        service.getCurrentWeatherForCoords(testCoords)
-                .subscribe(weather -> {
-                    assertThat(weather.getMain().getTemp(),
-                            closeTo(300.0, 80.0));
-                    syncEntity.notifyOne();
-                });
-        syncEntity.waitFor();
-    }
-
-    @Test
     public void testOWGetExtendedWeatherFromCoordsResponce() throws InterruptedException {
         OWService service = prepareOWService();
         Coord testCoords = new Coord(55.895159, 37.557798);
         SyncEntity syncEntity = new SyncEntity();
         service.getExtendedWeather(testCoords)
                 .subscribe(weather -> {
-                    assertThat(weather.getList().get(0).getMain().getTemp(),
+                    assertThat((double)weather.getList().get(0).getTemp().getDay(),
                             closeTo(300.0, 80.0));
                     syncEntity.notifyOne();
                 });

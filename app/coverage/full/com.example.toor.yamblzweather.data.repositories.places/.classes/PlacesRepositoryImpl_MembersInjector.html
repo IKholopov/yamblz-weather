@@ -1,0 +1,119 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PlacesRepositoryImpl_MembersInjector</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.example.toor.yamblzweather.data.repositories.places</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PlacesRepositoryImpl_MembersInjector (com.example.toor.yamblzweather.data.repositories.places)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PlacesRepositoryImpl_MembersInjector</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (4/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    75%
+  </span>
+  <span class="absValue">
+    (9/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.example.toor.yamblzweather.data.repositories.places;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import dagger.MembersInjector;
+<i>4</i>&nbsp;import java.util.Locale;
+<i>5</i>&nbsp;import javax.annotation.Generated;
+<i>6</i>&nbsp;import javax.inject.Provider;
+<i>7</i>&nbsp;
+<b class="fc"><i>8</i>&nbsp;@Generated(</b>
+<i>9</i>&nbsp;  value = &quot;dagger.internal.codegen.ComponentProcessor&quot;,
+<i>10</i>&nbsp;  comments = &quot;https://google.github.io/dagger&quot;
+<i>11</i>&nbsp;)
+<i>12</i>&nbsp;public final class PlacesRepositoryImpl_MembersInjector
+<i>13</i>&nbsp;    implements MembersInjector&lt;PlacesRepositoryImpl&gt; {
+<i>14</i>&nbsp;  private final Provider&lt;Locale&gt; localeProvider;
+<i>15</i>&nbsp;
+<b class="fc"><i>16</i>&nbsp;  public PlacesRepositoryImpl_MembersInjector(Provider&lt;Locale&gt; localeProvider) {</b>
+<b class="fc"><i>17</i>&nbsp;    assert localeProvider != null;</b>
+<b class="fc"><i>18</i>&nbsp;    this.localeProvider = localeProvider;</b>
+<b class="fc"><i>19</i>&nbsp;  }</b>
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;  public static MembersInjector&lt;PlacesRepositoryImpl&gt; create(Provider&lt;Locale&gt; localeProvider) {
+<b class="fc"><i>22</i>&nbsp;    return new PlacesRepositoryImpl_MembersInjector(localeProvider);</b>
+<i>23</i>&nbsp;  }
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;  @Override
+<i>26</i>&nbsp;  public void injectMembers(PlacesRepositoryImpl instance) {
+<b class="fc"><i>27</i>&nbsp;    if (instance == null) {</b>
+<b class="nc"><i>28</i>&nbsp;      throw new NullPointerException(&quot;Cannot inject members into a null reference&quot;);</b>
+<i>29</i>&nbsp;    }
+<b class="fc"><i>30</i>&nbsp;    instance.locale = localeProvider.get();</b>
+<b class="fc"><i>31</i>&nbsp;  }</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;  public static void injectLocale(PlacesRepositoryImpl instance, Provider&lt;Locale&gt; localeProvider) {
+<b class="nc"><i>34</i>&nbsp;    instance.locale = localeProvider.get();</b>
+<b class="nc"><i>35</i>&nbsp;  }</b>
+<i>36</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2017-08-13 23:21</div>
+</div>
+</body>
+</html>
