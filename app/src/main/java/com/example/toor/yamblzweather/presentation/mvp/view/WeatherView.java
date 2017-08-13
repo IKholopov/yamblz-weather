@@ -10,7 +10,4 @@ public interface WeatherView extends BaseView {
     void showWeather(DailyWeather weather);
 
     long getPlaceId();
-
-    void showErrorFragment();
-
 }

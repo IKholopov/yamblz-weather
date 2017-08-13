@@ -5,7 +5,6 @@ import com.example.toor.yamblzweather.presentation.di.modules.ActivityModule;
 import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
 import com.example.toor.yamblzweather.presentation.mvp.view.activity.MainActivity;
 import com.example.toor.yamblzweather.presentation.mvp.view.adapter.ForecastAdapter;
-import com.example.toor.yamblzweather.presentation.mvp.view.fragment.ErrorFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.InfoFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.PlacesListFragment;
 import com.example.toor.yamblzweather.presentation.mvp.view.fragment.SettingsFragment;
@@ -29,8 +28,6 @@ public interface ActivityComponent {
     void inject(PlacesListFragment fragment);
 
     void inject(InfoFragment fragment);
-
-    void inject(ErrorFragment fragment);
 
     void inject(ForecastAdapter adapter);
 

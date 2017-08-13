@@ -13,6 +13,7 @@ import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.common.BaseFragmentPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.NavigateView;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ import static com.example.toor.yamblzweather.domain.utils.TemperatureMetric.CELS
  */
 
 @ActivityScope
-public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
+public class WeatherPresenter extends BaseFragmentPresenter<NavigateView> {
     private static final String TAG = "WeatherPresenter";
 
     @Inject  Context context;
@@ -100,7 +101,10 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe((weather, throwable)
                 -> {
             if (throwable != null) {
-                view.showErrorFragment();
+                NavigateView navigateView = getView();
+                if(navigateView != null) {
+                    getView().showNetworkError();
+                }
                 return;
             }
             view.showWeather(weather, place.getName());
@@ -111,12 +115,13 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
         if ( view == null)
             return null;
         return weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
-                .subscribe((weather, throwable)
+                .onErrorResumeNext(throwable -> {
+                        showError();
+                        return weatherInteractor.getWeatherFromDB(place)
+                                .observeOn(AndroidSchedulers.mainThread());
+                })
+                .subscribe((weather)
                 -> {
-            if (throwable != null) {
-                view.showErrorFragment();
-                return;
-            }
             view.showWeather(weather, place.getName());
         });
     }
@@ -124,6 +129,11 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
     public void updateAllWeather() {
         unSubcribeOnDetach(placesInteractor.getAllPlaces().subscribe(place ->
                 unSubcribeOnDetach(weatherInteractor.updateWeather(place).observeOn(AndroidSchedulers.mainThread())
+                    .onErrorResumeNext(throwable -> {
+                        showError();
+                        return weatherInteractor.getWeatherFromDB(place)
+                            .observeOn(AndroidSchedulers.mainThread());
+                    })
                 .subscribe((weather) -> {
                     for(WeatherView weatherView: childViews) {
                         if(place == null) {
@@ -147,5 +157,12 @@ public class WeatherPresenter extends BaseFragmentPresenter<WeatherView> {
     @NonNull
     Single<TemperatureMetric> getMetric() {
         return settingsInteractor.getUserSettings().map(SettingsModel::getMetric);
+    }
+
+    private void showError() {
+        NavigateView navigateView = getView();
+        if(navigateView != null) {
+            getView().showNetworkError();
+        }
     }
 }

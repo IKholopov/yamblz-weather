@@ -1,11 +1,14 @@
 package com.example.toor.yamblzweather.presentation.mvp.view.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
@@ -27,11 +30,12 @@ import butterknife.Unbinder;
 /**
  * Fragment with ViewPager for different weather in different pages
  */
-public class WeatherPagerFragment extends BaseFragment implements WeatherView, NavigateView {
+public class WeatherPagerFragment extends BaseFragment implements NavigateView {
 
     private Unbinder unbinder;
     private WeatherPlacesPagerAdapter pagerAdapter;
     private NoPlacesAdapter noPlacesAdapter;
+    private Snackbar snack;
 
     @Inject
     WeatherPresenter presenter;
@@ -48,7 +52,6 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter.onAttach(this);
     }
 
     @Override
@@ -71,6 +74,10 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather_pager, container, false);
         unbinder = ButterKnife.bind(this, view);
+        snack = Snackbar.make(weatherPager, R.string.no_internet, Snackbar.LENGTH_SHORT);
+        View snackView = snack.getView();
+        TextView tv = snackView.findViewById(android.support.design.R.id.snackbar_text);
+        tv.setTextColor(Color.WHITE);
         noPlacesAdapter = new NoPlacesAdapter(getChildFragmentManager());
         return view;
     }
@@ -95,27 +102,28 @@ public class WeatherPagerFragment extends BaseFragment implements WeatherView, N
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onAttach(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        presenter.onDetach();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
     @Override
-    public void showWeather(DailyWeather weather, String placeName) {
-    }
-
-    @Override
-    public void showWeather(DailyWeather weather) {
-    }
-
-    @Override
-    public long getPlaceId() {
-        return 0;
-    }
-
-    @Override
-    public void showErrorFragment() {
-
+    public void showNetworkError() {
+        if(!snack.isShown()) {
+            snack.show();
+        }
     }
 
     @Override

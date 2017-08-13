@@ -20,6 +20,7 @@ import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
 import com.example.toor.yamblzweather.domain.utils.TimeUtils;
 import com.example.toor.yamblzweather.domain.utils.ViewUtils;
 import com.example.toor.yamblzweather.presentation.di.App;
+import com.example.toor.yamblzweather.presentation.di.scopes.ActivityScope;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
@@ -34,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
+@ActivityScope
 public class WeatherFragment extends BaseFragment implements WeatherView, WeatherDetailsView,
         SwipeRefreshLayout.OnRefreshListener {
 
@@ -41,10 +43,14 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
     TextView tvCity;
     @BindView(R.id.tvDate)
     TextView tvDate;
+    @BindView(R.id.pressureLabel)
+    TextView pressureLabel;
     @BindView(R.id.tvPressure)
     TextView tvPressure;
     @BindView(R.id.tvHumidity)
     TextView tvHumidity;
+    @BindView(R.id.humidityLabel)
+    TextView humidityLabel;
     @BindView(R.id.tvTempMax)
     TextView tvTempMax;
     @BindView(R.id.tvTempMin)
@@ -143,6 +149,9 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
 
     @Override
     public void showWeather(DailyWeather weather, String placeName) {
+        if(forecastList == null) {
+            return;
+        }
         if(weather.getList().size() == 0) {
             setSelectedWeather("No downloaded weather :)", "", placeName, null);
             presenter.updateAllWeather();
@@ -176,10 +185,6 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
         return placeModel.getLocalId();
     }
 
-    @Override
-    public void showErrorFragment() {
-        createNetworkErrorFragment();
-    }
 
     private void setSelectedWeather(@NonNull String temperatureMaxStr,
                                     @NonNull String temperatureMinStr,
@@ -193,18 +198,13 @@ public class WeatherFragment extends BaseFragment implements WeatherView, Weathe
         if(weather != null) {
             tvCity.setText(placeName);
             tvDate.setText(TimeUtils.formatDayShort(weather.getDt()));
+            humidityLabel.setText(getString(R.string.humidity));
             tvHumidity.setText(String.format(getString(R.string.percents_format), weather.getHumidity()));
+            pressureLabel.setText(getString(R.string.pressure));
             tvPressure.setText(String.format(getString(R.string.pressure_format), weather.getPressure()));
             tvDescription.setText(weather.getWeather().get(0).getDescription());
             setImageFromName(weather.getWeather().get(0).getIcon());
         }
-    }
-
-    private void createNetworkErrorFragment() {
-        Fragment fragment = ErrorFragment.newInstance();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.flContent, fragment, ErrorFragment.class.getSimpleName())
-                .commit();
     }
 
     private void setImageFromName(String name) {

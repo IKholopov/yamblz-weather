@@ -8,6 +8,7 @@ import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
+import com.example.toor.yamblzweather.presentation.mvp.view.NavigateView;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 
 import org.junit.Before;
@@ -16,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.plugins.RxAndroidPlugins;
 import io.reactivex.schedulers.Schedulers;
@@ -41,7 +43,7 @@ public class WeatherFragmentPresenterTest {
 
     private WeatherPresenter preparePresenter(WeatherView view) {
         WeatherPresenter presenter = new WeatherPresenter(placesInteractor, weatherInteractor, settingsInteractor);
-        presenter.onAttach(view);
+        presenter.onChildAttach(view);
         return presenter;
     }
 
@@ -63,7 +65,9 @@ public class WeatherFragmentPresenterTest {
                         () -> new SettingsModel.Builder(TemperatureMetric.CELSIUS, 10).build()
                 )
         );
-
+        when(placesInteractor.getAllPlaces()).thenReturn(
+                Flowable.just(new PlaceModel.Builder().placeId("").name("").localId(0L).build())
+        );
 
     }
 
@@ -80,6 +84,14 @@ public class WeatherFragmentPresenterTest {
         TestView testView = new TestView();
         WeatherPresenter presenter = preparePresenter(testView);
         presenter.updateWeather(new PlaceModel.Builder().build(), testView);
+        verify(weatherInteractor, times(1)).updateWeather(any());
+    }
+
+    @Test
+    public void updateAllWeatherTest() {
+        TestView testView = new TestView();
+        WeatherPresenter presenter = preparePresenter(testView);
+        presenter.updateAllWeather();
         verify(weatherInteractor, times(1)).updateWeather(any());
     }
 
@@ -100,11 +112,6 @@ public class WeatherFragmentPresenterTest {
         @Override
         public long getPlaceId() {
             return 0;
-        }
-
-        @Override
-        public void showErrorFragment() {
-            displayedError = true;
         }
 
         public boolean isWeatherDisplayed() {

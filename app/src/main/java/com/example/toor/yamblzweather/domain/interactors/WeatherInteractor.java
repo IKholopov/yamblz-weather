@@ -53,10 +53,7 @@ public class WeatherInteractor {
 
     @NonNull
     private Single<DailyWeather> updateExtendedWeather(PlaceDetails placeDetails) {
-        return weatherRepository.loadExtendedWeatherFromNW(placeDetails)
-                .onErrorResumeNext(throwable ->
-                        weatherRepository.getExtendedWeatherFromDB(placeDetails,
-                                TimeUtils.getCurrentNormalizedDate()));
+        return weatherRepository.loadExtendedWeatherFromNW(placeDetails);
     }
 
     @NonNull
