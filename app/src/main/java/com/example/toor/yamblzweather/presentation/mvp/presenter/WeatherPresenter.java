@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.example.toor.yamblzweather.R;
-import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
-import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;

@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 
 import java.util.Calendar;
 

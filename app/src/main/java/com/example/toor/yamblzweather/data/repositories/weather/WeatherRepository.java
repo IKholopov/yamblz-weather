@@ -1,14 +1,9 @@
 package com.example.toor.yamblzweather.data.repositories.weather;
 
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
-import com.example.toor.yamblzweather.data.models.weather.common.Coord;
-import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 
 import java.util.Calendar;
 

@@ -7,14 +7,10 @@ import com.example.toor.yamblzweather.data.database.PlaceDBModel;
 import com.example.toor.yamblzweather.data.database.WeatherDBModel;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
-import com.example.toor.yamblzweather.data.models.weather.common.Main;
 import com.example.toor.yamblzweather.data.models.weather.common.Temp;
 import com.example.toor.yamblzweather.data.models.weather.common.Weather;
-import com.example.toor.yamblzweather.data.models.weather.common.Wind;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 
 import org.junit.After;
 import org.junit.Before;

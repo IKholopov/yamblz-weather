@@ -7,7 +7,6 @@ import com.example.toor.yamblzweather.data.database.DataBase;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.presentation.di.App;
 

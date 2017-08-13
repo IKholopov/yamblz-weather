@@ -2,29 +2,26 @@ package com.example.toor.yamblzweather.data;
 
 import com.example.toor.yamblzweather.common.AnswerWithSelf;
 import com.example.toor.yamblzweather.common.AppMock;
+import com.example.toor.yamblzweather.data.database.CupboardDB;
 import com.example.toor.yamblzweather.data.database.DataBase;
 import com.example.toor.yamblzweather.data.models.places.PlaceDetails;
 import com.example.toor.yamblzweather.data.models.weather.common.City;
 import com.example.toor.yamblzweather.data.models.weather.common.Coord;
-import com.example.toor.yamblzweather.data.models.weather.common.Main;
-import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyForecastElement;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.WeatherForecastElement;
 import com.example.toor.yamblzweather.data.network.OWService;
 import com.example.toor.yamblzweather.data.network.api.ApiKeys;
 import com.example.toor.yamblzweather.data.network.api.OpenWeatherAPI;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepository;
 import com.example.toor.yamblzweather.data.repositories.weather.WeatherRepositoryImpl;
 import com.example.toor.yamblzweather.presentation.di.App;
-import com.example.toor.yamblzweather.presentation.di.components.AppComponent;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.stubbing.OngoingStubbing;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -38,10 +35,12 @@ import retrofit2.Retrofit;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.only;
 import static org.powermock.api.mockito.PowerMockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
@@ -64,7 +63,7 @@ public class WeatherRepositoryTest {
     private City city;
 
     @Mock OpenWeatherAPI api;
-    @Mock DataBase dataBase;
+    @Mock CupboardDB dataBase;
     @Mock DailyWeather weather;
 
     private WeatherRepository prepareWeatherRepository() {
@@ -96,13 +95,12 @@ public class WeatherRepositoryTest {
 
         DailyForecastElement testWeather = new DailyForecastElement();
 
-        place = new PlaceDetails();
-        place.setCoords(TEST_COORDS);
-        place.setName(TEST_CITY);
+        place = PlaceDetails.newInstance(0L, TEST_COORDS, TEST_CITY, "");
 
         testWeather.setDt(TEST_DT);
 
-        when(dataBase.getWeather(any(), any())).thenReturn(Flowable.fromCallable(() -> testWeather));
+        when(dataBase.getWeather(any(), anyLong()))
+                .thenReturn(Flowable.fromCallable(() -> testWeather));
     }
 
     @Test

@@ -35,16 +35,4 @@ public class SettingsInteractor {
     public void saveUpdateInterval(long interval) {
         repository.saveUpdateInterval(interval);
     }
-
-    public void saveSelectedCity(int cityId) {
-        repository.saveSelectedCity(cityId);
-    }
-
-    public void saveSelectedCity(PlaceModel city) {
-        repository.saveSelectedCity(city);
-    }
-
-    public String getSelectedCityName() {
-        return repository.getSelectedCityName();
-    }
 }

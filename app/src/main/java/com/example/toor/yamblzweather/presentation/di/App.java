@@ -1,8 +1,10 @@
 package com.example.toor.yamblzweather.presentation.di;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.evernote.android.job.JobManager;
+import com.evernote.android.job.JobManagerCreateException;
 import com.example.toor.yamblzweather.BuildConfig;
 import com.example.toor.yamblzweather.domain.scheduler.ScheduleJobCreator;
 import com.example.toor.yamblzweather.domain.scheduler.WeatherScheduleJob;
@@ -19,6 +21,8 @@ import timber.log.Timber;
 
 public class App extends Application {
 
+    private static final String TAG = "Application";
+
     private static App instance;
 
     private AppComponent appComponent;
@@ -32,12 +36,15 @@ public class App extends Application {
         super.onCreate();
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);
-        JobManager.create(getApplicationContext()).addJobCreator(new ScheduleJobCreator());
+        try {
+            JobManager.create(getApplicationContext()).addJobCreator(new ScheduleJobCreator());
+        } catch (JobManagerCreateException e) {
+            Log.e(TAG, "Failed to create a job are we running a unit test here?");
+        }
+
         if (BuildConfig.DEBUG)
             Timber.plant(new Timber.DebugTree());
 

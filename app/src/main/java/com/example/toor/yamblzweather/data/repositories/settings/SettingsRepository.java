@@ -24,13 +24,5 @@ public interface SettingsRepository {
     void saveSelectedCity(int cityId);
     void saveSelectedCity(PlaceModel model);
 
-    void saveCacheTime(long time);
-
     String getSelectedCityName();
-
-    @Nullable
-    Single<PlacesAutocompleteModel> loadPlacesAutocomplete(String input);
-
-    @Nullable
-    Single<PlaceDetails> loadPlaceDetails(String placeId);
 }

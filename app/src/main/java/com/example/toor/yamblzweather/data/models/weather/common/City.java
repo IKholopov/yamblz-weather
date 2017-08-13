@@ -1,7 +1,7 @@
 
 package com.example.toor.yamblzweather.data.models.weather.common;
 
-import com.example.toor.yamblzweather.data.models.weather.five_day.Sys;
+import com.example.toor.yamblzweather.data.models.weather.daily.Sys;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

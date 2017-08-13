@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import com.example.toor.yamblzweather.R;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.presentation.di.App;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.NavigateView;

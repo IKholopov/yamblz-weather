@@ -54,24 +54,13 @@ public class WeatherScheduleJob extends Job {
 
     public void startJob() {
         Timber.v("startJob");
-        if (BuildConfig.DEBUG) {
-            settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
-                    new JobRequest.Builder(TAG)
-                            .setPeriodic(TimeUnit.MILLISECONDS.toMillis(900000)
-                                    , TimeUnit.MILLISECONDS.toMillis(900000))
-                            .setUpdateCurrent(true)
-                            .setPersisted(true)
-                            .build()
-                            .schedule());
-        } else {
-            settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
-                    new JobRequest.Builder(TAG)
-                            .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
-                                    , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
-                            .setUpdateCurrent(true)
-                            .setPersisted(true)
-                            .build()
-                            .schedule());
-        }
+        settingsInteractor.getUserSettings().subscribe((settings, throwable) ->
+                new JobRequest.Builder(TAG)
+                        .setPeriodic(TimeUnit.MILLISECONDS.toMillis(settings.getUpdateWeatherInterval())
+                                , TimeUnit.MILLISECONDS.toMillis((long) ((double) settings.getUpdateWeatherInterval() * FLEX_TIME_PERCENT)))
+                        .setUpdateCurrent(true)
+                        .setPersisted(true)
+                        .build()
+                        .schedule());
     }
 }

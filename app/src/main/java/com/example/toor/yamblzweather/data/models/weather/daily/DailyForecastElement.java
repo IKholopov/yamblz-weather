@@ -1,17 +1,13 @@
 
 package com.example.toor.yamblzweather.data.models.weather.daily;
 
-import com.example.toor.yamblzweather.data.models.weather.common.Clouds;
-import com.example.toor.yamblzweather.data.models.weather.common.Main;
-import com.example.toor.yamblzweather.data.models.weather.common.Rain;
 import com.example.toor.yamblzweather.data.models.weather.common.Temp;
 import com.example.toor.yamblzweather.data.models.weather.common.Weather;
-import com.example.toor.yamblzweather.data.models.weather.common.Wind;
-import com.example.toor.yamblzweather.data.models.weather.five_day.Sys_;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DailyForecastElement {
 
@@ -43,43 +39,21 @@ public class DailyForecastElement {
     @Expose
     private float rain;
 
-    /**
-     * 
-     * @return
-     *     The dt
-     */
     public Integer getDt() {
         return dt;
     }
 
-    /**
-     * 
-     * @param dt
-     *     The dt
-     */
     public void setDt(Integer dt) {
         this.dt = dt;
     }
 
-    /**
-     * 
-     * @return
-     *     The weather
-     */
-    public java.util.List<Weather> getWeather() {
+    public List<Weather> getWeather() {
         return weather;
     }
 
-    /**
-     * 
-     * @param weather
-     *     The weather
-     */
     public void setWeather(java.util.List<Weather> weather) {
         this.weather = weather;
     }
-
-
 
     public Temp getTemp() {
         return temp;

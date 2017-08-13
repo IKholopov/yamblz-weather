@@ -1,15 +1,12 @@
 package com.example.toor.yamblzweather.presentation;
 
-import com.example.toor.yamblzweather.data.models.weather.current_day.CurrentWeather;
 import com.example.toor.yamblzweather.data.models.weather.daily.DailyWeather;
-import com.example.toor.yamblzweather.data.models.weather.five_day.ExtendedWeather;
 import com.example.toor.yamblzweather.domain.interactors.PlacesInteractor;
 import com.example.toor.yamblzweather.domain.interactors.SettingsInteractor;
 import com.example.toor.yamblzweather.domain.interactors.WeatherInteractor;
 import com.example.toor.yamblzweather.domain.utils.TemperatureMetric;
 import com.example.toor.yamblzweather.presentation.mvp.models.places.PlaceModel;
 import com.example.toor.yamblzweather.presentation.mvp.models.settings.SettingsModel;
-import com.example.toor.yamblzweather.presentation.mvp.models.weather.FullWeatherModel;
 import com.example.toor.yamblzweather.presentation.mvp.presenter.WeatherPresenter;
 import com.example.toor.yamblzweather.presentation.mvp.view.WeatherView;
 

@@ -51,9 +51,8 @@ public class PlacesInteractor {
         placesRepository.addPlace(detailsFromModel(placeModel), onSuccess);
     }
 
-    private
     @Nullable
-    ArrayList<PlaceModel> modelFromAutocomplete(PlacesAutocompleteModel model) {
+    private ArrayList<PlaceModel> modelFromAutocomplete(PlacesAutocompleteModel model) {
         if(model == null) {
             return null;
         }
@@ -66,9 +65,7 @@ public class PlacesInteractor {
         return transformed;
     }
 
-    private
-    @Nullable
-    PlaceModel modelFromDetails(PlaceDetails details) {
+    @Nullable private PlaceModel modelFromDetails(PlaceDetails details) {
         if(details == null) {
             return null;
         }

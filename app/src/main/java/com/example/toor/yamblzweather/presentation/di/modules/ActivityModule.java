@@ -19,8 +19,8 @@ public class ActivityModule {
 
     @Provides
     @ActivityScope
-    public WeatherInteractor provideWeatherInteractor(WeatherRepository repository, SettingsRepository settingsRepository) {
-        return new WeatherInteractor(repository, settingsRepository);
+    public WeatherInteractor provideWeatherInteractor(WeatherRepository repository) {
+        return new WeatherInteractor(repository);
     }
 
     @Provides

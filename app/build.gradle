@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply from: '../jacoco.gradle'
 
 android {
 
@@ -19,6 +20,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
+            testCoverageEnabled true
         }
     }
     compileOptions {
@@ -57,7 +59,6 @@ dependencies {
 
     compile "com.evernote:android-job:$android_job_version"
 
-    compile "org.greenrobot:greendao:$greendao_version"
     compile "nl.qbusict:cupboard:$cupboard_version"
     compile "nl.2312:rxcupboard2:$rxcupboard_version"
 
@@ -80,6 +81,4 @@ dependencies {
     debugCompile "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
     releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
     testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-
-    compile 'com.android.support:support-v4:26.+'
 }
